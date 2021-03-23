@@ -6,10 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "BasicPlayerController.generated.h"
 
-class USimpleInventoryWidgetBase;
-class UStorageWidgetBase;
-class UMainInventoryWidgetBase;
-class UConditionWidgetBase;
 class ABasicCharacter;
 class AAbility;
 class UMainHUDBase;

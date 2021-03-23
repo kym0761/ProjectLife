@@ -16,8 +16,6 @@ void UEquipSlotBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	//SlotImage = Cast<UImage>(GetWidgetFromName(TEXT("SlotImage")));
-
 	SetVisibility(ESlateVisibility::Visible);
 }
 

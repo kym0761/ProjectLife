@@ -210,10 +210,5 @@ void APuzzleDoorBase::Reset_Implementation()
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ResetNiagaraSystem,GetActorLocation());
 	}
 
-	//if (GEngine)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Cyan, TEXT("Door is reset!"));
-	//}
-
 }
 

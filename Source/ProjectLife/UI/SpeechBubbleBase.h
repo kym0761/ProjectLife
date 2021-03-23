@@ -20,11 +20,9 @@ class PROJECTLIFE_API USpeechBubbleBase : public UUserWidget
 
 public:
 	
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* SpeechTextBlock;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* NameTextBlock;
 

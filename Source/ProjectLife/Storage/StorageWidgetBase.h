@@ -21,7 +21,7 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UUniformGridPanel* SlotGridPanel;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
+	UPROPERTY()
 		TArray<UItemSlotBase*> ItemSlotArray;
 
 	virtual void NativeConstruct() override;

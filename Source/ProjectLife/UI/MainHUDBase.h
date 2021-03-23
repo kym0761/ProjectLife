@@ -55,18 +55,18 @@ public:
 
 
 
-		virtual void NativeConstruct() override;
+	virtual void NativeConstruct() override;
 
-		void UpdateInventory();
-		void ToggleInventory();
+	void UpdateInventory();
+	void ToggleInventory();
 
-		void ToggleStorageWidget(AActor* StorageActorRef);
+	void ToggleStorageWidget(AActor* StorageActorRef);
 
-		void AddConditionIcon(AAbility* ConditionActorRef);
-		void RemoveConditionIcon(AAbility* ConditionActorRef);
+	void AddConditionIcon(AAbility* ConditionActorRef);
+	void RemoveConditionIcon(AAbility* ConditionActorRef);
 
 
-		void NotifyInteract(AActor* InActor);
-		void UnnotifyInteract();
+	void NotifyInteract(AActor* InActor);
+	void UnnotifyInteract();
 
 };

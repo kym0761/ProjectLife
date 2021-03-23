@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Base.h"
 #include "GameFramework/Character.h"
 #include "BasicCharacter.generated.h"
 
@@ -12,9 +13,6 @@ class UInventoryComponent;
 class UStatComponent;
 class UEquipmentComponent;
 class ABasicWeapon;
-//class USimpleInventoryWidgetBase;
-//class UItemSlotBase;
-//class UStorageWidgetBase;
 class USpeechWidgetComponent;
 class ADamageTextActor;
 
