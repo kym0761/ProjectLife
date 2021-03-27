@@ -7,9 +7,8 @@
 #include "ButtonTriggerBase.h"
 #include "NiagaraComponent.h"
 #include "FireTimerWidgetBase.h"
-#include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
-
+#include "Components/BoxComponent.h"
 
 
 AFireStandBase::AFireStandBase()
@@ -28,6 +27,11 @@ AFireStandBase::AFireStandBase()
 	FireEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("FireEffect"));
 	FireEffect->SetupAttachment(Stand, TEXT("EffectSocket"));
 	FireEffect->bAutoActivate = false;
+
+	FireOverlap = CreateDefaultSubobject<UBoxComponent>(TEXT("FireOverlap"));
+	FireOverlap->InitBoxExtent(FVector(48.0f, 48.0f, 100.0f));
+	FireOverlap->SetRelativeLocation(FVector(0.0f,0.0f, 80.0f));
+	FireOverlap->SetupAttachment(RootComponent);
 
 	bUseTimer = false;
 	bOffImmediately = false;
@@ -112,6 +116,11 @@ void AFireStandBase::Reset_Implementation()
 	//}
 }
 
+void AFireStandBase::Combust_Implementation()
+{
+	TurnOnFire();
+}
+
 void AFireStandBase::TurnOnFire()
 {
 	bTriggerActive = true;
@@ -160,4 +169,26 @@ void AFireStandBase::TurnOffFire()
 			ITriggerable::Execute_TriggerAction(i);
 		}
 	}
+}
+
+void AFireStandBase::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+
+	if (bInterfaceValid)
+	{
+		if (bTriggerActive)
+		{
+			ICombustible::Execute_Combust(OtherActor);
+
+			if (GEngine)
+			{
+				FString temp = FString("Combust! --->") + OtherActor->GetName();
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, temp);
+			}
+		}
+	}
+
 }

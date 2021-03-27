@@ -11,12 +11,12 @@ class UStaticMeshComponent;
 class UWidgetComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
-
+class UBoxComponent;
 /**
  * 
  */
 UCLASS()
-class PROJECTLIFE_API AFireStandBase : public APuzzleTriggerBase, public ITriggerable, public IResetable
+class PROJECTLIFE_API AFireStandBase : public APuzzleTriggerBase, public ITriggerable, public IResetable, public ICombustible
 {
 	GENERATED_BODY()
 
@@ -32,6 +32,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UNiagaraComponent* FireEffect;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Effect")
+		UBoxComponent* FireOverlap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
 		bool bUseTimer;
@@ -60,6 +63,10 @@ public:
 
 	virtual void Reset_Implementation();
 
+	virtual void Combust_Implementation();
+
 	void TurnOnFire();
 	void TurnOffFire();
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

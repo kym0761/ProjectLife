@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "PuzzleInterfaces.generated.h"
+
  //Interface Class Base. Don't Use.
 UINTERFACE(Blueprintable)
 class UTriggerable : public UInterface
@@ -43,3 +44,21 @@ public:
 
 };
 
+//Interface Class Base. Don't Use.
+UINTERFACE(Blueprintable)
+class UCombustible : public UInterface
+{
+	GENERATED_BODY()
+};
+
+//Actual Interface Class. You must Use This When you Inherit Interface.
+class ICombustible
+{
+	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Combust")
+		void Combust();
+
+};
