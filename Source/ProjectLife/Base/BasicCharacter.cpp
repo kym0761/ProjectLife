@@ -18,6 +18,8 @@
 #include "../Inventory/EquipmentComponent.h"
 #include "SpeechWidgetComponent.h"
 #include "DamageTextActor.h"
+#include "Components/SceneComponent.h"
+#include "../Puzzle/PhysicsHoldBase.h"
 
 // Sets default values
 ABasicCharacter::ABasicCharacter()
@@ -60,6 +62,12 @@ ABasicCharacter::ABasicCharacter()
 	SpeechBubbleWidget->SetupAttachment(RootComponent);
 	SpeechBubbleWidget->SetRelativeLocation(FVector(0.0f,0.0f,110.0f));
 	SpeechBubbleWidget->SetPivot(FVector2D(0.125f,0.5f));
+
+
+
+	HoldPosition = CreateDefaultSubobject<USceneComponent>(TEXT("HoldPosition"));
+	HoldPosition->SetupAttachment(RootComponent);
+	bHoldSomething = false;
 
 }
 
@@ -378,6 +386,14 @@ void ABasicCharacter::InteractCheck()
 
 void ABasicCharacter::InteractTrigger()
 {
+
+	if (bHoldSomething)
+	{
+		UnHold();
+		return;
+	}
+
+
 	/*First, LineTrace Detection. First Priority is Actor's look Direction.*/
 	/*second Priority is Overlapped Actor detection & most Closest Actor.*/
 
@@ -471,6 +487,29 @@ void ABasicCharacter::ToggleInventory()
 	if (playerController)
 	{
 		playerController->ToggleInventory();
+	}
+}
+
+void ABasicCharacter::Hold(APhysicsHoldBase* ToHold)
+{
+	if (IsValid(ToHold))
+	{
+		bHoldSomething = true;
+		CurrentHold = ToHold;
+		ToHold->SetHoldStatus(true);
+		ToHold->AttachToComponent(HoldPosition,FAttachmentTransformRules::KeepWorldTransform);
+		ToHold->SetActorLocation(HoldPosition->GetComponentLocation());
+	}
+}
+
+void ABasicCharacter::UnHold()
+{
+	bHoldSomething = false;
+	if (CurrentHold)
+	{
+		CurrentHold->SetHoldStatus(false);
+		CurrentHold->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		CurrentHold->ThrowToDirection(GetActorForwardVector());
 	}
 }
 

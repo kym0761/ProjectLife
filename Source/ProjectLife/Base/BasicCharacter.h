@@ -15,7 +15,8 @@ class UEquipmentComponent;
 class ABasicWeapon;
 class USpeechWidgetComponent;
 class ADamageTextActor;
-
+class USceneComponent;
+class APhysicsHoldBase;
 UENUM(BlueprintType)
 enum class ECameraType : uint8
 {
@@ -74,6 +75,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 		TSubclassOf<ADamageTextActor> DamageTextActorClass;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
+		USceneComponent* HoldPosition;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
+		bool bHoldSomething;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
+		APhysicsHoldBase* CurrentHold;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -105,6 +115,10 @@ public:
 	void InteractTrigger();
 
 	void ToggleInventory();
+
+
+	void Hold(APhysicsHoldBase* ToHold);
+	void UnHold();
 
 	//virtual void Interact(APawn* InteractCauser);
 	virtual void Interact_Implementation(APawn* InteractCauser);
