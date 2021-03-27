@@ -270,6 +270,11 @@ void ABasicCharacter::SettingWithCameraType()
 
 void ABasicCharacter::InteractCheck()
 {
+	if (bHoldSomething)
+	{
+		return;
+	}
+
 	/*First, LineTrace Detection. First Priority is Actor's look Direction.*/
 	/*second Priority is Overlapped Actor detection & most Closest Actor.*/
 
@@ -504,9 +509,10 @@ void ABasicCharacter::Hold(APhysicsHoldBase* ToHold)
 
 void ABasicCharacter::UnHold()
 {
-	bHoldSomething = false;
+
 	if (CurrentHold)
 	{
+		bHoldSomething = false;
 		CurrentHold->SetHoldStatus(false);
 		CurrentHold->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		CurrentHold->ThrowToDirection(GetActorForwardVector());
