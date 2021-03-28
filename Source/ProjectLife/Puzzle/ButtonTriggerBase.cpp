@@ -30,6 +30,9 @@ void AButtonTriggerBase::BeginPlay()
 	Super::BeginPlay();
 
 	InitializeForTimeline();
+
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AButtonTriggerBase::OnButtonBeginOverlap);
+	Sphere->OnComponentEndOverlap.AddDynamic(this, &AButtonTriggerBase::OnButtonEndOverlap);
 }
 
 void AButtonTriggerBase::Tick(float DeltaTime)
@@ -46,55 +49,49 @@ void AButtonTriggerBase::Tick(float DeltaTime)
 
 }
 
-void AButtonTriggerBase::NotifyActorBeginOverlap(AActor* OtherActor)
+void AButtonTriggerBase::OnButtonBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::NotifyActorBeginOverlap(OtherActor);
-
 	UCharacterMovementComponent* characterMovement = OtherActor->FindComponentByClass<UCharacterMovementComponent>();
-	UStaticMeshComponent* staticMeshComp = OtherActor->FindComponentByClass<UStaticMeshComponent>();
+	UPrimitiveComponent* primitiveComp = OtherComp;
 
-	//if there is CharacterMovement or PhysicsMesh.
-	if (IsValid(characterMovement) || (staticMeshComp&&staticMeshComp->IsSimulatingPhysics()) && bTriggerActive == false )
+	//check if there is CharacterMovement or PhysicsComponent.
+	if ((IsValid(characterMovement) || (primitiveComp && primitiveComp->IsSimulatingPhysics())) && bTriggerActive == false)
 	{
 		//Button Down.
 		ButtonDown();
 	}
-
-
 }
 
-void AButtonTriggerBase::NotifyActorEndOverlap(AActor* OtherActor)
+void AButtonTriggerBase::OnButtonEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	Super::NotifyActorEndOverlap(OtherActor);
-
 	//Check Something Overlapping.
-	TArray<AActor*> overlappedActors;
-	GetOverlappingActors(overlappedActors);
+	TArray<UPrimitiveComponent*> overlappingComponents;
+	GetOverlappingComponents(overlappingComponents);
 
 	//temporary "false" Setting.
 	bool temp = false;
 
-	//check if there is CharacterMovement or PhysicsMesh.
-	for (AActor* i : overlappedActors)
+	//check if there is CharacterMovement or PhysicsComponent.
+	for (UPrimitiveComponent* i : overlappingComponents)
 	{
-		UCharacterMovementComponent* characterMovement = i->FindComponentByClass<UCharacterMovementComponent>();
-		UStaticMeshComponent* staticMeshComp = i->FindComponentByClass<UStaticMeshComponent>();
+		AActor* owner = i->GetOwner();
+		UCharacterMovementComponent* characterMovement = owner->FindComponentByClass<UCharacterMovementComponent>();
 
-		if (IsValid(characterMovement) || (IsValid(staticMeshComp) && staticMeshComp->IsSimulatingPhysics()))
+		if (IsValid(characterMovement) || (IsValid(i) && i->IsSimulatingPhysics()))
 		{
 			temp = true;
+			break;
 		}
 	}
 
 	//Set bTriggerActivate with result.
 	bTriggerActive = temp;
-	
-	//there is no Overlap Actors, Button UP.
+
+	//there is no Overlap, Button UP.
 	if (bTriggerActive == false)
 	{
 		ButtonUp();
 	}
-
 }
 
 void AButtonTriggerBase::InitializeForTimeline()

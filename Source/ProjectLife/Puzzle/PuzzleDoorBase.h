@@ -42,6 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bUseTimer;
 
+	//Use When You Want to This Door Open Permnanently Once Door Opened.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bOpenPermanently;
 
@@ -59,6 +60,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reset")
 		UNiagaraSystem* ResetNiagaraSystem;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
+		bool bBoxOverlapping;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -70,6 +74,12 @@ public:
 	virtual void TriggerAction_Implementation();
 
 	void InitializeForTimeline();
+
+	UFUNCTION()
+		void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+		void OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 
 	UFUNCTION()
 	void TimelineFloatFunction(float Value);

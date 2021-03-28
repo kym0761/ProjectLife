@@ -8,7 +8,7 @@
 AFireTorchBase::AFireTorchBase()
 {
 	FireOverlap = CreateDefaultSubobject<UBoxComponent>(TEXT("FireOverlap"));
-	FireOverlap->InitBoxExtent(FVector(75.0f,75.0f,75.0f));
+	FireOverlap->InitBoxExtent(FVector(64.0f,64.0f,64.0f));
 	FireOverlap->SetupAttachment(RootComponent);
 
 	FireEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("FireEffect"));

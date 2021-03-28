@@ -10,6 +10,7 @@
 #include "FireStandBase.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 APuzzleDoorBase::APuzzleDoorBase()
@@ -34,6 +35,7 @@ APuzzleDoorBase::APuzzleDoorBase()
 	bDoorOpen = false;
 	bUseTimer = false;
 	bOpenPermanently = false;
+	bBoxOverlapping = false;
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +56,9 @@ void APuzzleDoorBase::BeginPlay()
 	//Init for Door Mesh Up And Down.
 	InitializeForTimeline();
 
+	Box->OnComponentBeginOverlap.AddDynamic(this, &APuzzleDoorBase::OnBoxBeginOverlap);
+	Box->OnComponentEndOverlap.AddDynamic(this, &APuzzleDoorBase::OnBoxEndOverlap);
+
 }
 
 // Called every frame
@@ -69,7 +74,7 @@ void APuzzleDoorBase::Tick(float DeltaTime)
 	{
 		CurrentTime = FMath::Clamp<float>(CurrentTime - DeltaTime, 0.0f, TriggerWaitTime);
 		
-		if (CurrentTime <= 0.0f)
+		if (CurrentTime <= 0.0f && bBoxOverlapping == false)
 		{
 			CloseDoor();
 		}
@@ -113,6 +118,42 @@ void APuzzleDoorBase::InitializeForTimeline()
 		TimelineHandle.AddInterpFloat(CurveForTimeline, timelineFloat);
 		TimelineHandle.SetLooping(false);
 	}
+}
+
+void APuzzleDoorBase::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UCharacterMovementComponent* characterMovement = OtherActor->FindComponentByClass<UCharacterMovementComponent>();
+
+	if ( IsValid(characterMovement) || (IsValid(OtherComp) && OtherComp->IsSimulatingPhysics()) )
+	{
+		bBoxOverlapping = true;
+	}
+}
+
+void APuzzleDoorBase::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	//Check Something Overlapping.
+	TArray<UPrimitiveComponent*> overlappingComponents;
+	GetOverlappingComponents(overlappingComponents);
+
+	//temporary "false" Setting.
+	bool temp = false;
+
+	//check if there is CharacterMovement or PhysicsComponent.
+	for (UPrimitiveComponent* i : overlappingComponents)
+	{
+		AActor* owner = i->GetOwner();
+		UCharacterMovementComponent* characterMovement = owner->FindComponentByClass<UCharacterMovementComponent>();
+
+		if (IsValid(characterMovement) || (IsValid(i) && i->IsSimulatingPhysics()) )
+		{
+			temp = true;
+			break;
+		}
+	}
+
+	bBoxOverlapping = temp;
+
 }
 
 void APuzzleDoorBase::TimelineFloatFunction(float Value)

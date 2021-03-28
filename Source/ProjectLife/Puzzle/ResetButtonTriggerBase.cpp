@@ -27,7 +27,7 @@ void AResetButtonTriggerBase::Tick(float DeltaTime)
 
 void AResetButtonTriggerBase::ButtonUp()
 {
-	//Base Button Trigger's ButtonUp() has Trigger() Function. Reset Don't need it. so, Override And Delete That Function.
+	//Base Button Trigger's ButtonUp() has "Trigger()" Function. Reset Don't need it. so, Override And Delete That Function.
 
 	bTriggerActive = false;
 	ButtonMeshUp();

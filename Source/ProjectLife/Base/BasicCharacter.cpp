@@ -270,6 +270,7 @@ void ABasicCharacter::SettingWithCameraType()
 
 void ABasicCharacter::InteractCheck()
 {
+	//Disable the Check When Hold Something.
 	if (bHoldSomething)
 	{
 		return;
@@ -280,7 +281,7 @@ void ABasicCharacter::InteractCheck()
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> objects;
 
-	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
 	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
 	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
@@ -392,6 +393,7 @@ void ABasicCharacter::InteractCheck()
 void ABasicCharacter::InteractTrigger()
 {
 
+	//if Hold Something, Unhold And End Interaction Trigger.
 	if (bHoldSomething)
 	{
 		UnHold();
@@ -503,6 +505,7 @@ void ABasicCharacter::Hold(APhysicsHoldBase* ToHold)
 		CurrentHold = ToHold;
 		ToHold->SetHoldStatus(true);
 		ToHold->AttachToComponent(HoldPosition,FAttachmentTransformRules::KeepWorldTransform);
+		ToHold->SetActorRelativeRotation(FRotator::ZeroRotator);
 		ToHold->SetActorLocation(HoldPosition->GetComponentLocation());
 	}
 }
@@ -515,6 +518,7 @@ void ABasicCharacter::UnHold()
 		bHoldSomething = false;
 		CurrentHold->SetHoldStatus(false);
 		CurrentHold->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		CurrentHold->SetActorRotation(FRotator::ZeroRotator);
 		CurrentHold->ThrowToDirection(GetActorForwardVector());
 	}
 }
