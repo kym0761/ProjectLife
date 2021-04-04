@@ -103,19 +103,22 @@ public:
 	void Turn(float Value);
 	void LookUp(float Value);
 
+	//Camera Functions
 	void RotateTopView();
 	void RotateTopView_Reverse();
-
 	void ChangeCameraType();
 	void SettingWithCameraType();
 
+	//Check There is Interactable Actor.
 	void InteractCheck();
 
 	//Call Interact Function which has Interactive Interface. 
 	void InteractTrigger();
 
-	void ToggleInventory();
+	//Interactee Means Someone or Something is interacted by Interact() Function. Concept is Something like [employ"ee"]
+	AActor* FindInteractee();
 
+	void ToggleInventory();
 
 	void Hold(APhysicsHoldBase* ToHold);
 	void UnHold();

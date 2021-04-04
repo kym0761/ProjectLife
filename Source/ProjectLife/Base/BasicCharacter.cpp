@@ -63,12 +63,11 @@ ABasicCharacter::ABasicCharacter()
 	SpeechBubbleWidget->SetRelativeLocation(FVector(0.0f,0.0f,110.0f));
 	SpeechBubbleWidget->SetPivot(FVector2D(0.125f,0.5f));
 
-
-
 	HoldPosition = CreateDefaultSubobject<USceneComponent>(TEXT("HoldPosition"));
 	HoldPosition->SetupAttachment(RootComponent);
 	bHoldSomething = false;
 
+	CurrentHold = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -223,7 +222,7 @@ void ABasicCharacter::RotateTopView_Reverse()
 {
 	if (CameraType == ECameraType::TopView)
 	{
-		//PlayerController Default Yaw Scale Input is 2.5f. so to rotate -90 degree, -36*2.5 = 90.
+		//PlayerController Default Yaw Scale Input is 2.5f. so to rotate -90 degree, -36*2.5 = -90.
 		AddControllerYawInput(-36.0f);
 	}
 }
@@ -276,110 +275,15 @@ void ABasicCharacter::InteractCheck()
 		return;
 	}
 
-	/*First, LineTrace Detection. First Priority is Actor's look Direction.*/
-	/*second Priority is Overlapped Actor detection & most Closest Actor.*/
-
-	TArray<TEnumAsByte<EObjectTypeQuery>> objects;
-
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
-	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
-
-	TArray<AActor*> ignores;
-	ignores.Add(this);
-	ignores.Add(CurrentWeapon);
-
-	FHitResult hit;
-
-	FVector traceStart = GetActorLocation() + FVector(0.0f, 0.0f, -50.0f); // A little Downward of Trace Start Location.
-	FVector traceEnd = traceStart + GetActorForwardVector() * 100.0f;
-
-	bool result = UKismetSystemLibrary::LineTraceSingleForObjects(
-		GetWorld(),
-		traceStart,
-		traceEnd,
-		objects,
-		true,
-		ignores,
-		EDrawDebugTrace::None,
-		//EDrawDebugTrace::ForDuration,
-		hit,
-		true,
-		FLinearColor::Red,
-		FLinearColor::Blue,
-		5.0f
-	);
-
-	bool bCheck = false;
-	AActor* Interactee = nullptr;
-
-	if (result)
-	{
-		AActor* actor = hit.GetActor();
-		if (actor && actor->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-		{
-			//if (GEngine)
-			//{
-			//FString temp = FString("Current Interact Check : ") + actor->GetName();
-			//GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Silver, temp);
-			//}
-
-			bCheck = true;
-			Interactee = actor;
-		}
-	}
-	else
-	{
-		/*Line Trace Failed... Use Overlap Detection*/
-		TArray<AActor*> overlapped;
-
-		GetOverlappingActors(overlapped);
-
-		//Sort by Distance. descending order. lambda function.
-		overlapped.Sort(
-			[this](const AActor& a, const AActor& b)
-			->bool {
-				return FVector::Distance(GetActorLocation(), a.GetActorLocation())
-					< FVector::Distance(GetActorLocation(), b.GetActorLocation());
-			}
-		);
-
-		///*Result*/
-		//UE_LOG(LogTemp, Warning, TEXT("----After sort---"));
-		for (AActor* i : overlapped)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Actor Name : %s"), *i->GetName());
-		}
-
-		if (overlapped.Num() > 0)
-		{
-			AActor* firstOverlap = overlapped[0];
-
-			if (IsValid(firstOverlap) && firstOverlap->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-			{
-				//if (GEngine)
-				//{
-				//	//FString temp = FString("Overlap Current Interact Check : ") + firstOverlap->GetName();
-				//	//GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Green, temp);
-				//}
-
-				bCheck = true;
-				Interactee = firstOverlap;
-			}
-		}
-	}
-
+	AActor* interactee = FindInteractee();
 
 	ABasicPlayerController* playerController = GetController<ABasicPlayerController>();
 	if (playerController)
 	{
-		if (bCheck)
+
+		if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 		{
-			if (IsValid(Interactee))
-			{
-				playerController->NotifyInteract(Interactee);
-			}
+			playerController->NotifyInteract(interactee);
 		}
 		else
 		{
@@ -400,25 +304,35 @@ void ABasicCharacter::InteractTrigger()
 		return;
 	}
 
+	AActor* interactee = FindInteractee();
 
+	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+	{
+		IInteractive::Execute_Interact(interactee, this);
+	}
+}
+
+AActor* ABasicCharacter::FindInteractee()
+{
 	/*First, LineTrace Detection. First Priority is Actor's look Direction.*/
 	/*second Priority is Overlapped Actor detection & most Closest Actor.*/
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> objects;
 
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
 	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
 	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+	objects.Add(EObjectTypeQuery::ObjectTypeQuery7);
 
 	TArray<AActor*> ignores;
 	ignores.Add(this);
 	ignores.Add(CurrentWeapon);
 
-	FHitResult hit;
-
 	FVector traceStart = GetActorLocation() + FVector(0.0f, 0.0f, -50.0f); // A little Downward of Trace Start Location.
 	FVector traceEnd = traceStart + GetActorForwardVector() * 100.0f;
+
+	FHitResult hit;
 
 	bool result = UKismetSystemLibrary::LineTraceSingleForObjects(
 		GetWorld(),
@@ -436,12 +350,15 @@ void ABasicCharacter::InteractTrigger()
 		5.0f
 	);
 
+	AActor* interactee = nullptr;
+
 	if (result)
 	{
 		AActor* actor = hit.GetActor();
-		if (actor->GetClass()->ImplementsInterface(UInteractive::StaticClass())) //Detecting Interface
+		if (actor && actor->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 		{
-			IInteractive::Execute_Interact(actor, this);
+			//bCheck = true;
+			interactee = actor;
 		}
 	}
 	else
@@ -467,24 +384,26 @@ void ABasicCharacter::InteractTrigger()
 		//	UE_LOG(LogTemp, Warning, TEXT("Actor Name : %s"), *i->GetName());
 		//}
 
-		if (overlapped.Num() > 0)
-		{
-			AActor* firstOverlap = overlapped[0];
 
-			if (IsValid(firstOverlap))
+		for (AActor* i : overlapped)
+		{
+			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("%s"),*firstOverlap->GetName());
-				if (firstOverlap->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-				{
-					
-					IInteractive::Execute_Interact(firstOverlap,this);
-					//UE_LOG(LogTemp, Warning, TEXT("Interact OK.."));
-				}
+				interactee = i;
+				break;
 			}
 		}
 
 	}
 
+	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+	{
+		return interactee;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void ABasicCharacter::ToggleInventory()
@@ -520,6 +439,7 @@ void ABasicCharacter::UnHold()
 		CurrentHold->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		CurrentHold->SetActorRotation(FRotator::ZeroRotator);
 		CurrentHold->ThrowToDirection(GetActorForwardVector());
+		CurrentHold = nullptr;
 	}
 }
 

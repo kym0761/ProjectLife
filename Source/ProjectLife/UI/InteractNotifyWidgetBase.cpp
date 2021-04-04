@@ -8,27 +8,41 @@ void UInteractNotifyWidgetBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	ActorRef = nullptr;
 }
 
 void UInteractNotifyWidgetBase::NotifyInteract(AActor* InActor)
 {
-	SetVisibility(ESlateVisibility::Visible);
+	// If it Can be Visible && Identical Actor Selected, Don't Do Anything.
+	if (GetVisibility() == ESlateVisibility::Visible && ActorRef == InActor)
+	{
+		return;
+	}
 
-	if (NameTextBlock)
+	SetVisibility(ESlateVisibility::Visible);
+	if (IsValid(NameTextBlock))
 	{
 		if (InActor)
 		{
 			NameTextBlock->SetText(FText::FromString(InActor->GetName()));
+			ActorRef = InActor;
 		}
 	}
 }
 
 void UInteractNotifyWidgetBase::UnnotifyInteract()
 {
+	//if Already Hidden, Don't Do Anything.
+	if (GetVisibility() == ESlateVisibility::Hidden)
+	{
+		return;
+	}
+
 	SetVisibility(ESlateVisibility::Hidden);
-	if (NameTextBlock)
+	if (IsValid(NameTextBlock))
 	{
 		//Set Default.
 		NameTextBlock->SetText(FText::FromString(FString("Who?")));
+		ActorRef = nullptr;
 	}
 }

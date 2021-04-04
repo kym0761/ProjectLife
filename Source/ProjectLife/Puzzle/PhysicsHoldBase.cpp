@@ -19,7 +19,7 @@ APhysicsHoldBase::APhysicsHoldBase()
 	Box->BodyInstance.bLockYRotation = true;
 	Box->BodyInstance.bLockZRotation = true;
 
-	Box->SetCollisionProfileName(TEXT("BlockAllDynamic"));
+	Box->SetCollisionProfileName(TEXT("InteractiveCollision"));
 	//Box->bDynamicObstacle = true;
 	Box->SetCanEverAffectNavigation(false);
 
@@ -80,7 +80,7 @@ void APhysicsHoldBase::ThrowToDirection(FVector Direction)
 {
 	if (Box->IsSimulatingPhysics())
 	{
-		FVector power = Direction * 750.0f * Box->GetMass();
+		FVector power = Direction * 500.0f * Box->GetMass();
 		Box->AddImpulse(power);
 
 		if (GEngine)

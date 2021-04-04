@@ -18,10 +18,9 @@ AItem::AItem()
 	SetRootComponent(Sphere);
 	Sphere->InitSphereRadius(64.0f);
 
-
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Sphere);
-	Mesh->SetCollisionProfileName(FName("PhysicsActor"));
+
 
 }
 

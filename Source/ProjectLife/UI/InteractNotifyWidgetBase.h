@@ -21,6 +21,9 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* NameTextBlock;
 
+	UPROPERTY()
+	AActor* ActorRef;
+
 	virtual void NativeConstruct() override;
 
 	void NotifyInteract(AActor* InActor);

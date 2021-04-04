@@ -42,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bUseTimer;
 
-	//Use When You Want to This Door Open Permnanently Once Door Opened.
+	//Use When You Want to This Door Open Permanently Once Door Opened.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bOpenPermanently;
 
