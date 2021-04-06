@@ -328,6 +328,7 @@ UObject* ABasicCharacter::FindInteractee()
 	TArray<AActor*> ignores;
 	ignores.Add(this);
 	ignores.Add(CurrentWeapon);
+	ignores.Add(CurrentHold);
 
 	FVector traceStart = GetActorLocation() + FVector(0.0f, 0.0f, -50.0f); // A little Downward of Trace Start Location.
 	FVector traceEnd = traceStart + GetActorForwardVector() * 100.0f;
@@ -355,7 +356,7 @@ UObject* ABasicCharacter::FindInteractee()
 	if (result)
 	{
 		AActor* actor = hit.GetActor();
-		if (actor && actor->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+		if (IsValid(actor) && actor->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 		{
 			//bCheck = true;
 			interactee = actor;
@@ -392,7 +393,6 @@ UObject* ABasicCharacter::FindInteractee()
 		//	UE_LOG(LogTemp, Warning, TEXT("Actor Name : %s"), *i->GetName());
 		//}
 
-
 		for (AActor* i : overlapped)
 		{
 			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
@@ -402,17 +402,17 @@ UObject* ABasicCharacter::FindInteractee()
 			}
 		}
 
+		/*Actor Interactive Find would be Failed.  maybe, Is Your Intention To Find Component?*/
 
 		TArray<UPrimitiveComponent*> overlappedComponents;
-
 		GetOverlappingComponents(overlappedComponents);
 
 		overlappedComponents.Sort(
 			[this](const UPrimitiveComponent& a, const UPrimitiveComponent& b)
-			->bool{
-				return FVector::Distance(GetActorLocation(), a.GetComponentLocation()) 
+			->bool {
+				return FVector::Distance(GetActorLocation(), a.GetComponentLocation())
 					< FVector::Distance(GetActorLocation(), b.GetComponentLocation());
-		}
+			}
 		);
 
 		for (UPrimitiveComponent* i : overlappedComponents)
@@ -441,7 +441,7 @@ void ABasicCharacter::ToggleInventory()
 {
 	ABasicPlayerController* playerController = GetController<ABasicPlayerController>();
 
-	if (playerController)
+	if (IsValid(playerController))
 	{
 		playerController->ToggleInventory();
 	}
@@ -463,7 +463,7 @@ void ABasicCharacter::Hold(APhysicsHoldBase* ToHold)
 void ABasicCharacter::UnHold()
 {
 
-	if (CurrentHold)
+	if (IsValid(CurrentHold))
 	{
 		bHoldSomething = false;
 		CurrentHold->SetHoldStatus(false);
