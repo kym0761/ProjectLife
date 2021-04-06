@@ -89,11 +89,11 @@ void UMainHUDBase::RemoveConditionIcon(AAbility* ConditionActorRef)
 	}
 }
 
-void UMainHUDBase::NotifyInteract(AActor* InActor)
+void UMainHUDBase::NotifyInteract(UObject* InObject)
 {
 	if (Widget_InteractNotify)
 	{
-		Widget_InteractNotify->NotifyInteract(InActor);
+		Widget_InteractNotify->NotifyInteract(InObject);
 	}
 }
 

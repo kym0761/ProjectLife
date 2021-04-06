@@ -41,7 +41,7 @@ public:
 
 	void ToggleInventory();
 
-	void NotifyInteract(AActor* InActor);
+	void NotifyInteract(UObject* InObject);
 	void UnnotifyInteract();
 
 };

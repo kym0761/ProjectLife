@@ -22,11 +22,11 @@ public:
 		UTextBlock* NameTextBlock;
 
 	UPROPERTY()
-	AActor* ActorRef;
+		UObject* ObjectRef;
 
 	virtual void NativeConstruct() override;
 
-	void NotifyInteract(AActor* InActor);
+	void NotifyInteract(UObject* InObject);
 	void UnnotifyInteract();
 
 };

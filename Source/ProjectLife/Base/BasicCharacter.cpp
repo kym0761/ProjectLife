@@ -275,7 +275,7 @@ void ABasicCharacter::InteractCheck()
 		return;
 	}
 
-	AActor* interactee = FindInteractee();
+	UObject* interactee = FindInteractee();
 
 	ABasicPlayerController* playerController = GetController<ABasicPlayerController>();
 	if (playerController)
@@ -304,7 +304,7 @@ void ABasicCharacter::InteractTrigger()
 		return;
 	}
 
-	AActor* interactee = FindInteractee();
+	UObject* interactee = FindInteractee();
 
 	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 	{
@@ -312,7 +312,7 @@ void ABasicCharacter::InteractTrigger()
 	}
 }
 
-AActor* ABasicCharacter::FindInteractee()
+UObject* ABasicCharacter::FindInteractee()
 {
 	/*First, LineTrace Detection. First Priority is Actor's look Direction.*/
 	/*second Priority is Overlapped Actor detection & most Closest Actor.*/
@@ -350,7 +350,7 @@ AActor* ABasicCharacter::FindInteractee()
 		5.0f
 	);
 
-	AActor* interactee = nullptr;
+	UObject* interactee = nullptr;
 
 	if (result)
 	{
@@ -364,7 +364,8 @@ AActor* ABasicCharacter::FindInteractee()
 		UPrimitiveComponent* comp = hit.GetComponent();
 		if (IsValid(comp) && comp->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call Ok."));
+			//UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call Ok."));
+			interactee = comp;
 		}
 
 	}
@@ -418,7 +419,8 @@ AActor* ABasicCharacter::FindInteractee()
 		{
 			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call by Overlap Ok."));
+				//UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call by Overlap Ok."));
+				interactee = i;
 				break;
 			}
 		}

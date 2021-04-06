@@ -116,7 +116,7 @@ public:
 	void InteractTrigger();
 
 	//Interactee Means Someone or Something is interacted by Interact() Function. Concept is Something like [employ"ee"]
-	AActor* FindInteractee();
+	UObject* FindInteractee();
 
 	void ToggleInventory();
 

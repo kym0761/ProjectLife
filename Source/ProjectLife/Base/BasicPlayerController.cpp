@@ -98,11 +98,11 @@ void ABasicPlayerController::ToggleInventory()
 	}
 }
 
-void ABasicPlayerController::NotifyInteract(AActor* InActor)
+void ABasicPlayerController::NotifyInteract(UObject* InObject)
 {
 	if (IsValid(MainHUDRef))
 	{
-		MainHUDRef->NotifyInteract(InActor);
+		MainHUDRef->NotifyInteract(InObject);
 	}
 }
 
