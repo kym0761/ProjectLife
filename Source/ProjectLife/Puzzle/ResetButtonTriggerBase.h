@@ -14,7 +14,11 @@ class PROJECTLIFE_API AResetButtonTriggerBase : public AButtonTriggerBase
 {
 	GENERATED_BODY()
 
+public:
+	AResetButtonTriggerBase();
+
 protected:
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

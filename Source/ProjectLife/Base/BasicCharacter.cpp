@@ -360,6 +360,13 @@ AActor* ABasicCharacter::FindInteractee()
 			//bCheck = true;
 			interactee = actor;
 		}
+
+		UPrimitiveComponent* comp = hit.GetComponent();
+		if (IsValid(comp) && comp->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call Ok."));
+		}
+
 	}
 	else
 	{
@@ -390,6 +397,28 @@ AActor* ABasicCharacter::FindInteractee()
 			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 			{
 				interactee = i;
+				break;
+			}
+		}
+
+
+		TArray<UPrimitiveComponent*> overlappedComponents;
+
+		GetOverlappingComponents(overlappedComponents);
+
+		overlappedComponents.Sort(
+			[this](const UPrimitiveComponent& a, const UPrimitiveComponent& b)
+			->bool{
+				return FVector::Distance(GetActorLocation(), a.GetComponentLocation()) 
+					< FVector::Distance(GetActorLocation(), b.GetComponentLocation());
+		}
+		);
+
+		for (UPrimitiveComponent* i : overlappedComponents)
+		{
+			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call by Overlap Ok."));
 				break;
 			}
 		}

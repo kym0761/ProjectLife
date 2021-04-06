@@ -3,6 +3,12 @@
 
 #include "ResetButtonTriggerBase.h"
 #include "PuzzleInterfaces.h"
+#include "Components/SphereComponent.h"
+
+AResetButtonTriggerBase::AResetButtonTriggerBase()
+{
+
+}
 
 void AResetButtonTriggerBase::BeginPlay()
 {
@@ -14,6 +20,8 @@ void AResetButtonTriggerBase::BeginPlay()
 
 	InitializeForTimeline();
 
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AResetButtonTriggerBase::OnButtonBeginOverlap);
+	Sphere->OnComponentEndOverlap.AddDynamic(this, &AResetButtonTriggerBase::OnButtonEndOverlap);
 }
 
 void AResetButtonTriggerBase::Tick(float DeltaTime)

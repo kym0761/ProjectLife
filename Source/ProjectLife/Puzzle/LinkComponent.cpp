@@ -11,6 +11,7 @@
 #include "LinkTriggerBase.h"
 #include "PuzzleTriggerBase.h"
 
+
 // Sets default values for this component's properties
 ULinkComponent::ULinkComponent()
 {
@@ -257,6 +258,7 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 		}
 	}
 
+	//there is not connection, Spawn Edge.
 	if (!bConnectionExist)
 	{
 		if (LinkEdgeClass)
@@ -267,6 +269,7 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 				edge->InitializeCompRefs(this,OtherLinkComp);
 				edge->FinishSpawning(GetComponentTransform());
 				LinkEdges.Add(edge);
+				
 				OtherLinkComp->LinkEdges.Add(edge);
 				OtherLinkComp->SetLinkActivate(true);
 
