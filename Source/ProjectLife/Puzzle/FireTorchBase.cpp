@@ -39,14 +39,15 @@ void AFireTorchBase::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
-
-	if (bInterfaceValid)
+	if (bFireOn)
 	{
-		if (bFireOn)
+		bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+
+		if (bInterfaceValid)
 		{
 			ICombustible::Execute_Combust(OtherActor);
 		}
 	}
+
 
 }

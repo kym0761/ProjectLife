@@ -39,6 +39,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
 		bool bUseTimer;
 
+	//When this is Set, Off Immediatedly if One or more triggers are not Active.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
 		bool bOffImmediately;
 
@@ -47,6 +48,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Timeline")
 		float CurrentTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timer")
+		float TimerInRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timer")
+		float TimerFirstDelay;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reset")
 		UNiagaraSystem* ResetNiagaraSystem;
@@ -68,5 +75,14 @@ public:
 	void TurnOnFire();
 	void TurnOffFire();
 
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	//virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+
+
+
+	FTimerHandle CombustTimer;
+
+	UFUNCTION()
+	void OverlapCombust();
+
 };

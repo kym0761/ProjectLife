@@ -150,7 +150,6 @@ void AGridManager::RemoveAllGrids()
 		}
 	}
 
-
 }
 
 void AGridManager::HandleRequestBuild(TSubclassOf<ABuildingBase> WantToBuild, UGridComponent* RootGrid)

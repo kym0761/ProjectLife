@@ -3,8 +3,10 @@
 
 #include "GridComponent.h"
 #include "GridManager.h"
+
 UGridComponent::UGridComponent()
 {
+
 }
 
 void UGridComponent::RequestBuild(TSubclassOf<ABuildingBase> BuildingClass)

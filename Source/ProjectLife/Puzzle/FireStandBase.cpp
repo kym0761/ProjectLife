@@ -37,6 +37,9 @@ AFireStandBase::AFireStandBase()
 	bOffImmediately = false;
 	TriggerWaitTime = 2.5f;
 	CurrentTime = 0.0f;
+
+	TimerInRate = 0.1f;
+	TimerFirstDelay = 0.5f;
 }
 
 void AFireStandBase::BeginPlay()
@@ -88,7 +91,7 @@ void AFireStandBase::TriggerAction_Implementation()
 	{
 		TurnOnFire();
 	}
-	else if (bOffImmediately && bTriggerActive && !bReady) // if This Fire Need To Off Immediately when One of Triggers is Not Activated.
+	else if (bOffImmediately && bTriggerActive && !bReady) // if This Fire Need To Off Immediately, and not Ready, will Turn off the Fire.
 	{
 		TurnOffFire();
 	}
@@ -106,6 +109,7 @@ void AFireStandBase::Reset_Implementation()
 
 	if (bUseTimer)
 	{
+		CurrentTime = 0.0f;
 		Widget->SetVisibility(false);
 		Widget->SetHiddenInGame(true);
 	}
@@ -124,13 +128,26 @@ void AFireStandBase::Combust_Implementation()
 void AFireStandBase::TurnOnFire()
 {
 	bTriggerActive = true;
-	FireEffect->Activate();
+
+	if (!FireEffect->IsActive())
+	{
+		FireEffect->Activate();
+	}
 
 	if (bUseTimer)
 	{
 		CurrentTime = TriggerWaitTime;
-		Widget->SetVisibility(true);
-		Widget->SetHiddenInGame(false);
+		
+		if (!Widget->IsVisible())
+		{
+			Widget->SetVisibility(true);
+		}
+
+		if (Widget->bHiddenInGame)
+		{
+			Widget->SetHiddenInGame(false);
+		}
+		
 	}
 
 	//if (GEngine)
@@ -138,7 +155,7 @@ void AFireStandBase::TurnOnFire()
 	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, TEXT("Fire is Activated!"));
 	//}
 
-	//Trigger All that must Trigger.
+	//Trigger All things that must Trigger.
 	for (AActor* i : TriggeringArray)
 	{
 		bool bInterfaceValid = i->GetClass()->ImplementsInterface(UTriggerable::StaticClass());
@@ -147,16 +164,33 @@ void AFireStandBase::TurnOnFire()
 			ITriggerable::Execute_TriggerAction(i);
 		}
 	}
+
+	//Combust Timer On
+	if (!CombustTimer.IsValid()) // Do Once. Check is Valid or not
+	{
+		GetWorldTimerManager().SetTimer(CombustTimer, this, &AFireStandBase::OverlapCombust, TimerInRate, true, TimerFirstDelay);
+	}
 }
 
 void AFireStandBase::TurnOffFire()
 {
 	bTriggerActive = false;
-	FireEffect->Deactivate();
+	if (FireEffect->IsActive())
+	{
+		FireEffect->Deactivate();
+	}
+
 	if (bUseTimer)
 	{
-		Widget->SetVisibility(false);
-		Widget->SetHiddenInGame(true);
+		if (Widget->IsVisible())
+		{
+			Widget->SetVisibility(false);
+		}
+
+		if (!Widget->bHiddenInGame)
+		{
+			Widget->SetHiddenInGame(true);
+		}
 	}
 
 
@@ -169,26 +203,62 @@ void AFireStandBase::TurnOffFire()
 			ITriggerable::Execute_TriggerAction(i);
 		}
 	}
+
+	//Combust Timer Off
+	if (CombustTimer.IsValid())// Do Once. Check is Valid or not
+	{
+		GetWorldTimerManager().ClearTimer(CombustTimer);
+	}
+
 }
 
-void AFireStandBase::NotifyActorBeginOverlap(AActor* OtherActor)
+//void AFireStandBase::NotifyActorBeginOverlap(AActor* OtherActor)
+//{
+//	Super::NotifyActorBeginOverlap(OtherActor);
+//	
+//	if (bTriggerActive)
+//	{
+//		bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+//
+//		if (bInterfaceValid)
+//		{
+//			ICombustible::Execute_Combust(OtherActor);
+//
+//			if (GEngine)
+//			{
+//				FString temp = FString("Combust! --->") + OtherActor->GetName();
+//				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, temp);
+//			}
+//		}
+//	}
+//}
+
+void AFireStandBase::OverlapCombust()
 {
-	Super::NotifyActorBeginOverlap(OtherActor);
-
-	bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
-
-	if (bInterfaceValid)
+	if (bTriggerActive)
 	{
-		if (bTriggerActive)
-		{
-			ICombustible::Execute_Combust(OtherActor);
+		TArray<AActor*> overlapActors;
 
-			if (GEngine)
+		FireOverlap->GetOverlappingActors(overlapActors);
+		overlapActors.Remove(this);
+		//UE_LOG(LogTemp, Warning, TEXT("%d"), overlapActors.Num());
+
+		for (AActor* i : overlapActors)
+		{
+			bool bInterfaceValid = i->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+			if (bInterfaceValid)
 			{
-				FString temp = FString("Combust! --->") + OtherActor->GetName();
-				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, temp);
+				ICombustible::Execute_Combust(i);
+
+				//if (GEngine)
+				//{
+				//	FString temp = FString("Combust! Call OverlapCombust()! ---> combusted Actor Name : ") + i->GetName();
+				//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, temp);
+				//}
+
 			}
 		}
 	}
+
 
 }
