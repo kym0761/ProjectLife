@@ -21,6 +21,8 @@
 #include "Components/SceneComponent.h"
 #include "../Puzzle/PhysicsHoldBase.h"
 
+#include "../Grid/GridComponent.h"
+
 // Sets default values
 ABasicCharacter::ABasicCharacter()
 {
@@ -290,6 +292,12 @@ void ABasicCharacter::InteractCheck()
 			playerController->UnnotifyInteract();
 		}
 
+	}
+
+	UGridComponent* grid = Cast<UGridComponent>(interactee);
+	if (grid)
+	{
+		grid->DrawAvailable();
 	}
 
 }

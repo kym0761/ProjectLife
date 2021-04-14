@@ -16,6 +16,8 @@ class PROJECTLIFE_API UItemFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
+public:
+
 	/**
 	* WantToHeal : Link Actor Want to Heal.
 	*/

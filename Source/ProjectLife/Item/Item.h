@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FItemDataStruct ItemData;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		TSubclassOf<UItemData> ItemDataTest;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

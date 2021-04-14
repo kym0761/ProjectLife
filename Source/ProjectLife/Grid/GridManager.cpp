@@ -4,6 +4,7 @@
 #include "GridManager.h"
 #include "Components/BillboardComponent.h"
 #include "GridComponent.h"
+#include "Components/InstancedStaticMeshComponent.h"
 
 // Sets default values
 AGridManager::AGridManager()
@@ -13,6 +14,12 @@ AGridManager::AGridManager()
 
 	DefaultRoot = CreateDefaultSubobject<UBillboardComponent>(TEXT("DefaultRoot"));
 	SetRootComponent(DefaultRoot);
+
+
+	AvailableInstMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("AvailableInstMesh"));
+	AvailableInstMesh->SetupAttachment(RootComponent);
+	AvailableInstMesh->SetCollisionProfileName(TEXT("NoCollision"));
+
 
 	X = 0;
 	Y = 0;
@@ -249,6 +256,39 @@ void AGridManager::HandleRequestBuild(TSubclassOf<ABuildingBase> WantToBuild, UG
 	//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("UnValid BuildingClass or GridComponent*"));
 	//	}
 	//}
+
+}
+
+void AGridManager::DrawAVailableMesh(UGridComponent* InGrid)
+{
+	if (!IsValid(CurrentSeeGrid) || IsValid(InGrid) && CurrentSeeGrid != InGrid)
+	{
+		CurrentSeeGrid = InGrid;
+		
+
+		if (IsValid(AvailableInstMesh))
+		{
+			int32 count =  AvailableInstMesh->GetInstanceCount();
+			if (count > 0)
+			{
+				for (int32 i= 0; i < count; i++)
+				{
+					AvailableInstMesh->RemoveInstance(i);
+				}
+			}
+
+
+			FVector location = InGrid->GetRelativeLocation();
+			FTransform transform;
+			transform.SetLocation(location);
+
+			//UE_LOG(LogTemp, Warning, TEXT("%s"), *transform.ToString());
+
+			AvailableInstMesh->AddInstance(transform);
+		}
+
+
+	}
 
 }
 

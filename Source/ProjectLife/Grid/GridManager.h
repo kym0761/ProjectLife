@@ -9,7 +9,7 @@
 class UGridComponent;
 class UBillboardComponent;
 class ABuildingBase;
-
+class UInstancedStaticMeshComponent;
 UCLASS()
 class PROJECTLIFE_API AGridManager : public AActor
 {
@@ -37,6 +37,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn")
 		TSubclassOf<UGridComponent> GridCompClass;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+		UInstancedStaticMeshComponent* AvailableInstMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Spawn")
+		UGridComponent* CurrentSeeGrid;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -61,4 +68,5 @@ public:
 
 	void HandleRequestBuild(TSubclassOf<ABuildingBase> WantToBuild, UGridComponent* RootGrid);
 
+	void DrawAVailableMesh(UGridComponent* InGrid);
 };

@@ -29,6 +29,14 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	UItemData* data = ItemDataTest.GetDefaultObject();
+	if (data)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(FMath::Rand(),2.0f, FColor::Black,data->Name);
+		}
+	}
 }
 
 // Called every frame

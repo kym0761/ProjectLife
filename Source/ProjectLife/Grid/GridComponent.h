@@ -40,4 +40,6 @@ public:
 	void SetXY(int32 inX, int32 inY);
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
+
+	void DrawAvailable();
 };

@@ -32,3 +32,16 @@ void UGridComponent::Interact_Implementation(APawn* InteractCauser)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grid Interact()"));
 }
+
+void UGridComponent::DrawAvailable()
+{
+	AActor* owner = GetOwner();
+	if (IsValid(owner))
+	{
+		AGridManager* gridManager = Cast<AGridManager>(owner);
+		if (IsValid(gridManager))
+		{
+			gridManager->DrawAVailableMesh(this);
+		}
+	}
+}
