@@ -36,3 +36,32 @@ void ACrop::Tick(float DeltaTime)
 
 }
 
+void ACrop::Interact_Implementation(APawn* InteractCauser)
+{
+	if (IsValid(GrowthComponent))
+	{
+		if (GrowthComponent->GrowthLevel >= GrowthComponent->MaxGrowthLevel)
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f,FColor::Black,TEXT("Fruit Havest OK"));
+				GiveHarvest();
+			}
+		}
+		else
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Black, TEXT("Still Not Grow Enough.."));
+			}
+		}
+	}
+}
+
+void ACrop::GiveHarvest_Implementation()
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Black, TEXT("Harvest Give Off"));
+	}
+}

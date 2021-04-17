@@ -21,8 +21,10 @@ public:
 		float MaxHP;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", Meta = (ClampMin = 0.0f, ClampMax = 10000.0f))
 		float MaxStamina;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stat", Meta = (ClampMin = 0.0f, ClampMax = 10000.0f))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stat", Meta = (ClampMin = 0.0f, ClampMax = 100000.0f))
 		float HP;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stat", Meta = (ClampMin = 0.0f, ClampMax = 1000000.0f))
+		float Shield;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", Meta = (ClampMin = 0.0f, ClampMax = 10000.0f))
 		float Stamina;
 

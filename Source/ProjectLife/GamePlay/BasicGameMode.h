@@ -4,29 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "GameTimeStruct.h"
 #include "BasicGameMode.generated.h"
-
-
-USTRUCT(BlueprintType)
-struct FGameTime
-{
-	GENERATED_BODY()
-		
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 Hour;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 Minute;
-
-	FGameTime();
-	FGameTime(int32 InHour, int32 InMinute);
-
-	FGameTime operator+(const FGameTime& rValue);
-
-	FString ToString();
-	//UFUNCTION(BlueprintCallable)
-	//	FGameTime Plus_GameTime(FGameTime lValue, FGameTime rValue);
-};
 
 /**
  * 
@@ -41,10 +20,7 @@ public:
 	ABasicGameMode();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GamePlay")
-		int32 Day;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GamePlay")
-		FGameTime CurrentTime;
+		FGameTime CurrentGameTime;
 
 	UFUNCTION(BlueprintCallable)
 		void IncreaseDay(int32 IncDay = 1);

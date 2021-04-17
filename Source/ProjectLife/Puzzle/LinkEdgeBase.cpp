@@ -56,7 +56,7 @@ void ALinkEdgeBase::InitializeCompRefs(ULinkComponent* InComp1, ULinkComponent* 
 
 void ALinkEdgeBase::SetEffectPoint()
 {
-	if (LinkComps.IsValidIndex(0) && LinkComps.IsValidIndex(1) )
+	if (LinkComps.IsValidIndex(0) && LinkComps.IsValidIndex(1))
 	{
 		LinkEffectComponent->SetNiagaraVariableVec3(TEXT("StartPoint"), LinkComps[0]->GetComponentLocation());
 		LinkEffectComponent->SetNiagaraVariableVec3(TEXT("EndPoint"), LinkComps[1]->GetComponentLocation());

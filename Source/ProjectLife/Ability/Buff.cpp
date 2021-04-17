@@ -48,15 +48,25 @@ void ABuff::Tick(float DeltaTime)
 void ABuff::PlayBuff_Implementation()
 {
 
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-2, 5.0f, FColor::Magenta, TEXT("Play Buff.. Please Override it."));
+	}
+
 }
 
 void ABuff::EndBuff_Implementation()
 {
-
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-2, 5.0f, FColor::Magenta, TEXT("End Buff.. Please Override it."));
+	}
 }
 
 void ABuff::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	EndBuff();
+
 	if (GetOwner())
 	{
 		ABasicPlayerController* playerController = Cast<APawn>(GetOwner())->GetController<ABasicPlayerController>();
@@ -66,6 +76,4 @@ void ABuff::EndPlay(const EEndPlayReason::Type EndPlayReason)
 			playerController->RemoveConditionIcon(this);
 		}
 	}
-
-	EndBuff();
 }

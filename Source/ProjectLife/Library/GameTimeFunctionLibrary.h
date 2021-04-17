@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "../GamePlay/BasicGameMode.h"
+#include "../GamePlay/GameTimeStruct.h"
 #include "GameTimeFunctionLibrary.generated.h"
 
 /**
@@ -15,11 +15,20 @@ class PROJECTLIFE_API UGameTimeFunctionLibrary : public UBlueprintFunctionLibrar
 {
 	GENERATED_BODY()
 
-public: // if this is a problem. just make it for only Conv_ Function.
+public: // if this is a problem. just make sure it for only Conv_ Functions.
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "GameTime + GameTime", CompactNodeTitle = "+", KeyWords = "+ Plus", CommutativeAssosiativeBinaryOperator = "true"))
 		static FGameTime Plus_GameTimeGameTime(FGameTime InValue1, FGameTime InValue2);
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "ToString (GameTime)", CompactNodeTitle = "->", BlueprintAutocast),Category = "GameTime|Convert")
 		static FString Conv_GameTimeToString(FGameTime InGameTime);
+
+	UFUNCTION(BlueprintPure)
+		static int32 GetDay_GameTime(FGameTime InGameTime);
+
+	UFUNCTION(BlueprintPure)
+		static int32 GetHour_GameTime(FGameTime InGameTime);
+
+	UFUNCTION(BlueprintPure)
+		static int32 GetMinute_GameTime(FGameTime InGameTime);
 };

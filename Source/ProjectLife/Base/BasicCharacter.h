@@ -109,6 +109,8 @@ public:
 	void ChangeCameraType();
 	void SettingWithCameraType();
 
+	const float InteractCheckInterval = 0.1f;
+	FTimerHandle InteractCheckTimer;
 	//Check There is Interactable Actor.
 	void InteractCheck();
 
@@ -116,6 +118,7 @@ public:
 	void InteractTrigger();
 
 	//Interactee Means Someone or Something is interacted by Interact() Function. Concept is Something like [employ"ee"]
+	//UFUNCTION needed temporally for using in blueprint.
 	UFUNCTION(BlueprintCallable)
 	UObject* FindInteractee();
 

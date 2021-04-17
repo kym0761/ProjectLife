@@ -33,6 +33,28 @@ void UGridComponent::Interact_Implementation(APawn* InteractCauser)
 	UE_LOG(LogTemp, Warning, TEXT("Grid Interact()"));
 }
 
+void UGridComponent::SetOccupying(AActor* inOccupying)
+{
+	if (IsValid(inOccupying))
+	{
+		Occupying = inOccupying;
+	}
+	else
+	{
+		Occupying = nullptr;
+	}
+
+	if (IsValid(Occupying))
+	{
+		SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	else
+	{
+		SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+
+}
+
 void UGridComponent::DrawAvailable()
 {
 	AActor* owner = GetOwner();
@@ -41,7 +63,7 @@ void UGridComponent::DrawAvailable()
 		AGridManager* gridManager = Cast<AGridManager>(owner);
 		if (IsValid(gridManager))
 		{
-			gridManager->DrawAVailableMesh(this);
+			gridManager->DrawAvailableMesh(this);
 		}
 	}
 }

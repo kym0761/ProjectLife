@@ -41,5 +41,8 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
+	UFUNCTION(BlueprintCallable)
+	void SetOccupying(AActor* inOccupying);
+
 	void DrawAvailable();
 };

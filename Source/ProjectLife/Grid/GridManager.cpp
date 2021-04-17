@@ -259,7 +259,7 @@ void AGridManager::HandleRequestBuild(TSubclassOf<ABuildingBase> WantToBuild, UG
 
 }
 
-void AGridManager::DrawAVailableMesh(UGridComponent* InGrid)
+void AGridManager::DrawAvailableMesh(UGridComponent* InGrid)
 {
 	if (!IsValid(CurrentSeeGrid) || IsValid(InGrid) && CurrentSeeGrid != InGrid)
 	{
@@ -288,6 +288,25 @@ void AGridManager::DrawAVailableMesh(UGridComponent* InGrid)
 		}
 
 
+	}
+
+
+}
+
+void AGridManager::RemoveAvailableMesh()
+{
+	CurrentSeeGrid = nullptr;
+
+	if (IsValid(AvailableInstMesh))
+	{
+		int32 count = AvailableInstMesh->GetInstanceCount();
+		if (count > 0)
+		{
+			for (int32 i = 0; i < count; i++)
+			{
+				AvailableInstMesh->RemoveInstance(i);
+			}
+		}
 	}
 
 }

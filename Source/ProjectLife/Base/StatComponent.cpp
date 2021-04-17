@@ -14,6 +14,7 @@ UStatComponent::UStatComponent()
 	MaxStamina = 1000.0f;
 
 	HP = 100.0f;
+	Shield = 0.0f;
 	Stamina = 1000.0f;
 	// ...
 
@@ -50,7 +51,27 @@ void UStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UStatComponent::DealDamage(float DamageAmount)
 {
-	HP = FMath::Clamp(HP - DamageAmount, 0.0f, MaxHP);
+	float remainDamage = DamageAmount;
+
+	//if there is shield Amount, Apply Damage to shield first.
+	if (Shield > 0.0f)
+	{
+		float currentShield = Shield;
+
+		if (Shield >= remainDamage)
+		{
+			Shield = FMath::Clamp(Shield - remainDamage, 0.0f, 1000000.0f); //1,000,000 is Enough?
+			remainDamage = 0.0f;
+		}
+		else
+		{
+			remainDamage -= Shield;
+			Shield = 0.0f;
+		}		 
+	}
+
+
+	HP = FMath::Clamp(HP - remainDamage, 0.0f, MaxHP);
 }
 
 void UStatComponent::Heal(float HealAmount)

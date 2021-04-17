@@ -11,25 +11,6 @@ class UNiagaraComponent;
 class ULinkComponent;
 class USceneComponent;
 
-
-///**
-// * Class for Edge Array.
-// */
-//UCLASS(BlueprintType, Blueprintable)
-//class PROJECTLIFE_API ULinkEdges : public UObject
-//{
-//	GENERATED_BODY()
-//
-//public:
-//
-//	ULinkEdges();
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Edge")
-//		TArray<ALinkEdgeBase*> LinkEdges;
-//
-//};
-
-
 UCLASS()
 class PROJECTLIFE_API ALinkEdgeBase : public AActor
 {

@@ -22,6 +22,7 @@
 #include "../Puzzle/PhysicsHoldBase.h"
 
 #include "../Grid/GridComponent.h"
+#include "../Grid/GridManager.h"
 
 // Sets default values
 ABasicCharacter::ABasicCharacter()
@@ -80,6 +81,8 @@ void ABasicCharacter::BeginPlay()
 	//init Camera Setting.
 	SettingWithCameraType();
 
+	GetWorldTimerManager().SetTimer(InteractCheckTimer, this, &ABasicCharacter::InteractCheck, InteractCheckInterval, true);
+
 }
 
 float ABasicCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -108,17 +111,17 @@ float ABasicCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 
 		float damageResult = DamageAmount;
 
-		if (DamageEvent.DamageTypeClass != NULL)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *DamageEvent.DamageTypeClass->GetName());
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("NULL?"));
-		}
+		//if (DamageEvent.DamageTypeClass != NULL)
+		//{
+		//	UE_LOG(LogTemp, Warning, TEXT("%s"), *DamageEvent.DamageTypeClass->GetName());
+		//}
+		//else
+		//{
+		//	UE_LOG(LogTemp, Warning, TEXT("NULL?"));
+		//}
 
 		Stat->DealDamage(damageResult);
-		UE_LOG(LogTemp, Warning, TEXT("Current HP : %f"), Stat->HP);
+		//UE_LOG(LogTemp, Warning, TEXT("Current HP : %f"), Stat->HP);
 
 		if (DamageTextActorClass)
 		{
@@ -126,7 +129,10 @@ float ABasicCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 			if (damageTextActor)
 			{
 				damageTextActor->AppliedDamage = damageResult;
-				damageTextActor->FinishSpawning(GetActorTransform());
+
+				FTransform transform = GetActorTransform();
+				transform.SetLocation(transform.GetLocation() + FVector(FMath::FRandRange(-50.0f, 50.0f), FMath::FRandRange(-50.0f, 50.0f), 0.0f));
+				damageTextActor->FinishSpawning(transform);
 			}
 		}
 
@@ -144,7 +150,6 @@ void ABasicCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	InteractCheck();
 }
 
 // Called to bind functionality to input
@@ -294,10 +299,15 @@ void ABasicCharacter::InteractCheck()
 
 	}
 
+	AGridManager* gridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
 	UGridComponent* grid = Cast<UGridComponent>(interactee);
-	if (grid)
+	if (IsValid(gridManager) && IsValid(grid))
 	{
-		grid->DrawAvailable();
+		gridManager->DrawAvailableMesh(grid);
+	}
+	else if (IsValid(gridManager) && !IsValid(grid))
+	{
+		gridManager->RemoveAvailableMesh();
 	}
 
 }
@@ -484,6 +494,6 @@ void ABasicCharacter::UnHold()
 
 void ABasicCharacter::Interact_Implementation(APawn* InteractCauser)
 {
-	UE_LOG(LogTemp, Warning, TEXT("C++ Interact()"));
+	UE_LOG(LogTemp, Warning, TEXT("C++ Interact(). Override Needed?"));
 }
 

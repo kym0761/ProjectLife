@@ -68,5 +68,6 @@ public:
 
 	void HandleRequestBuild(TSubclassOf<ABuildingBase> WantToBuild, UGridComponent* RootGrid);
 
-	void DrawAVailableMesh(UGridComponent* InGrid);
+	void DrawAvailableMesh(UGridComponent* InGrid);
+	void RemoveAvailableMesh();
 };

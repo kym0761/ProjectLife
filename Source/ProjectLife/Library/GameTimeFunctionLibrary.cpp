@@ -12,3 +12,18 @@ FString UGameTimeFunctionLibrary::Conv_GameTimeToString(FGameTime InGameTime)
 {
 	return InGameTime.ToString();
 }
+
+int32 UGameTimeFunctionLibrary::GetDay_GameTime(FGameTime InGameTime)
+{
+	return InGameTime.Day;
+}
+
+int32 UGameTimeFunctionLibrary::GetHour_GameTime(FGameTime InGameTime)
+{
+	return InGameTime.Hour;
+}
+
+int32 UGameTimeFunctionLibrary::GetMinute_GameTime(FGameTime InGameTime)
+{
+	return InGameTime.Minute;
+}

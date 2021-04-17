@@ -89,7 +89,7 @@ bool ULinkComponent::CheckLinkedWithRoot()
 	//Array for Traversing
 	TArray<ULinkComponent*> ElectricComp;
 	
-	//Cache for Already Traversing.
+	//Cache for Already Traversed.
 	TArray<ULinkComponent*> ElectricCompRemember;
 	TArray<ALinkEdgeBase*> ElectricEdgeRemember;
 

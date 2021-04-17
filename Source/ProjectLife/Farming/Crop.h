@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../Base/Base.h"
 #include "Crop.generated.h"
 
 class UGrowthComponent;
@@ -11,7 +12,7 @@ class UStaticMeshComponent;
 class UBoxComponent;
 
 UCLASS()
-class PROJECTLIFE_API ACrop : public AActor
+class PROJECTLIFE_API ACrop : public AActor, public IInteractive
 {
 	GENERATED_BODY()
 	
@@ -36,4 +37,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void Interact_Implementation(APawn* InteractCauser);
+
+	UFUNCTION(BlueprintNativeEvent)
+		void GiveHarvest();
+		void GiveHarvest_Implementation();
 };

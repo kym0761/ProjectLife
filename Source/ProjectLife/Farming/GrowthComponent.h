@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "GrowthComponent.generated.h"
 
+class UStaticMesh;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIFE_API UGrowthComponent : public UActorComponent
@@ -37,6 +38,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
 		int32 NumberOfHarvest;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
+		TArray<UStaticMesh*> GrowthMeshs;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -47,4 +51,6 @@ public:
 
 	void Grow();
 	void Fruit();
+
+	void SetOwnerMesh();
 };

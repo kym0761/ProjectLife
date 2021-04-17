@@ -2,6 +2,8 @@
 
 
 #include "GrowthComponent.h"
+#include "Components/StaticMeshComponent.h"
+//#include "Engine/StaticMesh.h"
 
 // Sets default values for this component's properties
 UGrowthComponent::UGrowthComponent()
@@ -28,7 +30,8 @@ void UGrowthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+
+	SetOwnerMesh();
 }
 
 
@@ -43,14 +46,16 @@ void UGrowthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UGrowthComponent::Grow()
 {
 	Day += 1;
-
 	CurrentGrowth += 1;
 
-	if (CurrentGrowth >= GrowthLevelThreshold)
-	{
-		GrowthLevel = FMath::Clamp(GrowthLevel + 1, 0, MaxGrowthLevel);
-		CurrentGrowth = 0;
-	}
+	GrowthLevel = FMath::Clamp(CurrentGrowth / GrowthLevelThreshold, 0, MaxGrowthLevel);
+
+	//if (CurrentGrowth >= GrowthLevelThreshold)
+	//{
+	//	GrowthLevel = FMath::Clamp(GrowthLevel + 1, 0, MaxGrowthLevel);
+	//	CurrentGrowth = 0;
+	//}
+	SetOwnerMesh();
 
 	Fruit();
 }
@@ -64,3 +69,15 @@ void UGrowthComponent::Fruit()
 
 }
 
+void UGrowthComponent::SetOwnerMesh()
+{
+	AActor* owner = GetOwner();
+	if (IsValid(owner))
+	{
+		UStaticMeshComponent* meshComp = owner->FindComponentByClass<UStaticMeshComponent>();
+		if (IsValid(meshComp) && GrowthMeshs.IsValidIndex(GrowthLevel))
+		{
+			meshComp->SetStaticMesh(GrowthMeshs[GrowthLevel]);
+		}
+	}
+}
