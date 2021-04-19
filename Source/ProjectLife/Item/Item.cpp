@@ -2,6 +2,7 @@
 
 
 #include "Item.h"
+#include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "../Base/BasicCharacter.h"
@@ -14,12 +15,22 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Collision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
+	SetRootComponent(Collision);
+	Collision->InitBoxExtent(FVector(32.0f));
+	Collision->SetCollisionProfileName(TEXT("BlockAllDynamic"));
+	//Collision->SetVisibility(false);
+	Collision->ShapeColor = FColor::Black;
+	Collision->SetSimulatePhysics(true);
+	Collision->GetBodyInstance()->bLockXRotation = true;
+	Collision->GetBodyInstance()->bLockYRotation = true;
+	Collision->GetBodyInstance()->bLockZRotation = true;
+
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	SetRootComponent(Sphere);
 	Sphere->InitSphereRadius(64.0f);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(Sphere);
+	Mesh->SetupAttachment(RootComponent);
 
 
 }

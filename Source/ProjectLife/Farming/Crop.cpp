@@ -17,7 +17,7 @@ ACrop::ACrop()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
-
+	Mesh->SetCollisionProfileName("OverlapAllDynamic");
 	GrowthComponent = CreateDefaultSubobject<UGrowthComponent>(TEXT("GrowthComponent"));
 
 }

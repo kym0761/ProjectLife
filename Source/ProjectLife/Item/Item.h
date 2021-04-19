@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class UBoxComponent;
 class USphereComponent;
 class UStaticMeshComponent;
 
@@ -19,6 +20,10 @@ class PROJECTLIFE_API AItem : public AActor , public IInteractive
 public:	
 	// Sets default values for this actor's properties
 	AItem();
+
+	//Needed for Main Collision.
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
+		UBoxComponent* Collision;
 
 	//Needed For Detection.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")

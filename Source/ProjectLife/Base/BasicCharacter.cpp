@@ -337,11 +337,11 @@ UObject* ABasicCharacter::FindInteractee()
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> objects;
 
-	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
-	//objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
+	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
 	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
-	objects.Add(EObjectTypeQuery::ObjectTypeQuery7);
+	objects.Add(EObjectTypeQuery::ObjectTypeQuery7); // interact object type.
 
 	TArray<AActor*> ignores;
 	ignores.Add(this);
@@ -388,9 +388,10 @@ UObject* ABasicCharacter::FindInteractee()
 		}
 
 	}
-	else
+	
+	//if interactee still not Valid.. Line Trace Failed... Use Overlap Detection.
+	if(!IsValid(interactee))
 	{
-		/*Line Trace Failed... Use Overlap Detection*/
 		TArray<AActor*> overlapped;
 
 		GetOverlappingActors(overlapped);
@@ -447,6 +448,7 @@ UObject* ABasicCharacter::FindInteractee()
 
 	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 	{
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *interactee->GetName());
 		return interactee;
 	}
 	else
