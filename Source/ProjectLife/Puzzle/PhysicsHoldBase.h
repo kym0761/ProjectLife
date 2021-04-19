@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Base/Base.h"
+#include "../Base/InteractiveInterface.h"
 #include "GameFramework/Actor.h"
 #include "PuzzleInterfaces.h"
 #include "PhysicsHoldBase.generated.h"

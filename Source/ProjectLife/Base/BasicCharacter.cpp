@@ -10,7 +10,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "../Inventory/InventoryComponent.h"
 #include  "StatComponent.h"
-#include "Base.h" //Interactive
+//#include "Base.h" //Interactive
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BasicWeapon.h"
 #include "Blueprint/UserWidget.h" // CreateWidget

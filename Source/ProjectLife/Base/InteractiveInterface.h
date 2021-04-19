@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "Base.Generated.h"
+#include "InteractiveInterface.Generated.h"
 /**
  * 
  */
