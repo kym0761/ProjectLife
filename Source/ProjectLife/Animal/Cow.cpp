@@ -2,4 +2,8 @@
 
 
 #include "Cow.h"
-
+#include "MilkComponent.h"
+ACow::ACow()
+{
+	MilkComponent = CreateDefaultSubobject<UMilkComponent>(TEXT("MilkComponent"));
+}

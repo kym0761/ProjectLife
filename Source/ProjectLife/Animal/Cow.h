@@ -6,6 +6,7 @@
 #include "Animal.h"
 #include "Cow.generated.h"
 
+class UMilkComponent;
 /**
  * 
  */
@@ -14,4 +15,12 @@ class PROJECTLIFE_API ACow : public AAnimal
 {
 	GENERATED_BODY()
 	
+public:
+
+	ACow();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+		UMilkComponent* MilkComponent;
+
+
 };
