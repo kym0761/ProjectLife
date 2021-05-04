@@ -4,17 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "LivestockComponent.generated.h"
+#include "LivestockProduceComponent.generated.h"
 
+class AItem;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PROJECTLIFE_API ULivestockComponent : public UActorComponent
+class PROJECTLIFE_API ULivestockProduceComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	ULivestockComponent();
+	ULivestockProduceComponent();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Produce")
+		TSubclassOf<AItem> ProduceClass;
 
 protected:
 	// Called when the game starts
@@ -24,5 +28,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	virtual AItem* Produce();
+
 };

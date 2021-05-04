@@ -29,8 +29,9 @@ void UInventoryComponent::InitInventory()
 	for (int32 i = 0; i < InventoryCapacity; i++)
 	{
 		//Must Init. or You'll Get Error..
-
-		InventoryArray.Add(FItemDataStruct());
+		FItemDataSlot itemDataSlot;
+		itemDataSlot.Quantity = 0;
+		InventoryArray.Add(itemDataSlot);
 	}
 }
 
@@ -48,7 +49,7 @@ bool UInventoryComponent::CheckInventoryHasSpace()
 	bool bHasSpace = false;
 	for (int32 i = 0; i < InventoryArray.Num(); i++)
 	{
-		if (InventoryArray[i].Quantity == 0)
+		if (InventoryArray[i].ItemData == nullptr)
 		{
 			bHasSpace = true;
 			break;
@@ -58,91 +59,108 @@ bool UInventoryComponent::CheckInventoryHasSpace()
 	return bHasSpace;
 }
 
-bool UInventoryComponent::AddItemToInventory(FItemDataStruct ItemData)
+bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 {
 	//check Array Has Space
 	bool bHasSpace = false;
 
-	if (ItemData.Quantity == 0)
+	bHasSpace = CheckInventoryHasSpace();
+
+	if (ItemDataSlot.Quantity == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Item Quantity is 0. Impossible"));
 		return false;
 	}
 
-	if (ItemData.bIsStackable && ItemData.MaxQuantity < ItemData.Quantity)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Item Quantity which Over the MaxQuantity is Impossible. so, Item Quantity will be set to MaxQuantity."));
-		ItemData.Quantity = ItemData.MaxQuantity;
-	}
+	UItemData* itemData = ItemDataSlot.ItemData.GetDefaultObject();
 
-	bHasSpace = CheckInventoryHasSpace();
 
-	if (ItemData.bIsStackable)
+	if (IsValid(itemData))
 	{
-		//Add Quantity of an identical item
-		for (int32 i = 0; i < InventoryArray.Num(); i++)
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *itemData->Name);
+
+		if (itemData->bIsStackable && itemData->MaxQuantity < ItemDataSlot.Quantity)
 		{
-			if (InventoryArray[i].ItemClass == ItemData.ItemClass)
-			{
-				if (InventoryArray[i].Quantity + ItemData.Quantity <= InventoryArray[i].MaxQuantity) // check enough for Max Quantity
-				{
-					InventoryArray[i].Quantity += ItemData.Quantity;
-					return true;
-				}
-			}
+			UE_LOG(LogTemp, Warning, TEXT("Item Quantity which Over the MaxQuantity is Impossible. so, Item Quantity will be set to MaxQuantity."));
+			ItemDataSlot.Quantity = itemData->MaxQuantity;
 		}
 
-		//if loop ended, there is no identical Item OR the Identical Item Slot is Full. so, Use Empty Inventory Space.
-		if (bHasSpace)
+		if (itemData->bIsStackable)
 		{
+			//Add Quantity of an identical item
 			for (int32 i = 0; i < InventoryArray.Num(); i++)
 			{
-				//Identical Item
-				if (InventoryArray[i].ItemClass == ItemData.ItemClass)
+				if (IsValid(InventoryArray[i].ItemData) && InventoryArray[i].ItemData == itemData->GetClass())
 				{
-					//check excceed
-					if (InventoryArray[i].Quantity + ItemData.Quantity > InventoryArray[i].MaxQuantity)
+					UE_LOG(LogTemp, Warning, TEXT("%s"), *itemData->Name);
+					UE_LOG(LogTemp, Warning, TEXT("%s"), *InventoryArray[i].ItemData.GetDefaultObject()->Name);
+
+					if (InventoryArray[i].Quantity + ItemDataSlot.Quantity <= InventoryArray[i].ItemData.GetDefaultObject()->MaxQuantity) // check enough for Max Quantity
 					{
-						int32 temp = InventoryArray[i].Quantity + ItemData.Quantity;
-						InventoryArray[i].Quantity = InventoryArray[i].MaxQuantity;
-						ItemData.Quantity = temp - InventoryArray[i].Quantity;
-						break; //temp Quantity won't excceed MaxQuantity. so, go to the Next Procedure.
-					}
-					else// if not excceed, join and End Function.
-					{
-						InventoryArray[i].Quantity += ItemData.Quantity;
+						InventoryArray[i].Quantity += ItemDataSlot.Quantity;
 						return true;
 					}
 				}
-
 			}
 
-			//if there is LeftOver, just Add in Empty Space. LeftOver Will be Less then MaxQuantity OR equal. So, Don't Needed to check ItemInfo Quantity.
-			for (int32 i = 0; i < InventoryArray.Num(); i++)
+			//if loop ended, there is no identical Item OR the Identical Item Slot is Full. so, Use Empty Inventory Space.
+			if (bHasSpace)
 			{
-				if (InventoryArray[i].Quantity == 0)
+				for (int32 i = 0; i < InventoryArray.Num(); i++)
 				{
-					InventoryArray[i] = ItemData;
-					return true;
+					//Identical Item
+					if (IsValid(InventoryArray[i].ItemData)&& InventoryArray[i].ItemData== itemData->GetClass())
+					{
+						//check excceed
+						if (InventoryArray[i].Quantity + ItemDataSlot.Quantity > InventoryArray[i].ItemData.GetDefaultObject()->MaxQuantity)
+						{
+							int32 temp = InventoryArray[i].Quantity + ItemDataSlot.Quantity;
+							InventoryArray[i].Quantity = InventoryArray[i].ItemData.GetDefaultObject()->MaxQuantity;
+							ItemDataSlot.Quantity = temp - InventoryArray[i].Quantity;
+							break; //temp Quantity won't excceed MaxQuantity. so, go to the Next Procedure.
+						}
+						else// if not excceed, join and End Function.
+						{
+							InventoryArray[i].Quantity += ItemDataSlot.Quantity;
+							return true;
+						}
+					}
+
+				}
+
+				//if there is LeftOver, just Add in Empty Space.
+				for (int32 i = 0; i < InventoryArray.Num(); i++)
+				{
+					if (InventoryArray[i].ItemData == nullptr)
+					{
+						InventoryArray[i] = ItemDataSlot;
+						return true;
+					}
 				}
 			}
 		}
-	}
-	else // Can't Stackable Item. - etc)Equipment, Accessory.. - this will be Just Assigned in Empty Space.
-	{
-		if (bHasSpace)
+		else // Can't Stackable Item. - etc)Equipment, Accessory.. - this will be Just Assigned in Empty Space.
 		{
-			for (int32 i = 0; i < InventoryArray.Num(); i++)
+			if (bHasSpace)
 			{
-				if (InventoryArray[i].Quantity == 0)
+				for (int32 i = 0; i < InventoryArray.Num(); i++)
 				{
-					InventoryArray[i] = ItemData;
-					return true;
+					if (InventoryArray[i].ItemData == nullptr)
+					{
+						InventoryArray[i] = ItemDataSlot;
+						return true;
+					}
 				}
 			}
 		}
 	}
+	else 
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Item Data Is Not Valid."));
+	}
 
+	UE_LOG(LogTemp, Warning, TEXT("Add to Inventory Failed."));
 	//there is no Enough Space to Pick it up.
 	return false;
 }
@@ -151,7 +169,7 @@ void UInventoryComponent::PopItemFromInventory(int32 Index)
 {
 	if (InventoryArray.IsValidIndex(Index))
 	{
-		if (InventoryArray[Index].bIsStackable) // Stackable Item.
+		if (InventoryArray[Index].ItemData.GetDefaultObject()->bIsStackable) // Stackable Item.
 		{
 			if (InventoryArray[Index].Quantity > 1) // Decrease Item Number
 			{
@@ -159,12 +177,12 @@ void UInventoryComponent::PopItemFromInventory(int32 Index)
 			}
 			else if (InventoryArray[Index].Quantity == 1) //Delete and Reset
 			{
-				InventoryArray[Index] = FItemDataStruct();
+				InventoryArray[Index] = FItemDataSlot();
 			}
 		}
 		else // not Stackable item will be just Deleted and Reset.
 		{
-			InventoryArray[Index] = FItemDataStruct();
+			InventoryArray[Index] = FItemDataSlot();
 		}
 
 	}
@@ -172,47 +190,53 @@ void UInventoryComponent::PopItemFromInventory(int32 Index)
 
 bool UInventoryComponent::SwapInventoryItem(int32 CurrentInventoryIndex, UInventoryComponent* OtherInventory, int32 OtherInventoryIndex)
 {
-	if (OtherInventory)
+	if (IsValid(OtherInventory))
 	{
-		if (InventoryArray[CurrentInventoryIndex].ItemClass == OtherInventory->InventoryArray[OtherInventoryIndex].ItemClass) // join.
+		if (IsValid(InventoryArray[CurrentInventoryIndex].ItemData) && IsValid(OtherInventory->InventoryArray[OtherInventoryIndex].ItemData) && InventoryArray[CurrentInventoryIndex].ItemData == OtherInventory->InventoryArray[OtherInventoryIndex].ItemData) // join.
 		{
-			if (InventoryArray[CurrentInventoryIndex].MaxQuantity 
+			if (InventoryArray[CurrentInventoryIndex].ItemData.GetDefaultObject()->MaxQuantity
 				>= InventoryArray[CurrentInventoryIndex].Quantity + OtherInventory->InventoryArray[OtherInventoryIndex].Quantity) //enough Quantity for join
 			{
 				InventoryArray[CurrentInventoryIndex].Quantity += OtherInventory->InventoryArray[OtherInventoryIndex].Quantity;
-				OtherInventory->InventoryArray[OtherInventoryIndex] = FItemDataStruct();
+				OtherInventory->InventoryArray[OtherInventoryIndex] = FItemDataSlot();
+				UE_LOG(LogTemp, Warning, TEXT("join Success"));
+				return true;
 			}
 			else //Exceed Max Quantity.
 			{
 				int32 temp = InventoryArray[CurrentInventoryIndex].Quantity + OtherInventory->InventoryArray[OtherInventoryIndex].Quantity;
-				InventoryArray[CurrentInventoryIndex].Quantity = InventoryArray[CurrentInventoryIndex].MaxQuantity;
+				InventoryArray[CurrentInventoryIndex].Quantity = InventoryArray[CurrentInventoryIndex].ItemData.GetDefaultObject()->MaxQuantity;
 				temp -= InventoryArray[CurrentInventoryIndex].Quantity;
 				OtherInventory->InventoryArray[OtherInventoryIndex].Quantity = temp;
+				UE_LOG(LogTemp, Warning, TEXT("join Success"));
+				return true;
 			}
 		}
 		else //swap
 		{
-			FItemDataStruct temp = OtherInventory->InventoryArray[OtherInventoryIndex];
+			FItemDataSlot temp = OtherInventory->InventoryArray[OtherInventoryIndex];
 			OtherInventory->InventoryArray[OtherInventoryIndex] = InventoryArray[CurrentInventoryIndex];
 			InventoryArray[CurrentInventoryIndex] = temp;
+			UE_LOG(LogTemp, Warning, TEXT("Swap Success"));
+			return true;
 		}
-		return true;
 	}
+	UE_LOG(LogTemp, Warning, TEXT("S&J Failed"));
 	return false;
 }
 
 bool UInventoryComponent::UseItemInInventory(int32 InventoryIndex)
 {
 
-	if (InventoryArray.IsValidIndex(InventoryIndex)) // check valid
+	if (InventoryArray.IsValidIndex(InventoryIndex) && IsValid(InventoryArray[InventoryIndex].ItemData)) // check valid
 	{
-		if (InventoryArray[InventoryIndex].ItemClass) // check class exist
+		if (IsValid(InventoryArray[InventoryIndex].ItemData.GetDefaultObject()->ItemClass)) // check class exist
 		{
 			FActorSpawnParameters spawnParam;
 			spawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			spawnParam.Owner = GetOwner();
 
-			AItem* item = GetWorld()->SpawnActor<AItem>(InventoryArray[InventoryIndex].ItemClass, spawnParam);
+			AItem* item = GetWorld()->SpawnActor<AItem>(InventoryArray[InventoryIndex].ItemData.GetDefaultObject()->ItemClass, spawnParam);
 			if (item)
 			{
 				//Disable the Physical Existence
@@ -228,7 +252,7 @@ bool UInventoryComponent::UseItemInInventory(int32 InventoryIndex)
 				if (bSucceed)
 				{
 					// if Item Type is consumption, decrease item number.
-					if (InventoryArray[InventoryIndex].ItemType == EItemType::Consumption)
+					if (InventoryArray[InventoryIndex].ItemData.GetDefaultObject()->ItemType == EItemType::Consumption)
 					{
 						PopItemFromInventory(InventoryIndex);
 						return true;
@@ -279,13 +303,13 @@ bool UInventoryComponent::CheckEnoughMoney(int32 ToCompare)
 	return false;
 }
 
-bool UInventoryComponent::Transaction(FItemDataStruct InData)
+bool UInventoryComponent::Transaction(FItemDataSlot InValue)
 {
-	int32 totalPrice = InData.ItemPrice * InData.Quantity;
+	int32 totalPrice = InValue.ItemData.GetDefaultObject()->ItemPrice * InValue.Quantity;
 
 	if (Money >= totalPrice)
 	{
-		bool bAddSucceed = AddItemToInventory(InData);
+		bool bAddSucceed = AddItemToInventory(InValue);
 		if (bAddSucceed)
 		{
 			return SpendMoney(totalPrice);

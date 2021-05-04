@@ -19,17 +19,17 @@ public:
 	UEquipmentComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		FItemDataStruct WeaponData;
+		UEquipmentItemData* WeaponData;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		FItemDataStruct ShieldData;
+		UEquipmentItemData* ShieldData;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		FItemDataStruct ArmorData;
+		UEquipmentItemData* ArmorData;
 
 	/* 2 Slot for Accessories*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		FItemDataStruct AccessoryData1;
+		UEquipmentItemData* AccessoryData1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		FItemDataStruct AccessoryData2;
+		UEquipmentItemData* AccessoryData2;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment")
 		ABasicWeapon* CurrentWeapon;
@@ -42,10 +42,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	bool SetEquipWithIndex(int32 Index , FItemDataStruct InData);
-	FItemDataStruct GetEquipWithIndex(int32 Index);
+	bool SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSlot InData);
+	bool SetEquipment(EEquipmentSlot EquipmentSlot, UEquipmentItemData* InData);
+	UEquipmentItemData* GetEquipmentData(EEquipmentSlot Equipmentslot);
+	//bool SetEquipWithIndex(int32 Index , FItemDataSlot InData);
+	//FItemDataSlot GetEquipWithIndex(int32 Index);
 
-	bool SwapWithInventory(int32 EquipmentIndex, UInventoryComponent* Inventory, int32 InventoryIndex);
+	bool SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex);
+
+	//bool SwapWithInventory(int32 EquipmentIndex, UInventoryComponent* Inventory, int32 InventoryIndex);
 
 	void ApplyEquipment();
 };

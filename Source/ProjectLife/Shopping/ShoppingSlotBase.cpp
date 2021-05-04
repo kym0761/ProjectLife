@@ -54,7 +54,7 @@ FReply UShoppingSlotBase::NativeOnMouseButtonUp(const FGeometry& InGeometry, con
 		{
 			confirmShopping->AddToViewport();
 			//confirmShopping->SetPositionInViewport(USlateBlueprintLibrary::LocalToAbsolute(InGeometry, InMouseEvent.GetScreenSpacePosition()));
-			confirmShopping->ItemData = ItemData;
+			confirmShopping->ItemDataSlot = ItemDataSlot;
 
 			//if (GEngine)
 			//{
@@ -81,17 +81,38 @@ void UShoppingSlotBase::InitShoppingSlot(AShoppingActor* ShopOwner, int32 Index)
 {
 	if (ShopOwner && ShopOwner->Items.IsValidIndex(Index))
 	{
+
 		AItem* item = ShopOwner->Items[Index].GetDefaultObject();
 		if (item)
 		{
-			FItemDataStruct itemData = item->ItemData;
-			SlotImage->SetBrushFromTexture(itemData.Thumbnail);
-			SlotItemName->SetText(FText::FromString(itemData.Name));
-			FString priceText = FString::FromInt(itemData.ItemPrice) + FString("$");
-			SlotItemPrice->SetText(FText::FromString(priceText));
+			FItemDataSlot itemDataSlot = item->ItemDataSlot;
 
-			ItemData = itemData;
-			UE_LOG(LogTemp, Warning, TEXT("Shopping Slot Data's Name : %s"),*ItemData.Name);
+			if (IsValid(itemDataSlot.ItemData))
+			{
+				UItemData* itemData = itemDataSlot.ItemData.GetDefaultObject();
+
+				if (IsValid(itemData))
+				{
+
+					if (IsValid(SlotImage) && IsValid(itemData->Thumbnail))
+					{
+						SlotImage->SetBrushFromTexture(itemData->Thumbnail);
+					}
+
+					if (IsValid(SlotItemName))
+					{
+						SlotItemName->SetText(FText::FromString(itemData->Name));
+					}
+
+					if (IsValid(SlotItemPrice))
+					{
+						FString priceText = FString::FromInt(itemData->ItemPrice) + FString("$");
+						SlotItemPrice->SetText(FText::FromString(priceText));
+					}
+
+					ItemDataSlot = itemDataSlot;
+				}
+			}
 		}
 	}
 }

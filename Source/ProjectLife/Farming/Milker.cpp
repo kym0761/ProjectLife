@@ -3,12 +3,16 @@
 
 #include "Milker.h"
 #include "Components/SphereComponent.h"
-#include "../Animal/Animal.h"
-#include "../Animal/MilkComponent.h"
+//#include "../Animal/Animal.h"
+#include "../Animal/Cow.h"
+//#include "../Animal/MilkProduceComponent.h"
+#include "../Animal/LivestockProduceComponent.h"
+#include "../Item/Item.h"
 AMilker::AMilker()
 {
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(Mesh);
+	Sphere->SetupAttachment(RootComponent);
+	Sphere->InitSphereRadius(48.0f);
 }
 
 void AMilker::BeginPlay()
@@ -21,12 +25,12 @@ void AMilker::Milking()
 {
 	if (IsValid(Sphere))
 	{
-		TArray<AActor*> animals;
+		TArray<AActor*> cows;
 
-		Sphere->GetOverlappingActors(animals,AAnimal::StaticClass());
+		Sphere->GetOverlappingActors(cows,ACow::StaticClass());
 
 		//Sort by Distance. descending order
-		animals.Sort(
+		cows.Sort(
 			[this](const AActor& a, const AActor& b)
 			->bool {
 				return FVector::Distance(GetActorLocation(), a.GetActorLocation())
@@ -37,19 +41,21 @@ void AMilker::Milking()
 
 		//UE_LOG(LogTemp, Warning, TEXT("Current animal Number : %d"), animals.Num());
 
-		for (AActor* i : animals)
+		AItem* produce = nullptr;
+		for (AActor* i : cows)
 		{
-			UMilkComponent* milkComp = i->FindComponentByClass<UMilkComponent>();
-			if (IsValid(milkComp))
+			ULivestockProduceComponent* produceComp = i->FindComponentByClass<ULivestockProduceComponent>();
+			if (IsValid(produceComp))
 			{
-				//TODO : Make Milk
-				milkComp->MakeMilk();
+				produce = produceComp->Produce();
 				break;
 			}
-
 		}
 
-
+		if (IsValid(produce))
+		{
+			//TODO : Hold Produce to Milker's Owner. 
+		}
 
 	}
 }

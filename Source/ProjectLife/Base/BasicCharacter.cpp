@@ -10,7 +10,6 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "../Inventory/InventoryComponent.h"
 #include  "StatComponent.h"
-//#include "Base.h" //Interactive
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BasicWeapon.h"
 #include "Blueprint/UserWidget.h" // CreateWidget
@@ -19,7 +18,7 @@
 #include "SpeechWidgetComponent.h"
 #include "DamageTextActor.h"
 #include "Components/SceneComponent.h"
-#include "../Puzzle/PhysicsHoldBase.h"
+//#include "../Puzzle/PhysicsHoldBase.h"
 
 #include "../Grid/GridComponent.h"
 #include "../Grid/GridManager.h"
@@ -467,13 +466,19 @@ void ABasicCharacter::ToggleInventory()
 	}
 }
 
-void ABasicCharacter::Hold(APhysicsHoldBase* ToHold)
+void ABasicCharacter::Hold(AActor* ToHold)
 {
 	if (IsValid(ToHold))
 	{
 		bHoldSomething = true;
 		CurrentHold = ToHold;
-		ToHold->SetHoldStatus(true);
+		//ToHold->SetHoldStatus(true);
+		UPrimitiveComponent* rootComp = Cast<UPrimitiveComponent>(CurrentHold->GetRootComponent());
+		if (IsValid(rootComp))
+		{
+			rootComp->SetSimulatePhysics(false);
+		}
+
 		ToHold->AttachToComponent(HoldPosition,FAttachmentTransformRules::KeepWorldTransform);
 		ToHold->SetActorRelativeRotation(FRotator::ZeroRotator);
 		ToHold->SetActorLocation(HoldPosition->GetComponentLocation());
@@ -486,10 +491,23 @@ void ABasicCharacter::UnHold()
 	if (IsValid(CurrentHold))
 	{
 		bHoldSomething = false;
-		CurrentHold->SetHoldStatus(false);
+		//CurrentHold->SetHoldStatus(false);
+
+		UPrimitiveComponent* rootComp = Cast<UPrimitiveComponent>(CurrentHold->GetRootComponent());
+		if (IsValid(rootComp))
+		{
+			rootComp->SetSimulatePhysics(true);
+		}
+
 		CurrentHold->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		CurrentHold->SetActorRotation(FRotator::ZeroRotator);
-		CurrentHold->ThrowToDirection(GetActorForwardVector());
+		
+		//CurrentHold->ThrowToDirection(GetActorForwardVector());
+		if (IsValid(rootComp) && rootComp->IsSimulatingPhysics())
+		{
+			FVector power = GetActorForwardVector() * 500.0f * rootComp->GetMass();
+			rootComp->AddImpulse(power);
+		}
 		CurrentHold = nullptr;
 	}
 }

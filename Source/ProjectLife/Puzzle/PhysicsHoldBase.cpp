@@ -60,36 +60,36 @@ void APhysicsHoldBase::Interact_Implementation(APawn* InteractCauser)
 
 }
 
-bool APhysicsHoldBase::SetHoldStatus(bool Status)
-{
+//bool APhysicsHoldBase::SetHoldStatus(bool Status)
+//{
+//
+//	if (Status == true)
+//	{
+//		Box->SetSimulatePhysics(false);
+//		return true;
+//	}
+//	else
+//	{
+//		Box->SetSimulatePhysics(true);
+//		return false;
+//	}
+//
+//}
 
-	if (Status == true)
-	{
-		Box->SetSimulatePhysics(false);
-		return true;
-	}
-	else
-	{
-		Box->SetSimulatePhysics(true);
-		return false;
-	}
-
-}
-
-void APhysicsHoldBase::ThrowToDirection(FVector Direction)
-{
-	if (Box->IsSimulatingPhysics())
-	{
-		FVector power = Direction * 500.0f * Box->GetMass();
-		Box->AddImpulse(power);
-
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Black, TEXT("Throw Done."));
-		}
-
-	}
-}
+//void APhysicsHoldBase::ThrowToDirection(FVector Direction)
+//{
+//	if (Box->IsSimulatingPhysics())
+//	{
+//		FVector power = Direction * 500.0f * Box->GetMass();
+//		Box->AddImpulse(power);
+//
+//		if (GEngine)
+//		{
+//			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Black, TEXT("Throw Done."));
+//		}
+//
+//	}
+//}
 
 void APhysicsHoldBase::TriggerAction_Implementation()
 {

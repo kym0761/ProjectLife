@@ -15,23 +15,22 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Collision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
-	SetRootComponent(Collision);
-	Collision->InitBoxExtent(FVector(32.0f));
-	Collision->SetCollisionProfileName(TEXT("BlockAllDynamic"));
+	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	SetRootComponent(Box);
+	Box->InitBoxExtent(FVector(32.0f));
+	Box->SetCollisionProfileName(TEXT("Item"));
 	//Collision->SetVisibility(false);
-	Collision->ShapeColor = FColor::Black;
-	Collision->SetSimulatePhysics(true);
-	Collision->GetBodyInstance()->bLockXRotation = true;
-	Collision->GetBodyInstance()->bLockYRotation = true;
-	Collision->GetBodyInstance()->bLockZRotation = true;
+	Box->ShapeColor = FColor::Black;
+	Box->SetSimulatePhysics(true);
+	Box->GetBodyInstance()->bLockXRotation = true;
+	Box->GetBodyInstance()->bLockYRotation = true;
+	Box->GetBodyInstance()->bLockZRotation = true;
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->InitSphereRadius(64.0f);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
-
 
 }
 
@@ -40,14 +39,6 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UItemData* data = ItemDataTest.GetDefaultObject();
-	if (data)
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(),2.0f, FColor::Black,data->Name);
-		}
-	}
 }
 
 // Called every frame
@@ -63,7 +54,7 @@ void AItem::Interact_Implementation(APawn* InteractCauser)
 	
 	if (player)
 	{
-		bool bSucceeded = player->Inventory->AddItemToInventory(ItemData);
+		bool bSucceeded = player->Inventory->AddItemToInventory(ItemDataSlot);
 		//Add Succeeded, Update UI & Delete Item Actor.
 		if (bSucceeded)
 		{
@@ -81,17 +72,19 @@ void AItem::Interact_Implementation(APawn* InteractCauser)
 
 bool AItem::UseItem_Implementation()
 {
-	switch (ItemData.ItemType)
+	UItemData* itemdata = ItemDataSlot.ItemData.GetDefaultObject();
+
+	switch (itemdata->ItemType)
 	{
 	case EItemType::Consumption:
 		UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Consumption"));
 		break;
 	case EItemType::Equipment:
 		UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Equipment"));
-		if (ItemData.WeaponClass)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Class Name : %s"), *ItemData.WeaponClass.GetDefaultObject()->ItemData.Name);
-		}
+		//if (ItemData.WeaponClass)
+		//{
+		//	UE_LOG(LogTemp, Warning, TEXT("Class Name : %s"), *ItemData.WeaponClass.GetDefaultObject()->ItemData.Name);
+		//}
 		break;
 	case EItemType::Resource:
 		UE_LOG(LogTemp, Warning, TEXT("Resource Item Will not Need Use Item function Maybe..?"));

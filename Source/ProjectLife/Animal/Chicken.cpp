@@ -2,4 +2,9 @@
 
 
 #include "Chicken.h"
+#include "LivestockProduceComponent.h"
+AChicken::AChicken()
+{
+	LivestockProduceComponent = CreateDefaultSubobject<ULivestockProduceComponent>(TEXT("LivestockProduceComponent"));
 
+}

@@ -16,6 +16,12 @@ public:
 	// Sets default values for this character's properties
 	AAnimal();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		TArray<USoundBase*> InteractSound;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Interact")
+		bool bInteractOK;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -27,4 +33,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Interact_Implementation(APawn* InteractCauser);
+
+	UFUNCTION()
+	void WhenSoundFinished();
+
+	void PlayInteractSound();
 };

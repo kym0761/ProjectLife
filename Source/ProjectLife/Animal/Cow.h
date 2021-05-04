@@ -6,7 +6,7 @@
 #include "Animal.h"
 #include "Cow.generated.h"
 
-class UMilkComponent;
+class ULivestockProduceComponent;
 /**
  * 
  */
@@ -20,7 +20,6 @@ public:
 	ACow();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UMilkComponent* MilkComponent;
-
+		ULivestockProduceComponent* LivestockProduceComponent;
 
 };

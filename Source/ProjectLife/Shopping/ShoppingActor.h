@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingWidgetBase> ShoppingWidgetClass;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Shopping")
+	UPROPERTY(BlueprintReadWrite, Category = "Shopping")
 		UShoppingWidgetBase* ShoppingWidgetRef;
 
 

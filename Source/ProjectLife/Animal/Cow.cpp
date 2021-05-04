@@ -2,8 +2,9 @@
 
 
 #include "Cow.h"
-#include "MilkComponent.h"
+#include "LivestockProduceComponent.h"
 ACow::ACow()
 {
-	MilkComponent = CreateDefaultSubobject<UMilkComponent>(TEXT("MilkComponent"));
+	LivestockProduceComponent = CreateDefaultSubobject<ULivestockProduceComponent>(TEXT("LivestockProduceComponent"));
+
 }

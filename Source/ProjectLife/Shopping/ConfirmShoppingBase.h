@@ -36,8 +36,9 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_Quantity;
 
+	//FItemDataSlot? or UItemData?
 	UPROPERTY()
-		FItemDataStruct ItemData;
+		FItemDataSlot ItemDataSlot;
 
 	UPROPERTY()
 		int32 Quantity;

@@ -20,8 +20,8 @@ public:
 
 	AStorageBox();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
-		TArray<FItemDataStruct> StorageArray;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
+	//	TArray<FItemDataSlot> StorageArray;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
 		UInventoryComponent* Inventory;

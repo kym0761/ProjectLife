@@ -38,6 +38,7 @@ void UQuestBase::ObjectiveClear()
 
 void UQuestBase::QuestClear(APawn* QuestReceiver)
 {
+	/*
 	UInventoryComponent* inventory = QuestReceiver->FindComponentByClass<UInventoryComponent>();
 	UStatComponent* stat = QuestReceiver->FindComponentByClass<UStatComponent>();
 
@@ -60,7 +61,7 @@ void UQuestBase::QuestClear(APawn* QuestReceiver)
 		case EQuestReward::Item:
 			if (IsValid(inventory))
 			{
-				FItemDataStruct itemData= ob.RewardItem->GetDefaultObject<AItem>()->ItemData;
+				FItemDataSlot itemData = ob.RewardItem->GetDefaultObject<AItem>()->ItemData;
 				inventory->AddItemToInventory(itemData);
 			}
 			break;
@@ -92,5 +93,5 @@ void UQuestBase::QuestClear(APawn* QuestReceiver)
 			gameInstance->HandleQuestClear(this);
 		}
 	}
-
+	*/
 }

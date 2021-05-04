@@ -86,14 +86,20 @@ void UStatComponent::RefillStamina(float RefillAmount)
 
 void UStatComponent::ClearAdditionalStat()
 {
+	//Not Finished.
 	AdditionalAttack = 0.0f;
 	AdditionalDefense = 0.0f;
+	AdditionalCriticalHit = 0.0f;
 }
 
-void UStatComponent::ApplyAdditionalStat(FItemDataStruct InData)
+void UStatComponent::ApplyAdditionalStat(UEquipmentItemData* InData)
 {
-	AdditionalAttack += InData.Attack;
-	AdditionalDefense += InData.Defense;
-	AdditionalCriticalHit += InData.CriticalHit;
+	//Not Finished.
+	if (IsValid(InData))
+	{
+		AdditionalAttack += InData->Attack;
+		AdditionalDefense += InData->Defense;
+		AdditionalCriticalHit += InData->CriticalHit;
+	}
 }
 

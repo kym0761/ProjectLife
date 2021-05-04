@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "FarmingTool.generated.h"
 
+class UBoxComponent;
 class UStaticMeshComponent;
 
 UCLASS()
@@ -18,7 +19,13 @@ public:
 	AFarmingTool();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+		UBoxComponent* Box;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UStaticMeshComponent* Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Farming")
+		AActor* FarmingToolOwner;
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,4 +35,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetFarmingToolOwner(AActor* InActor);
 };

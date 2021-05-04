@@ -30,7 +30,7 @@ public:
 		UTextBlock* SlotItemPrice;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button")
-		FItemDataStruct ItemData;
+		FItemDataSlot ItemDataSlot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button")
 		TSubclassOf<UConfirmShoppingBase> ConfirmShoppingClass;

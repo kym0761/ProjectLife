@@ -6,6 +6,7 @@
 #include "Animal.h"
 #include "Chicken.generated.h"
 
+class ULivestockProduceComponent;
 /**
  * 
  */
@@ -14,4 +15,11 @@ class PROJECTLIFE_API AChicken : public AAnimal
 {
 	GENERATED_BODY()
 	
+public:
+
+	AChicken();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+		ULivestockProduceComponent* LivestockProduceComponent;
+
 };

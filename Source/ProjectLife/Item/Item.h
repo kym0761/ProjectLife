@@ -23,7 +23,7 @@ public:
 
 	//Needed for Main Collision.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
-		UBoxComponent* Collision;
+		UBoxComponent* Box;
 
 	//Needed For Detection.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
@@ -32,11 +32,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 		UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		FItemDataStruct ItemData;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item") //deprecated
+	//	FItemDataStruct ItemData;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		TSubclassOf<UItemData> ItemDataTest;
+		FItemDataSlot ItemDataSlot;
+
+
+
 
 protected:
 	// Called when the game starts or when spawned

@@ -39,9 +39,9 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool SetHoldStatus(bool Status);
+	//bool SetHoldStatus(bool Status);
 
-	void ThrowToDirection(FVector Direction);
+	//void ThrowToDirection(FVector Direction);
 
 
 	virtual void TriggerAction_Implementation();

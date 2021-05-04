@@ -17,7 +17,7 @@ public:
 	UInventoryComponent();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TArray<FItemDataStruct> InventoryArray;
+	TArray<FItemDataSlot> InventoryArray;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		int32 InventoryCapacity;
@@ -38,7 +38,7 @@ public:
 	bool CheckInventoryHasSpace();
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool AddItemToInventory(FItemDataStruct ItemData);
+		bool AddItemToInventory(FItemDataSlot ItemDataSlot);
 		
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		void PopItemFromInventory(int32 Index);
@@ -52,6 +52,6 @@ public:
 
 	bool CheckEnoughMoney(int32 ToCompare);
 
-	bool Transaction(FItemDataStruct InData);
+	bool Transaction(FItemDataSlot InValue);
 
 };

@@ -20,14 +20,8 @@
 void UItemSlotBase::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	//SlotImage = Cast<UImage>(GetWidgetFromName(TEXT("SlotImage")));
-
-	//SlotItemNum = Cast<UTextBlock>(GetWidgetFromName(TEXT("SlotItemNum")));
 	
 	SetVisibility(ESlateVisibility::Visible);
-
-	//UE_LOG(LogTemp, Warning, TEXT("%s"),*GetOwningPlayer()->GetName());
 }
 
 FReply UItemSlotBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -44,50 +38,47 @@ void UItemSlotBase::NativeOnDragDetected(const FGeometry& InGeometry, const FPoi
 {
 	Super::NativeOnDragDetected(InGeometry,InMouseEvent,OutOperation);
 
-	if (InventoryRef)
+	if (IsValid(InventoryRef))
 	{
-		//Null Item Slot Must Not Dragged.
-		if (InventoryRef->InventoryArray[InventoryIndex].Quantity == 0)
+		if (IsValid(InventoryRef->InventoryArray[InventoryIndex].ItemData))
 		{
-			return;
-		}
-	}
+			UItemData* itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData.GetDefaultObject();
 
-	//UE_LOG(LogTemp, Warning, TEXT("NativeOnDragDetected"));
-	if (ItemSlotClass)
-	{
-		//Create DragDisplayUI
-		UItemSlotBase* dragDisplay = CreateWidget<UItemSlotBase>(GetOwningPlayer(), ItemSlotClass);
-		
-		if (dragDisplay)
-		{
-			//Set Default Image and Number.
-			dragDisplay->SlotImage->SetBrushFromTexture(InventoryRef->InventoryArray[InventoryIndex].Thumbnail);
-			dragDisplay->SlotItemNum->SetText(FText::GetEmpty());
+			if (IsValid(itemData))
+			{
+				if (IsValid(ItemSlotClass))
+				{
+					//Create DragDisplayUI
+					UItemSlotBase* dragDisplay = CreateWidget<UItemSlotBase>(GetOwningPlayer(), ItemSlotClass);
 
-			//FVector2D temp = UKismetInputLibrary::PointerEvent_GetScreenSpacePosition(InMouseEvent);
-			//FVector2D temp2 = USlateBlueprintLibrary::AbsoluteToLocal(InGeometry,temp);
+					if (IsValid(dragDisplay))
+					{
+						//Set Default Image and Number.
+						if (itemData->Thumbnail)
+						{
+							dragDisplay->SlotImage->SetBrushFromTexture(itemData->Thumbnail);
+						}
+						dragDisplay->SlotItemNum->SetText(FText::GetEmpty());
 
-			//dragDisplay->SetPositionInViewport(temp2);
+						//Make DragDropEvent And Assign it.
+						UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
+						dragDropOper->Payload = this;
+						dragDropOper->DefaultDragVisual = dragDisplay;
+						dragDropOper->Pivot = EDragPivot::CenterCenter;
 
-			//Make DragDropEvent And Assign it.
-			UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
-			dragDropOper->Payload = this;
-			dragDropOper->DefaultDragVisual = dragDisplay;
-			dragDropOper->Pivot = EDragPivot::CenterCenter;
-			
-			
-
-			OutOperation = dragDropOper;
-		}
-		else 
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Player is Not Exist."));
+						OutOperation = dragDropOper;
+					}
+					else
+					{
+						UE_LOG(LogTemp, Warning, TEXT("dragDisplay Create Failed."));
+					}
+				}
+			}
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ItemSlotClass is not Exist. Add Slot Class Please."));
+		UE_LOG(LogTemp, Warning, TEXT("ItemSlotClass is not Exist. Add Slot Class Please."));
 	}
 }
 
@@ -103,12 +94,12 @@ bool UItemSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEve
 			//Get Payload and Cast To ItemSlot.
 			UItemSlotBase* droppedItemSlot = Cast<UItemSlotBase>(InOperation->Payload);
 
-			if (droppedItemSlot) //Get InventoryRef & Index.
+			if (IsValid(droppedItemSlot)) //Get InventoryRef & Index.
 			{
 				UInventoryComponent* droppedItemslot_Inventory = droppedItemSlot->InventoryRef;
 				int32 droppedInventoryIndex = droppedItemSlot->InventoryIndex;
 
-				if (droppedItemslot_Inventory) //Swap With it.
+				if (IsValid(droppedItemslot_Inventory)) //Swap With it.
 				{
 					bool bSucceed = InventoryRef->SwapInventoryItem(InventoryIndex, droppedItemslot_Inventory, droppedInventoryIndex);
 
@@ -117,6 +108,7 @@ bool UItemSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEve
 						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 						if (playerController)
 						{
+							UE_LOG(LogTemp,Warning,TEXT("Attempt Update"));
 							playerController->UpdateInventory();
 						}
 						return true;
@@ -125,23 +117,23 @@ bool UItemSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEve
 			}
 		}
 
-		/*EquipSlot Same With [Item Slot] code*/
+		/*EquipSlot, similar With [Item Slot] code*/
 		{
 			UEquipSlotBase* droppedEquipSlot = Cast<UEquipSlotBase>(InOperation->Payload);
-			if (droppedEquipSlot)
+			if (IsValid( droppedEquipSlot))
 			{
-
 				UEquipmentComponent* equipmentComp = droppedEquipSlot->EquipmentCompRef;
-				int32 droppedEquipmentIndex = droppedEquipSlot->EquipmentIndex;
+				EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
 
 				if (equipmentComp)
 				{
-					bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentIndex, InventoryRef, InventoryIndex);
+					bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentslot, InventoryRef, InventoryIndex);
 					if (bSucceed)
 					{
 						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 						if (playerController)
 						{
+							UE_LOG(LogTemp, Warning, TEXT("Attempt Update"));
 							playerController->UpdateInventory();
 						}
 						return true;
@@ -152,10 +144,7 @@ bool UItemSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEve
 	}
 	else
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, TEXT("InOperation is Not Valid."));
-		}
+		UE_LOG(LogTemp, Warning, TEXT("InOperation is Not Valid."));
 	}
 
 
@@ -180,35 +169,66 @@ FReply UItemSlotBase::NativeOnMouseButtonUp(const FGeometry& InGeometry, const F
 void UItemSlotBase::UpdateSlot()
 {
 
-	if (InventoryRef && InventoryRef->InventoryArray.IsValidIndex(InventoryIndex))
+	if (IsValid(InventoryRef) && InventoryRef->InventoryArray.IsValidIndex(InventoryIndex))
 	{
-
-		//UE_LOG(LogTemp, Warning, TEXT("Access"));
-		if (SlotImage)//Set Image
+		if (IsValid(InventoryRef->InventoryArray[InventoryIndex].ItemData))
 		{
-			SlotImage->SetBrushFromTexture(InventoryRef->InventoryArray[InventoryIndex].Thumbnail);
-			//UE_LOG(LogTemp, Warning, TEXT("Image Updated"));
+			UItemData* itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData.GetDefaultObject();
+
+			if (IsValid(itemData))
+			{
+				if (IsValid(SlotImage))//Set Image
+				{
+					if (IsValid(itemData->Thumbnail))
+					{
+						SlotImage->SetBrushFromTexture(itemData->Thumbnail);
+					}
+					else
+					{
+						SlotImage->SetBrushFromTexture(nullptr);
+					}
+				}
+
+				if (IsValid(SlotItemNum))//Set Number
+				{
+					FText QuantityText;
+
+					if (itemData->bIsStackable)
+					{
+						QuantityText = FText::FromString(FString::FromInt(InventoryRef->InventoryArray[InventoryIndex].Quantity));
+					}
+					else
+					{
+						QuantityText = FText::GetEmpty();
+					}
+
+					SlotItemNum->SetText(QuantityText);
+				}
+			}
 		}
-
-		if (SlotItemNum)//Set Number
+		else // set void
 		{
-			FText QuantityText;
-
-			if (InventoryRef->InventoryArray[InventoryIndex].bIsStackable)
+			if (IsValid(SlotImage))
 			{
-				QuantityText = FText::FromString(FString::FromInt(InventoryRef->InventoryArray[InventoryIndex].Quantity));
+				SlotImage->SetBrushFromTexture(nullptr);
 			}
-			else
+			if (IsValid(SlotItemNum))
 			{
-				QuantityText = FText::GetEmpty();
+				SlotItemNum->SetText(FText::GetEmpty());
 			}
-
-			SlotItemNum->SetText(QuantityText);
-			//UE_LOG(LogTemp, Warning, TEXT("number Updated"));
+		}	
+	}
+	else // set void
+	{
+		if (IsValid(SlotImage))
+		{
+			SlotImage->SetBrushFromTexture(nullptr);
+		}
+		if (IsValid(SlotItemNum))
+		{
+			SlotItemNum->SetText(FText::GetEmpty());
 		}
 	}
-
-
 }
 
 

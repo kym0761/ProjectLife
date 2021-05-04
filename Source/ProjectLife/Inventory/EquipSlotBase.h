@@ -9,6 +9,8 @@
 
 class UImage;
 class UEquipmentComponent;
+
+
 /**
  * 
  */
@@ -25,7 +27,10 @@ public:
 		UEquipmentComponent* EquipmentCompRef;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		int32 EquipmentIndex;
+		EEquipmentSlot EquipmentSlot;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment") //deprecated
+	//	int32 EquipmentIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentType SlotEquipmentType;

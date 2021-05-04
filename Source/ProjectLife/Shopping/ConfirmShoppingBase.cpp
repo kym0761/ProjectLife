@@ -54,12 +54,12 @@ void UConfirmShoppingBase::Clicked_OK()
 	//Transaction
 
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
-	if (inventory)
+	if (IsValid(inventory))
 	{
-		FItemDataStruct temp = ItemData;
+		FItemDataSlot temp = ItemDataSlot;
 		temp.Quantity = Quantity;
 
-		UE_LOG(LogTemp, Warning, TEXT(" ItemData Name : %s"), *temp.Name);
+		//UE_LOG(LogTemp, Warning, TEXT(" ItemData Name : %s"), *temp.ItemData.GetDefaultObject()->Name);
 
 		bool bSucceed = inventory->Transaction(temp);
 		if (bSucceed)
@@ -73,7 +73,7 @@ void UConfirmShoppingBase::Clicked_OK()
 	}
 	else 
 	{
-
+		//what?
 	}
 
 	RemoveFromParent();
@@ -91,13 +91,13 @@ void UConfirmShoppingBase::Clicked_Plus()
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 	if (inventory)
 	{
-		int32 tempPrice = tempQuantity * ItemData.ItemPrice;
+		int32 tempPrice = tempQuantity * ItemDataSlot.ItemData.GetDefaultObject()->ItemPrice;
 		bAffordable = inventory->CheckEnoughMoney(tempPrice);
 	}
 
 	if (bAffordable)
 	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ItemData.MaxQuantity);
+		Quantity = FMath::Clamp(tempQuantity, 0, ItemDataSlot.ItemData.GetDefaultObject()->MaxQuantity);
 	}
 	else
 	{
@@ -112,13 +112,13 @@ void UConfirmShoppingBase::Clicked_10Plus()
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 	if (inventory)
 	{
-		int32 tempPrice = tempQuantity * ItemData.ItemPrice;
+		int32 tempPrice = tempQuantity * ItemDataSlot.ItemData.GetDefaultObject()->ItemPrice;
 		bAffordable = inventory->CheckEnoughMoney(tempPrice);
 	}
 
 	if (bAffordable)
 	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ItemData.MaxQuantity);
+		Quantity = FMath::Clamp(tempQuantity, 0, ItemDataSlot.ItemData.GetDefaultObject()->MaxQuantity);
 	}
 	else
 	{
@@ -128,12 +128,12 @@ void UConfirmShoppingBase::Clicked_10Plus()
 
 void UConfirmShoppingBase::Clicked_Minus()
 {
-	Quantity = FMath::Clamp(Quantity - 1, 0, ItemData.MaxQuantity);
+	Quantity = FMath::Clamp(Quantity - 1, 0, ItemDataSlot.ItemData.GetDefaultObject()->MaxQuantity);
 }
 
 void UConfirmShoppingBase::Clicked_10Minus()
 {
-	Quantity = FMath::Clamp(Quantity - 10, 0, ItemData.MaxQuantity);
+	Quantity = FMath::Clamp(Quantity - 10, 0, ItemDataSlot.ItemData.GetDefaultObject()->MaxQuantity);
 }
 
 FText UConfirmShoppingBase::SetQuantityText()

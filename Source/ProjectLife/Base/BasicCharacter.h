@@ -16,7 +16,8 @@ class ABasicWeapon;
 class USpeechWidgetComponent;
 class ADamageTextActor;
 class USceneComponent;
-class APhysicsHoldBase;
+//class APhysicsHoldBase;
+//class AFarmingTool;
 UENUM(BlueprintType)
 enum class ECameraType : uint8
 {
@@ -82,7 +83,10 @@ public:
 		bool bHoldSomething;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
-		APhysicsHoldBase* CurrentHold;
+		AActor* CurrentHold;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Farming")
+	//	AFarmingTool* FarmingTool;
 
 protected:
 	// Called when the game starts or when spawned
@@ -124,9 +128,10 @@ public:
 
 	void ToggleInventory();
 
-	void Hold(APhysicsHoldBase* ToHold);
+	UFUNCTION(BlueprintCallable) //Temporary In Blueprint Cause by Farming tool
+	void Hold(AActor* ToHold);
 	void UnHold();
 
 	//virtual void Interact(APawn* InteractCauser);
-	virtual void Interact_Implementation(APawn* InteractCauser);
+	void Interact_Implementation(APawn* InteractCauser);
 };
