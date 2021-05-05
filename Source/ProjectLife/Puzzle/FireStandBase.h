@@ -75,13 +75,7 @@ public:
 	void TurnOnFire();
 	void TurnOffFire();
 
-	//virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
-
-
-
-
 	FTimerHandle CombustTimer;
-
 	UFUNCTION()
 	void OverlapCombust();
 

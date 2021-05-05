@@ -24,15 +24,15 @@ FReply UEquipSlotBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, cons
 
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
-	if (GEngine)
-	{
-		UEnum* enumptr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEquipmentType"), true);
-		if (enumptr)
-		{
-			FString enumString = enumptr->GetNameStringByIndex((uint8)SlotEquipmentType);
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, enumString);
-		}
-	}
+	//if (GEngine)
+	//{
+	//	UEnum* enumptr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEquipmentType"), true);
+	//	if (enumptr)
+	//	{
+	//		FString enumString = enumptr->GetNameStringByIndex((uint8)SlotEquipmentType);
+	//		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, enumString);
+	//	}
+	//}
 
 	//Drag Function Activate.
 	FEventReply reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
@@ -45,7 +45,7 @@ void UEquipSlotBase::NativeOnDragDetected(const FGeometry& InGeometry, const FPo
 {
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 
-	
+	//Make New Equip Slot For Drag.
 	if (IsValid(EquipmentCompRef))
 	{
 		UEquipmentItemData* equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
@@ -83,11 +83,12 @@ bool UEquipSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
-	//UE_LOG(LogTemp, Warning, TEXT("Equip Slot Base Native On Drop"));
+
 
 	if (InOperation)
 	{
-		//if drop is Item Slot
+		//if a dropped slot is a Item Slot
+		//Get ItemData And Equip it if it is EquipmentData.
 		{
 			UItemSlotBase* dropped = Cast<UItemSlotBase>(InOperation->Payload);
 			if (IsValid(dropped))
@@ -116,6 +117,8 @@ bool UEquipSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 									bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
 									if (bSucceed)
 									{
+										//Equipment item Data is Valid, set slot's Values.
+										//if not, Reset slot's Values.
 										if (IsValid(currentEquipment))
 										{
 											FItemDataSlot temp;
@@ -141,18 +144,12 @@ bool UEquipSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 							}
 						}
 					}
-					//else
-					//{
-					//	if (GEngine)
-					//	{
-					//		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("It is not a Equipment."));
-					//	}
-					//}
 				}
 			}
 		}
 
 		//if drop is Equip slot. Maybe Accessory? ex) accessory1 <->accessory2 swap.
+		//other Equipment Slot Will not Valid.. because there is no other Weapon Slot or Armor slot, etc... in game...
 		{
 			UEquipSlotBase* dropped = Cast<UEquipSlotBase>(InOperation->Payload);
 			if (IsValid(dropped))
@@ -180,19 +177,14 @@ bool UEquipSlotBase::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 			}
 		}
 	}
-	//else
-	//{
-	//	if (GEngine)
-	//	{
-	//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, TEXT("InOperation is Not Valid."));
-	//	}
-	//}
 
 	return false;
 }
 
 void UEquipSlotBase::UpdateSlot()
 {
+	//Update Slot with Current Data.
+
 	if (EquipmentCompRef)
 	{
 		UEquipmentItemData* equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);

@@ -30,13 +30,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn", Meta = (ClampMin = 0, ClampMax = 1000))
 		float Offset;
 
-	//May Not need to be Seen.
+	//May Not need to be Seen in Blueprint.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Spawn")
 		TMap<FString, UGridComponent*> GridMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn")
 		TSubclassOf<UGridComponent> GridCompClass;
 
+	//You can See whether that This Grid Can be used or not.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UInstancedStaticMeshComponent* AvailableInstMesh;
 

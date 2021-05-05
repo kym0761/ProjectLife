@@ -25,13 +25,6 @@ void USpeechBubbleBase::StartSpeech(FString InSpeech)
 	float timeRate = 1.0f / SpeechSpeed;
 	GetWorld()->GetTimerManager().SetTimer(SpeechTimer, this, &USpeechBubbleBase::Speech, timeRate, true);
 	
-
-	/*if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, TEXT("Start Speech OK"));
-		FString temp = FString("Current rate : ") + FString::SanitizeFloat(timeRate);
-		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, temp);
-	}*/
 }
 
 void USpeechBubbleBase::Speech()
@@ -48,14 +41,6 @@ void USpeechBubbleBase::Speech()
 		GetWorld()->GetTimerManager().SetTimer(SpeechEndTimer, this, &USpeechBubbleBase::EndSpeech, 1.0f, false, EndTime);
 		GetWorld()->GetTimerManager().ClearTimer(SpeechTimer);
 	}
-
-	//if (GEngine)
-	//{
-	//	FString intTemp = FString("Current Length : ")+FString::FromInt(CurrentLength);
-	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Cyan, intTemp);
-	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, TEXT("Speech OK"));
-	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Blue, temp);
-	//}
 
 }
 

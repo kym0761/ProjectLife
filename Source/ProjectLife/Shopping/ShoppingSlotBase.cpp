@@ -53,18 +53,7 @@ FReply UShoppingSlotBase::NativeOnMouseButtonUp(const FGeometry& InGeometry, con
 		if (confirmShopping)
 		{
 			confirmShopping->AddToViewport();
-			//confirmShopping->SetPositionInViewport(USlateBlueprintLibrary::LocalToAbsolute(InGeometry, InMouseEvent.GetScreenSpacePosition()));
 			confirmShopping->ItemDataSlot = ItemDataSlot;
-
-			//if (GEngine)
-			//{
-			//	FVector2D vec = InMouseEvent.GetScreenSpacePosition();
-			//		
-			//	//USlateBlueprintLibrary::LocalToAbsolute(InGeometry, InMouseEvent.GetScreenSpacePosition());
-			//	FString str = vec.ToString();
-			//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, str);
-			//}
-
 		}
 	}
 	else

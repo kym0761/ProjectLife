@@ -262,6 +262,9 @@ UEquipmentItemData* UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipme
 
 bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex)
 {
+	//Swap Equip <-> Inventory.
+
+
 	if (IsValid(Inventory))
 	{
 		FItemDataSlot inInventory = Inventory->InventoryArray[InventoryIndex];
@@ -271,6 +274,8 @@ bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInven
 
 			if (IsValid(itemData))
 			{
+
+				//Failed if inventory item is not Equipment.
 				UEquipmentItemData* equipmentItemData = Cast<UEquipmentItemData>(itemData);
 				UEquipmentItemData* temp = GetEquipmentData(Equipmentslot);
 				if (IsValid(equipmentItemData) && IsValid(temp))
@@ -284,33 +289,16 @@ bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInven
 	return false;
 }
 
-//bool UEquipmentComponent::SwapWithInventory(int32 EquipmentIndex, UInventoryComponent* Inventory, int32 InventoryIndex)
-//{
-//
-//	if (Inventory)
-//	{
-//		FItemDataSlot inInventory = Inventory->InventoryArray[InventoryIndex];
-//		FItemDataSlot temp;
-//		temp = GetEquipWithIndex(EquipmentIndex);
-//		bool bSucceed = SetEquipWithIndex(EquipmentIndex, inInventory);
-//		if (bSucceed)
-//		{
-//			Inventory->InventoryArray[InventoryIndex] = temp;
-//
-//			return true;
-//		}
-//	}
-//	
-//	return false;
-//}
-
 void UEquipmentComponent::ApplyEquipment()
 {
+
+	//Remove past Weapon.
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->Destroy();
 	}
 
+	//update Stat along with current Equipments.
 	UStatComponent* statComp = GetOwner()->FindComponentByClass<UStatComponent>();
 	if (statComp)
 	{
@@ -322,6 +310,7 @@ void UEquipmentComponent::ApplyEquipment()
 		statComp->ApplyAdditionalStat(AccessoryData2);
 	}
 
+	//add New Weapon.
 	if (IsValid(WeaponData->WeaponClass))
 	{
 		ABasicCharacter* OwnerCharacter = Cast<ABasicCharacter>(GetOwner());

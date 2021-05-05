@@ -21,9 +21,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GamePlay")
 		FGameTime CurrentGameTime;
-
+	
+	//increase Game's Day.
 	UFUNCTION(BlueprintCallable)
 		void IncreaseDay(int32 IncDay = 1);
 
+	//Increase All Crop's Growth.
 	void IncreaseGrowth(int32 IncGrowth = 1);
 };

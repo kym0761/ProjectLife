@@ -41,6 +41,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
 		TArray<ULinkComponent*> AdjacentLinkComps;
 
+	FTimerHandle LinkTimer;
+
+	const float LinkJobInterval = 0.05f;
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
@@ -70,6 +74,7 @@ public:
 
 	void ReEvaluateAllLinks();
 
-	//Called in Tick()
+	//Called In Timer.
+	UFUNCTION()
 	void LinkJob();
 };

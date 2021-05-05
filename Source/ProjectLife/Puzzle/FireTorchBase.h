@@ -35,5 +35,6 @@ public:
 
 	virtual void Combust_Implementation();
 
+	//TODO : FireTorch Function Will Remake Like FireStand.
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

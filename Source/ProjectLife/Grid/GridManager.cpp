@@ -43,7 +43,7 @@ void AGridManager::Tick(float DeltaTime)
 
 void AGridManager::SpawnGrids()
 {
-	//Remove Not Valid Grid Components.
+	//Remove if there are Not Valid Grid Components.
 	RemoveAllGrids();
 
 	if (!IsValid(GridCompClass))
@@ -52,6 +52,7 @@ void AGridManager::SpawnGrids()
 		return;
 	}
 
+	//Actual Spawn Grids.
 	for (int32 i = 0; i < X; i++)
 	{
 		for (int32 j = 0; j < Y; j++)
@@ -125,7 +126,7 @@ void AGridManager::SetNearGrids()
 
 void AGridManager::RemoveAllGrids()
 {
-
+	//Remove Grids in Gridmap.
 	if (GridMap.Num() > 0)
 	{
 		for (TPair<FString, UGridComponent*> i : GridMap)

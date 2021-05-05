@@ -44,13 +44,9 @@ public:
 
 	bool SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSlot InData);
 	bool SetEquipment(EEquipmentSlot EquipmentSlot, UEquipmentItemData* InData);
+
 	UEquipmentItemData* GetEquipmentData(EEquipmentSlot Equipmentslot);
-	//bool SetEquipWithIndex(int32 Index , FItemDataSlot InData);
-	//FItemDataSlot GetEquipWithIndex(int32 Index);
-
 	bool SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex);
-
-	//bool SwapWithInventory(int32 EquipmentIndex, UInventoryComponent* Inventory, int32 InventoryIndex);
 
 	void ApplyEquipment();
 };

@@ -99,6 +99,9 @@ void AFireStandBase::TriggerAction_Implementation()
 
 void AFireStandBase::Reset_Implementation()
 {
+
+	//Reset Fire Effect And TimerWidget.
+
 	bTriggerActive = false;
 	FireEffect->DeactivateImmediate();
 
@@ -211,27 +214,6 @@ void AFireStandBase::TurnOffFire()
 	}
 
 }
-
-//void AFireStandBase::NotifyActorBeginOverlap(AActor* OtherActor)
-//{
-//	Super::NotifyActorBeginOverlap(OtherActor);
-//	
-//	if (bTriggerActive)
-//	{
-//		bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
-//
-//		if (bInterfaceValid)
-//		{
-//			ICombustible::Execute_Combust(OtherActor);
-//
-//			if (GEngine)
-//			{
-//				FString temp = FString("Combust! --->") + OtherActor->GetName();
-//				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, temp);
-//			}
-//		}
-//	}
-//}
 
 void AFireStandBase::OverlapCombust()
 {

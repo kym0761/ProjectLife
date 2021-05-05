@@ -51,10 +51,11 @@ public:
 	UFUNCTION()
 	void OnButtonEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	/*Door Open And Close*/
 	void InitializeForTimeline();
-
 	UFUNCTION()
 		void TimelineFloatFunction(float Value);
+
 
 	virtual void ButtonUp(); // virtual for ResetButton. See ResetButtonTriggerBase.h
 	void ButtonDown();

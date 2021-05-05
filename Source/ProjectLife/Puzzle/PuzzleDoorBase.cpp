@@ -183,6 +183,7 @@ void APuzzleDoorBase::OpenDoor()
 			}
 		}
 
+		//Refresh Time.
 		if (bCheck)
 		{
 			float tempTime = 1000000.0f;

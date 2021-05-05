@@ -46,13 +46,13 @@ void AShoppingActor::Tick(float DeltaTime)
 
 void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage((int32)FMath::Rand(), 5.0f, FColor::Turquoise, TEXT("Shopping Start"));
-	}
+	//if (GEngine)
+	//{
+	//	GEngine->AddOnScreenDebugMessage((int32)FMath::Rand(), 5.0f, FColor::Turquoise, TEXT("Shopping Start"));
+	//}
 
+	//Make UI For Shopping.
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
-
 	if (ShoppingWidgetClass && playerController)
 	{
 		ShoppingWidgetRef = CreateWidget<UShoppingWidgetBase>(playerController, ShoppingWidgetClass);

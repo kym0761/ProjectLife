@@ -50,59 +50,6 @@ enum class EEquipmentSlot : uint8
 	Accessory2 UMETA(DisplayName = "Accessory2")
 };
 
-//USTRUCT(BlueprintType)
-//struct FItemDataStruct : public FTableRowBase
-//{
-//	GENERATED_BODY()
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		FString Name;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		UTexture2D* Thumbnail;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		FString Description;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		bool bIsStackable;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		int32 Quantity;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		int32 MaxQuantity;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		TSubclassOf<AItem> ItemClass;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		EItemType ItemType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		EItemRarity ItemRarity;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-//		int32 ItemPrice;
-//	
-//	/*Equipment*/
-//	
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-//		float Attack;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-//		float Defense;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-//		float CriticalHit;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-//		EEquipmentType EquipmentType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-//		EAttackType AttackType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-//		EAttackRangeType AttackRangeType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-//		EDamageType DamageType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-//		EElement Element;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-//		TSubclassOf<ABasicWeapon> WeaponClass;
-//
-//
-//
-//	FItemDataStruct();
-//
-//};
-
 UCLASS(BlueprintType, Blueprintable, abstract)
 class PROJECTLIFE_API UItemData : public UObject
 {
@@ -118,8 +65,6 @@ public:
 		FString Description;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		bool bIsStackable;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	//	int32 Quantity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 MaxQuantity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
@@ -146,35 +91,6 @@ public:
 	UConsumableItemData();
 };
 
-//UCLASS(BlueprintType, Blueprintable, abstract)
-//class PROJECTLIFE_API UWeaponItemData : public UItemData
-//{
-//	GENERATED_BODY()
-//
-//public:
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		float Attack;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		float Defense;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		float CriticalHit;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		EEquipmentType EquipmentType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		EAttackType AttackType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		EAttackRangeType AttackRangeType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		EDamageType DamageType;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		EElement Element;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
-//		TSubclassOf<ABasicWeapon> WeaponClass;
-//
-//	UWeaponItemData();
-//};
-
 UCLASS(BlueprintType, Blueprintable, abstract)
 class PROJECTLIFE_API UEquipmentItemData : public UItemData
 {
@@ -182,23 +98,23 @@ class PROJECTLIFE_API UEquipmentItemData : public UItemData
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		float Attack;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		float Defense;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		float CriticalHit;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		EEquipmentType EquipmentType;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		EAttackType AttackType;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		EAttackRangeType AttackRangeType;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		EDamageType DamageType;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		EElement Element;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Equipment")
 		TSubclassOf<ABasicWeapon> WeaponClass;
 
 	UEquipmentItemData();

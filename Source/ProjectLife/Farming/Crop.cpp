@@ -45,8 +45,9 @@ void ACrop::Interact_Implementation(APawn* InteractCauser)
 			if (GEngine)
 			{
 				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f,FColor::Black,TEXT("Fruit Havest OK"));
-				GiveHarvest();
 			}
+
+			GiveHarvest();
 		}
 		else
 		{

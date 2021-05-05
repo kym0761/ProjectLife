@@ -32,15 +32,12 @@ public:
 
 	virtual void OnUnPossess() override;
 
+	/*UI Functions.*/
 	void ToggleStorageWidget(AActor* StorageActorRef);
-
 	void UpdateInventory();
-
+	void ToggleInventory();
 	void AddConditionIcon(AAbility* ConditionActorRef);
 	void RemoveConditionIcon(AAbility* ConditionActorRef);
-
-	void ToggleInventory();
-
 	void NotifyInteract(UObject* InObject);
 	void UnnotifyInteract();
 

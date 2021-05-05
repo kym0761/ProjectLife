@@ -80,6 +80,7 @@ void ABasicCharacter::BeginPlay()
 	//init Camera Setting.
 	SettingWithCameraType();
 
+	//InteractCheck with Interval.
 	GetWorldTimerManager().SetTimer(InteractCheckTimer, this, &ABasicCharacter::InteractCheck, InteractCheckInterval, true);
 
 }
@@ -87,6 +88,8 @@ void ABasicCharacter::BeginPlay()
 float ABasicCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	//TODO : ReMake Take Damage.
 
 	if (Stat) // Only Stat is Exist...
 	{
@@ -323,6 +326,7 @@ void ABasicCharacter::InteractTrigger()
 
 	UObject* interactee = FindInteractee();
 
+	//check valid and Interact Execute.
 	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 	{
 		IInteractive::Execute_Interact(interactee, this);
@@ -395,7 +399,7 @@ UObject* ABasicCharacter::FindInteractee()
 
 		GetOverlappingActors(overlapped);
 
-		//Sort by Distance. descending order. lambda function.
+		//Sort by Distance. descending order.
 		overlapped.Sort(
 			[this](const AActor& a, const AActor& b)
 			->bool {
@@ -403,13 +407,6 @@ UObject* ABasicCharacter::FindInteractee()
 					< FVector::Distance(GetActorLocation(), b.GetActorLocation());
 			}
 		);
-
-		///*Result*/
-		//UE_LOG(LogTemp, Warning, TEXT("----After sort---"));
-		//for (AActor* i : overlapped)
-		//{
-		//	UE_LOG(LogTemp, Warning, TEXT("Actor Name : %s"), *i->GetName());
-		//}
 
 		for (AActor* i : overlapped)
 		{
@@ -419,12 +416,15 @@ UObject* ABasicCharacter::FindInteractee()
 				break;
 			}
 		}
+	}
 
-		/*Actor Interactive Find would be Failed.  maybe, Is Your Intention To Find Component?*/
-
+	/*Actor Interactive Find would be Failed.  maybe, Is Your Intention To Find Component?*/
+	if (!IsValid(interactee))
+	{
 		TArray<UPrimitiveComponent*> overlappedComponents;
 		GetOverlappingComponents(overlappedComponents);
 
+		//Sort by Distance. descending order.
 		overlappedComponents.Sort(
 			[this](const UPrimitiveComponent& a, const UPrimitiveComponent& b)
 			->bool {
@@ -437,17 +437,14 @@ UObject* ABasicCharacter::FindInteractee()
 		{
 			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call by Overlap Ok."));
 				interactee = i;
 				break;
 			}
 		}
-
 	}
 
-	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+	if (IsValid(interactee))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *interactee->GetName());
 		return interactee;
 	}
 	else
@@ -470,15 +467,18 @@ void ABasicCharacter::Hold(AActor* ToHold)
 {
 	if (IsValid(ToHold))
 	{
+		//set
 		bHoldSomething = true;
 		CurrentHold = ToHold;
-		//ToHold->SetHoldStatus(true);
+		
+		//if has Primitive, Physics Off.
 		UPrimitiveComponent* rootComp = Cast<UPrimitiveComponent>(CurrentHold->GetRootComponent());
 		if (IsValid(rootComp))
 		{
 			rootComp->SetSimulatePhysics(false);
 		}
 
+		//Attach.
 		ToHold->AttachToComponent(HoldPosition,FAttachmentTransformRules::KeepWorldTransform);
 		ToHold->SetActorRelativeRotation(FRotator::ZeroRotator);
 		ToHold->SetActorLocation(HoldPosition->GetComponentLocation());
@@ -490,24 +490,26 @@ void ABasicCharacter::UnHold()
 
 	if (IsValid(CurrentHold))
 	{
-		bHoldSomething = false;
-		//CurrentHold->SetHoldStatus(false);
-
+		//if Root is Primitive, then Physics On.
 		UPrimitiveComponent* rootComp = Cast<UPrimitiveComponent>(CurrentHold->GetRootComponent());
 		if (IsValid(rootComp))
 		{
 			rootComp->SetSimulatePhysics(true);
 		}
 
+		//detach from character.
 		CurrentHold->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		CurrentHold->SetActorRotation(FRotator::ZeroRotator);
 		
-		//CurrentHold->ThrowToDirection(GetActorForwardVector());
+		//Throw.
 		if (IsValid(rootComp) && rootComp->IsSimulatingPhysics())
 		{
 			FVector power = GetActorForwardVector() * 500.0f * rootComp->GetMass();
 			rootComp->AddImpulse(power);
 		}
+
+		//Reset
+		bHoldSomething = false;
 		CurrentHold = nullptr;
 	}
 }

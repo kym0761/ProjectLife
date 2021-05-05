@@ -68,7 +68,7 @@ bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 
 	if (ItemDataSlot.Quantity == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Item Quantity is 0. Impossible"));
+		//UE_LOG(LogTemp, Warning, TEXT("Item Quantity is 0. Impossible"));
 		return false;
 	}
 
@@ -82,7 +82,7 @@ bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 
 		if (itemData->bIsStackable && itemData->MaxQuantity < ItemDataSlot.Quantity)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Item Quantity which Over the MaxQuantity is Impossible. so, Item Quantity will be set to MaxQuantity."));
+			//UE_LOG(LogTemp, Warning, TEXT("Item Quantity which Over the MaxQuantity is Impossible. so, Item Quantity will be set to MaxQuantity."));
 			ItemDataSlot.Quantity = itemData->MaxQuantity;
 		}
 
@@ -155,13 +155,13 @@ bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 			}
 		}
 	}
-	else 
-	{
-		UE_LOG(LogTemp,Warning,TEXT("Item Data Is Not Valid."));
-	}
+	//else 
+	//{
+	//	UE_LOG(LogTemp,Warning,TEXT("Item Data Is Not Valid."));
+	//}
 
-	UE_LOG(LogTemp, Warning, TEXT("Add to Inventory Failed."));
-	//there is no Enough Space to Pick it up.
+	//UE_LOG(LogTemp, Warning, TEXT("Add to Inventory Failed."));
+	////there is no Enough Space to Pick it up.
 	return false;
 }
 
@@ -192,6 +192,7 @@ bool UInventoryComponent::SwapInventoryItem(int32 CurrentInventoryIndex, UInvent
 {
 	if (IsValid(OtherInventory))
 	{
+
 		if (IsValid(InventoryArray[CurrentInventoryIndex].ItemData) && IsValid(OtherInventory->InventoryArray[OtherInventoryIndex].ItemData) && InventoryArray[CurrentInventoryIndex].ItemData == OtherInventory->InventoryArray[OtherInventoryIndex].ItemData) // join.
 		{
 			if (InventoryArray[CurrentInventoryIndex].ItemData.GetDefaultObject()->MaxQuantity
@@ -199,7 +200,7 @@ bool UInventoryComponent::SwapInventoryItem(int32 CurrentInventoryIndex, UInvent
 			{
 				InventoryArray[CurrentInventoryIndex].Quantity += OtherInventory->InventoryArray[OtherInventoryIndex].Quantity;
 				OtherInventory->InventoryArray[OtherInventoryIndex] = FItemDataSlot();
-				UE_LOG(LogTemp, Warning, TEXT("join Success"));
+				UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
 				return true;
 			}
 			else //Exceed Max Quantity.
@@ -208,7 +209,7 @@ bool UInventoryComponent::SwapInventoryItem(int32 CurrentInventoryIndex, UInvent
 				InventoryArray[CurrentInventoryIndex].Quantity = InventoryArray[CurrentInventoryIndex].ItemData.GetDefaultObject()->MaxQuantity;
 				temp -= InventoryArray[CurrentInventoryIndex].Quantity;
 				OtherInventory->InventoryArray[OtherInventoryIndex].Quantity = temp;
-				UE_LOG(LogTemp, Warning, TEXT("join Success"));
+				UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
 				return true;
 			}
 		}

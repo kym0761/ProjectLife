@@ -48,6 +48,12 @@ void ULinkComponent::BeginPlay()
 
 	FindAllOtherLinkComps();
 
+	if (GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(LinkTimer, this, &ULinkComponent::LinkJob, LinkJobInterval, true);
+	}
+	
+
 }
 
 
@@ -58,7 +64,6 @@ void ULinkComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 	// ...
 
-	LinkJob();
 }
 
 bool ULinkComponent::GetLinkActivate() const
@@ -171,6 +176,7 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 	}
 
 	//Check One of them is Active.
+	//then Check there is Any Obstacles Between them.
 	if (GetLinkActivate() || OtherLinkComp->GetLinkActivate())
 	{
 		TArray<AActor*> ignores;
@@ -201,7 +207,7 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 			true
 		);
 
-		//If There is Any Collision, Edge Can Exist.
+		//If There isn't Any Collision, Edge Can Exist.
 		if (result == false)
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("%s is Success.  ----- Other : %s"), *GetOwner()->GetName(), *OtherLinkComp->GetOwner()->GetName());
@@ -209,7 +215,7 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 		}
 	}
 
-	//UE_LOG(LogTemp, Warning, TEXT("Failed."));
+	//failed or obstacles detected.
 	return false;
 
 }
@@ -407,6 +413,7 @@ void ULinkComponent::LinkJob()
 	{
 		for (ULinkComponent* i : LinkComps)
 		{
+			//Check Distance And Obstacles.
 			bool result1 = CheckCompDistance(i);
 			bool result2 = CheckEdgeCanExist(i);
 

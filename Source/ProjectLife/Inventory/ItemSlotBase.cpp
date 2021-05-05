@@ -168,6 +168,7 @@ FReply UItemSlotBase::NativeOnMouseButtonUp(const FGeometry& InGeometry, const F
 
 void UItemSlotBase::UpdateSlot()
 {
+	// update Slot with Current Inventory Infomation.
 
 	if (IsValid(InventoryRef) && InventoryRef->InventoryArray.IsValidIndex(InventoryIndex))
 	{

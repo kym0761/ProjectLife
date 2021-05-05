@@ -76,13 +76,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 		TSubclassOf<ADamageTextActor> DamageTextActorClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
 		USceneComponent* HoldPosition;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
 		bool bHoldSomething;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PhysicsHold")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
 		AActor* CurrentHold;
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Farming")

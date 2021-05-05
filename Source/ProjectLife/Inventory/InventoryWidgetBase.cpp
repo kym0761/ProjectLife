@@ -30,6 +30,7 @@ void UInventoryWidgetBase::InitInventoryWidget()
 	{
 		UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 		
+		//Add ItemSlot in Inventory UI.
 		if (IsValid(inventory))
 		{
 			for (int32 i = 0; i < ItemSlotArray.Num(); i++)
@@ -39,10 +40,10 @@ void UInventoryWidgetBase::InitInventoryWidget()
 				ItemSlotArray[i]->UpdateSlot();
 			}
 		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("failed?"));
-		}
+		//else
+		//{
+		//	UE_LOG(LogTemp, Warning, TEXT("failed?"));
+		//}
 	}
 }
 
