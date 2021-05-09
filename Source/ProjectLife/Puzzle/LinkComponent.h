@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SceneComponent.h"
+//#include "Components/SceneComponent.h"
 //#include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "LinkComponent.generated.h"
 
 class ALinkEdgeBase;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PROJECTLIFE_API ULinkComponent : public USceneComponent
+class PROJECTLIFE_API ULinkComponent : public UCapsuleComponent
 {
 	GENERATED_BODY()
 
@@ -26,9 +27,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
 		TArray<ALinkEdgeBase*> LinkEdges;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
-		float MaxDistance;
-
 	//Edge Spawn Class.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Link")
 		TSubclassOf<ALinkEdgeBase> LinkEdgeClass;
@@ -43,7 +41,7 @@ public:
 
 	FTimerHandle LinkTimer;
 
-	const float LinkJobInterval = 0.05f;
+	const float LinkJobInterval = 0.03f;
 
 protected:
 
@@ -63,7 +61,6 @@ public:
 	bool CheckLinkedWithRoot();
 
 	bool CheckEdgeCanExist(ULinkComponent* OtherLinkComp);
-	bool CheckCompDistance(ULinkComponent* OtherLinkComp);
 
 	void TrySpawnEdge(ULinkComponent* OtherLinkComp);
 	void TryRemoveEdge(ULinkComponent* OtherLinkComp);
@@ -77,4 +74,13 @@ public:
 	//Called In Timer.
 	UFUNCTION()
 	void LinkJob();
+
+
+	/*BeginOverlap will not Need. Because, Overlap check is needed periodically. so Overlap Will Active cyclically*/
+	UFUNCTION()
+		void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 };

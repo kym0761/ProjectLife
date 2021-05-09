@@ -19,12 +19,15 @@ ULinkComponent::ULinkComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+	SetCollisionProfileName(TEXT("LinkOverlap"));
+
 	// ...
 	bRootLink = false;
 	bLinkActivated = false;
+	
+	InitCapsuleSize(500.0f,750.0f);
+	ShapeColor = FColor::Blue;
 
-	//InitSphereRadius(500.0f);
-	MaxDistance = 500.0f;
 }
 
 
@@ -34,8 +37,8 @@ void ULinkComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
-	//If RootLink, Set Activate.
+
+	//If RootLink, Activate Owner.
 	if (bRootLink)
 	{
 		bLinkActivated = true;
@@ -46,7 +49,8 @@ void ULinkComponent::BeginPlay()
 		}
 	}
 
-	FindAllOtherLinkComps();
+	OnComponentBeginOverlap.AddDynamic(this, &ULinkComponent::OnBeginOverlap);
+	OnComponentEndOverlap.AddDynamic(this, &ULinkComponent::OnEndOverlap);
 
 	if (GetWorld())
 	{
@@ -73,7 +77,7 @@ bool ULinkComponent::GetLinkActivate() const
 
 void ULinkComponent::SetLinkActivate(bool InVal)
 {
-	//It Not RootLink, Activated Can be Variable.
+	//if RootLink, Don't Change Anything.
 	if (!bRootLink)
 	{
 		bLinkActivated = InVal;
@@ -83,12 +87,16 @@ void ULinkComponent::SetLinkActivate(bool InVal)
 		{
 			owner->SetTriggerActivate(bLinkActivated);
 		}
-
 	}
 }
 
 bool ULinkComponent::CheckLinkedWithRoot()
 {
+	if (bRootLink)
+	{
+		return true;
+	}
+
 	bool result = false;
 
 	//Array for Traversing
@@ -112,7 +120,7 @@ bool ULinkComponent::CheckLinkedWithRoot()
 			for (ALinkEdgeBase* i : popResult->LinkEdges)
 			{
 
-				//find Edge Currently Not Traversed.
+				//find Edge which is Currently Not Traversed.
 				bool bIsIn = ElectricEdgeRemember.Find(i) == -1 ? false : true;
 				if (bIsIn == false)
 				{
@@ -128,6 +136,11 @@ bool ULinkComponent::CheckLinkedWithRoot()
 					ULinkComponent* comp1 = i->LinkComps[0];
 					if (IsValid(comp1))
 					{
+						if (comp1->bRootLink)
+						{
+							return true;
+						}
+
 						bool bIsComp1_In = ElectricCompRemember.Find(comp1) == -1 ? false : true;
 						if (bIsComp1_In == false)
 						{
@@ -140,6 +153,11 @@ bool ULinkComponent::CheckLinkedWithRoot()
 					ULinkComponent* comp2 = i->LinkComps[1];
 					if (IsValid(comp2))
 					{
+						if (comp2->bRootLink)
+						{
+							return true;
+						}
+
 						bool bIsComp2_In = ElectricCompRemember.Find(comp2) == -1 ? false : true;
 						if (bIsComp2_In == false)
 						{
@@ -152,15 +170,15 @@ bool ULinkComponent::CheckLinkedWithRoot()
 		}
 	}
 
-	//Check there is a RootLink In traversed Components.
-	for (ULinkComponent* i : ElectricCompRemember)
-	{
-		if (i->bRootLink)
-		{
-			result = true;
-			break;
-		}
-	}
+	////Check there is a RootLink In traversed Components.
+	//for (ULinkComponent* i : ElectricCompRemember)
+	//{
+	//	if (i->bRootLink)
+	//	{
+	//		result = true;
+	//		break;
+	//	}
+	//}
 
 	return result;
 
@@ -171,7 +189,7 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 	
 	if (!IsValid(this) && !IsValid(OtherLinkComp))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Link Component Not Valid"));
+		//UE_LOG(LogTemp, Warning, TEXT("Link Component Not Valid"));
 		return false;
 	}
 
@@ -181,14 +199,15 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 	{
 		TArray<AActor*> ignores;
 
+		//ignore Collision of Owner Actors
 		TArray<AActor*> arr1;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALinkTriggerBase::StaticClass(), arr1);
 		TArray<AActor*> arr2;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALinkHoldBase::StaticClass(), arr2);
-
 		ignores.Append(arr1);
 		ignores.Append(arr2);
 
+		//Set Trace Type
 		TArray<TEnumAsByte<EObjectTypeQuery>> objectType;
 		objectType.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
 		objectType.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
@@ -203,8 +222,10 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 			ignores,
 			EDrawDebugTrace::None,
 			//EDrawDebugTrace::ForOneFrame,
+			//EDrawDebugTrace::ForDuration,
 			hit,
-			true
+			true,
+			FLinearColor::Red,FLinearColor::Green,0.5f
 		);
 
 		//If There isn't Any Collision, Edge Can Exist.
@@ -215,52 +236,35 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 		}
 	}
 
-	//failed or obstacles detected.
+	//Trace failed or obstacles detected.
 	return false;
 
-}
-
-bool ULinkComponent::CheckCompDistance(ULinkComponent* OtherLinkComp)
-{
-	float distance = UKismetMathLibrary::Vector_Distance(GetComponentLocation(), OtherLinkComp->GetComponentLocation());
-
-	if (distance <= MaxDistance)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-	
 }
 
 void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 {
 	bool bConnectionExist = false;
 
+	//Other Not Valid, Cancel.
 	if (!IsValid(OtherLinkComp))
 	{
-		//if (GEngine)
-		//{
-		//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Other Not Valid"));
-		//}
 		return;
 	}
 
+	//Root Not Linked, Cancel.
 	if (!CheckLinkedWithRoot())
 	{
-		//UE_LOG(LogTemp, Warning, TEXT(" Not Root Linked ====>current %s / OtherComp : %s"), *GetOwner()->GetName(), *OtherLinkComp->GetOwner()->GetName());
 		return;
 	}
 
-	//check LinkEdge that emplace "OtherLinkComp" already Exist.
+	//Check All LinkEdges which Has "OtherLinkComp" already Exist.
 	for (ALinkEdgeBase* i : LinkEdges)
 	{
 		bool temp = i->LinkComps.Find(OtherLinkComp) != -1 ? true : false;
 		if (temp)
 		{
 			bConnectionExist = true;
+			break;
 		}
 	}
 
@@ -270,7 +274,7 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 		if (LinkEdgeClass)
 		{
 			ALinkEdgeBase* edge = GetWorld()->SpawnActorDeferred<ALinkEdgeBase>(LinkEdgeClass, GetComponentTransform(),nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-			if (edge)
+			if (IsValid(edge))
 			{
 				edge->InitializeCompRefs(this,OtherLinkComp);
 				edge->FinishSpawning(GetComponentTransform());
@@ -282,35 +286,14 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 				AdjacentLinkComps.Add(OtherLinkComp);
 				OtherLinkComp->AdjacentLinkComps.Add(this);
 
-				if (GEngine)
-				{
-					GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Edge Spawn success"));
-				}
-
+				//if (GEngine)
+				//{
+				//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Edge Spawn success"));
+				//}
 			}
-			//else
-			//{
-			//	if (GEngine)
-			//	{
-			//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Unknown2"));
-			//	}
-			//}
 		}
-		//else
-		//{
-		//	if (GEngine)
-		//	{
-		//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Unknown1"));
-		//	}
-		//}
 	}
-	//else
-	//{
-	//	if (GEngine)
-	//	{
-	//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Unknown"));
-	//	}
-	//}
+
 
 }
 
@@ -338,7 +321,7 @@ void ULinkComponent::TryRemoveEdge(ULinkComponent* OtherLinkComp)
 		}
 	}
 
-	//if not Find, End Function.
+	//if not Found, End Function.
 	if (index1 == -1 && index2 == -1)
 	{
 		return;
@@ -370,16 +353,16 @@ void ULinkComponent::TryRemoveAllEdges()
 	{
 		TryRemoveEdge(i);
 	}
-
 }
 
 void ULinkComponent::FindAllOtherLinkComps()
 {
-	//find Other Link Components Except "this"
+	////find Other Link Components Except "this"
+	//reset Current LinkCompArray.
+	LinkComps.Empty();
 
 	TArray<AActor*> actors;
-
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), actors);
+	GetOverlappingActors(actors, AActor::StaticClass());
 
 	for (AActor* i : actors)
 	{
@@ -395,6 +378,7 @@ void ULinkComponent::FindAllOtherLinkComps()
 			LinkComps.Add(linkComp);
 		}
 	}
+
 }
 
 void ULinkComponent::ReEvaluateAllLinks()
@@ -403,7 +387,6 @@ void ULinkComponent::ReEvaluateAllLinks()
 	if (result == false)
 	{
 		SetLinkActivate(result);
-		TryRemoveAllEdges();
 	}
 }
 
@@ -411,13 +394,14 @@ void ULinkComponent::LinkJob()
 {
 	if (bLinkActivated)
 	{
+		FindAllOtherLinkComps();
+
 		for (ULinkComponent* i : LinkComps)
 		{
-			//Check Distance And Obstacles.
-			bool result1 = CheckCompDistance(i);
-			bool result2 = CheckEdgeCanExist(i);
+			//Check Obstacles.
+			bool result = CheckEdgeCanExist(i);
 
-			if (result1 && result2)
+			if (result)
 			{
 				TrySpawnEdge(i);
 			}
@@ -426,6 +410,30 @@ void ULinkComponent::LinkJob()
 				TryRemoveEdge(i);
 			}
 		}
+	}
+	else
+	{
+		TryRemoveAllEdges();
+	}
+}
+
+void ULinkComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//ULinkComponent* linkComp = OtherActor->FindComponentByClass<ULinkComponent>();
+	//if (IsValid(linkComp))
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Overlap Something"));
+	//}
+}
+
+void ULinkComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+
+	ULinkComponent* linkComp = OtherActor->FindComponentByClass<ULinkComponent>();
+
+	if (IsValid(linkComp))
+	{
+		TryRemoveEdge(linkComp);
 	}
 }
 
