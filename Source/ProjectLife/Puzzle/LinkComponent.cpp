@@ -136,6 +136,7 @@ bool ULinkComponent::CheckLinkedWithRoot()
 					ULinkComponent* comp1 = i->LinkComps[0];
 					if (IsValid(comp1))
 					{
+						//if RootLink Found, return true.
 						if (comp1->bRootLink)
 						{
 							return true;
@@ -153,6 +154,7 @@ bool ULinkComponent::CheckLinkedWithRoot()
 					ULinkComponent* comp2 = i->LinkComps[1];
 					if (IsValid(comp2))
 					{
+						//if RootLink Found, return true. 
 						if (comp2->bRootLink)
 						{
 							return true;
@@ -170,26 +172,15 @@ bool ULinkComponent::CheckLinkedWithRoot()
 		}
 	}
 
-	////Check there is a RootLink In traversed Components.
-	//for (ULinkComponent* i : ElectricCompRemember)
-	//{
-	//	if (i->bRootLink)
-	//	{
-	//		result = true;
-	//		break;
-	//	}
-	//}
-
 	return result;
-
 }
 
 bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 {
 	
-	if (!IsValid(this) && !IsValid(OtherLinkComp))
+	if (!IsValid(OtherLinkComp))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Link Component Not Valid"));
+		//UE_LOG(LogTemp, Warning, TEXT(" Other Link Component Not Valid"));
 		return false;
 	}
 
@@ -285,11 +276,6 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 
 				AdjacentLinkComps.Add(OtherLinkComp);
 				OtherLinkComp->AdjacentLinkComps.Add(this);
-
-				//if (GEngine)
-				//{
-				//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Yellow, TEXT("Edge Spawn success"));
-				//}
 			}
 		}
 	}
@@ -419,21 +405,19 @@ void ULinkComponent::LinkJob()
 
 void ULinkComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//ULinkComponent* linkComp = OtherActor->FindComponentByClass<ULinkComponent>();
-	//if (IsValid(linkComp))
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Overlap Something"));
-	//}
+
 }
 
 void ULinkComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-
-	ULinkComponent* linkComp = OtherActor->FindComponentByClass<ULinkComponent>();
-
-	if (IsValid(linkComp))
+	if (IsValid(OtherActor))
 	{
-		TryRemoveEdge(linkComp);
+		ULinkComponent* linkComp = OtherActor->FindComponentByClass<ULinkComponent>();
+
+		if (IsValid(linkComp))
+		{
+			TryRemoveEdge(linkComp);
+		}
 	}
 }
 

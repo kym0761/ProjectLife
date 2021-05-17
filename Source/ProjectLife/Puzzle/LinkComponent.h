@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "Components/SceneComponent.h"
-//#include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "LinkComponent.generated.h"
 
