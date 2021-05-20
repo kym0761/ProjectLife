@@ -21,5 +21,22 @@ void UQuestViewWidgetBase::InitializeWidget()
 	if (GetWorld())
 	{
 		GameInstanceRef = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+		if (IsValid(GameInstanceRef))
+		{
+			GameInstanceRef->Quests;
+
+			for (TSubclassOf<UQuestBase> q : GameInstanceRef->Quests)
+			{
+
+
+
+
+			}
+
+
+
+		}
+
 	}
 }

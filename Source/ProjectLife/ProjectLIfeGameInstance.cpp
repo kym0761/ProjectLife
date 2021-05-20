@@ -4,7 +4,7 @@
 #include "ProjectLIfeGameInstance.h"
 #include "Quest/QuestBase.h"
 
-void UProjectLIfeGameInstance::AddQuest(UQuestBase* InQuest)
+void UProjectLIfeGameInstance::AddQuest(TSubclassOf<UQuestBase> InQuest)
 {
 	if (!IsValid(InQuest))
 	{
@@ -14,29 +14,50 @@ void UProjectLIfeGameInstance::AddQuest(UQuestBase* InQuest)
 	bool bCanAdd = true;
 	for (int32 i = 0; i < Quests.Num(); i++)
 	{
-		if (Quests[i]->GetClass() == InQuest->GetClass())
+		if (Quests[i] == InQuest)
 		{
 			bCanAdd = false;
-		}
-	}
-	for (int32 i = 0; i < CompleteQuests.Num(); i++)
-	{
-		if (CompleteQuests[i]->GetClass() == InQuest->GetClass())
-		{
-			bCanAdd = false;
+			if (GEngine)
+			{
+
+				FString txt = FString("Quest Already Existed");
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Black, txt);
+			}
 		}
 	}
 
+	for (int32 i = 0; i < CompleteQuests.Num(); i++)
+	{
+		if (CompleteQuests[i] == InQuest)
+		{
+			bCanAdd = false;
+			if (GEngine)
+			{
+
+				FString txt = FString("Quest Already Cleared");
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Black, txt);
+			}
+		}
+	}
 
 	if (bCanAdd)
 	{
 		Quests.Add(InQuest);
+
+		if (GEngine)
+		{
+			FString questName = InQuest.GetDefaultObject()->QuestName;
+			FString txt = questName + FString(" is Added");
+			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Black, txt);
+		}
 	}
+
+
 }
 
-void UProjectLIfeGameInstance::HandleQuestClear(UQuestBase* ClearedQuest)
+void UProjectLIfeGameInstance::QuestClear(TSubclassOf<UQuestBase> WantToClear)
 {
-	if (!IsValid(ClearedQuest))
+	if (!IsValid(WantToClear))
 	{
 		return;
 	}
@@ -44,7 +65,7 @@ void UProjectLIfeGameInstance::HandleQuestClear(UQuestBase* ClearedQuest)
 	int32 questIndex = -1;
 	for (int32 i = 0; i < Quests.Num(); i++)
 	{
-		if (Quests[i]->GetClass() == ClearedQuest->GetClass())
+		if (Quests[i] == WantToClear)
 		{
 			questIndex = i;
 			break;

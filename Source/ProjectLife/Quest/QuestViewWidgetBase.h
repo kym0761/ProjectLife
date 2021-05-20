@@ -22,21 +22,21 @@ class PROJECTLIFE_API UQuestViewWidgetBase : public UUserWidget
 	
 public:
 
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UTextBlock* QuestNameText;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UTextBlock* QuestDescriptionText;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UVerticalBox* QuestObjectivesBox;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UVerticalBox* QuestRewardsBox;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UButton* CurrentQuestButton;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UButton* CompletedQuestButton;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UButton* ExitButton;
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UScrollBox* QuestScrollBox;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest")

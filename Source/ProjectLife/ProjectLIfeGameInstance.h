@@ -19,13 +19,14 @@ class PROJECTLIFE_API UProjectLIfeGameInstance : public UGameInstance
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		TArray<UQuestBase*> Quests;
+		TArray<TSubclassOf<UQuestBase>> Quests;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		TArray<UQuestBase*> CompleteQuests;
+		TArray<TSubclassOf<UQuestBase>> CompleteQuests;
 
 	UFUNCTION(BlueprintCallable)
-		void AddQuest(UQuestBase* InQuest);
+		void AddQuest(TSubclassOf<UQuestBase> InQuest);
 
-	void HandleQuestClear(UQuestBase* ClearedQuest);
+	UFUNCTION(BlueprintCallable)
+	void QuestClear(TSubclassOf<UQuestBase> WantToClear);
 };
