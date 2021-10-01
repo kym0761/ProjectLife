@@ -52,7 +52,7 @@ void APhysicsHoldBase::Interact_Implementation(APawn* InteractCauser)
 	}
 
 	 ABasicCharacter* playerCharacter = Cast<ABasicCharacter>(InteractCauser);
-	 if (playerCharacter)
+	 if (IsValid(playerCharacter))
 	 {
 		 playerCharacter->Hold(this);
 	 }

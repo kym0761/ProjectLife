@@ -308,7 +308,7 @@ void ULinkComponent::TryRemoveEdge(ULinkComponent* OtherLinkComp)
 	}
 
 	//if not Found, End Function.
-	if (index1 == -1 && index2 == -1)
+	if (index1 == -1 || index2 == -1)
 	{
 		return;
 	}
@@ -372,7 +372,7 @@ void ULinkComponent::ReEvaluateAllLinks()
 	bool result = CheckLinkedWithRoot();
 	if (result == false)
 	{
-		SetLinkActivate(result);
+		SetLinkActivate(false);
 	}
 }
 
