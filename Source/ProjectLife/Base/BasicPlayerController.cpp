@@ -3,10 +3,10 @@
 
 #include "BasicPlayerController.h"
 #include "BasicCharacter.h"
-#include "../Storage/StorageWidgetBase.h"
-#include "../Ability/ConditionWidgetBase.h"
+#include "../Storage/StorageWidget.h"
+#include "../Ability/ConditionWidget.h"
 #include "../Inventory/InventoryComponent.h"
-#include "../UI/MainHUDBase.h"
+#include "../UI/MainHUD.h"
 
 ABasicPlayerController::ABasicPlayerController()
 {
@@ -29,7 +29,7 @@ void ABasicPlayerController::OnPossess(APawn* InPawn)
 	{
 		if (IsValid(MainHUDClass))
 		{
-			MainHUDRef = CreateWidget<UMainHUDBase>(this, MainHUDClass);
+			MainHUDRef = CreateWidget<UMainHUD>(this, MainHUDClass);
 			if (IsValid(MainHUDRef))
 			{
 				MainHUDRef->AddToViewport();

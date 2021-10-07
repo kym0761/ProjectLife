@@ -8,7 +8,7 @@
 
 class ABasicCharacter;
 class AAbility;
-class UMainHUDBase;
+class UMainHUD;
 /**
  * 
  */
@@ -22,10 +22,10 @@ public:
 	ABasicPlayerController();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-		TSubclassOf<UMainHUDBase> MainHUDClass;
+		TSubclassOf<UMainHUD> MainHUDClass;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "UI")
-		UMainHUDBase* MainHUDRef;
+		UMainHUD* MainHUDRef;
 
 
 	virtual void OnPossess(APawn* InPawn) override;

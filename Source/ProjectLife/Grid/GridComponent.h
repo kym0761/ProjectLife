@@ -7,7 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "GridComponent.generated.h"
 
-class ABuildingBase;
+class ABuilding;
 
 /**
  * 
@@ -35,7 +35,7 @@ public:
 
 public:
 
-	void RequestBuild(TSubclassOf<ABuildingBase> BuildingClass);
+	void RequestBuild(TSubclassOf<ABuilding> BuildingClass);
 
 	void SetXY(int32 inX, int32 inY);
 

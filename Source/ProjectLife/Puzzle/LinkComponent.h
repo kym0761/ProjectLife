@@ -6,7 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "LinkComponent.generated.h"
 
-class ALinkEdgeBase;
+class ALinkEdge;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIFE_API ULinkComponent : public UCapsuleComponent
@@ -23,11 +23,11 @@ public:
 
 	//Current Link's Edges
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
-		TArray<ALinkEdgeBase*> LinkEdges;
+		TArray<ALinkEdge*> LinkEdges;
 
 	//Edge Spawn Class.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Link")
-		TSubclassOf<ALinkEdgeBase> LinkEdgeClass;
+		TSubclassOf<ALinkEdge> LinkEdgeClass;
 
 	//Other LinkComponents.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")

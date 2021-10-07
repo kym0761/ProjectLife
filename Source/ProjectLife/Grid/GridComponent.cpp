@@ -9,7 +9,7 @@ UGridComponent::UGridComponent()
 
 }
 
-void UGridComponent::RequestBuild(TSubclassOf<ABuildingBase> BuildingClass)
+void UGridComponent::RequestBuild(TSubclassOf<ABuilding> BuildingClass)
 {
 	AActor* owner = GetOwner();
 	if (IsValid(owner))

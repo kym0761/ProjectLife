@@ -10,7 +10,7 @@
 
 class Aitem;
 class UBoxComponent;
-class UShoppingWidgetBase;
+class UShoppingWidget;
 
 UCLASS()
 class PROJECTLIFE_API AShoppingActor : public AActor, public IInteractive
@@ -28,10 +28,10 @@ public:
 		TArray<TSubclassOf<AItem>> Items;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
-		TSubclassOf<UShoppingWidgetBase> ShoppingWidgetClass;
+		TSubclassOf<UShoppingWidget> ShoppingWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Shopping")
-		UShoppingWidgetBase* ShoppingWidgetRef;
+		UShoppingWidget* ShoppingWidgetRef;
 
 
 

@@ -4,7 +4,7 @@
 #include "ShoppingActor.h"
 #include "../Item/Item.h"
 #include "Components/BoxComponent.h"
-#include "ShoppingWidgetBase.h"
+#include "ShoppingWidget.h"
 #include "../Base/BasicPlayerController.h"
 
 // Sets default values
@@ -55,7 +55,7 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
 	if (ShoppingWidgetClass && playerController)
 	{
-		ShoppingWidgetRef = CreateWidget<UShoppingWidgetBase>(playerController, ShoppingWidgetClass);
+		ShoppingWidgetRef = CreateWidget<UShoppingWidget>(playerController, ShoppingWidgetClass);
 		if (ShoppingWidgetRef)
 		{
 			ShoppingWidgetRef->AddToViewport();

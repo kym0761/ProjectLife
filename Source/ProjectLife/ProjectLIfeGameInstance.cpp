@@ -2,9 +2,9 @@
 
 
 #include "ProjectLIfeGameInstance.h"
-#include "Quest/QuestBase.h"
+#include "Quest/Quest.h"
 
-void UProjectLIfeGameInstance::AddQuest(TSubclassOf<UQuestBase> InQuest)
+void UProjectLIfeGameInstance::AddQuest(TSubclassOf<UQuest> InQuest)
 {
 	if (!IsValid(InQuest))
 	{
@@ -55,7 +55,7 @@ void UProjectLIfeGameInstance::AddQuest(TSubclassOf<UQuestBase> InQuest)
 
 }
 
-void UProjectLIfeGameInstance::QuestClear(TSubclassOf<UQuestBase> WantToClear)
+void UProjectLIfeGameInstance::QuestClear(TSubclassOf<UQuest> WantToClear)
 {
 	if (!IsValid(WantToClear))
 	{

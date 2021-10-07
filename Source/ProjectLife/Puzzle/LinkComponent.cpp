@@ -2,14 +2,14 @@
 
 
 #include "LinkComponent.h"
-#include "LinkEdgeBase.h"
+#include "LinkEdge.h"
 #include "NiagaraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "LinkHoldBase.h"
-#include "LinkTriggerBase.h"
-#include "PuzzleTriggerBase.h"
+#include "LinkHold.h"
+#include "LinkTrigger.h"
+#include "PuzzleTrigger.h"
 
 
 // Sets default values for this component's properties
@@ -42,7 +42,7 @@ void ULinkComponent::BeginPlay()
 	if (bRootLink)
 	{
 		bLinkActivated = true;
-		ALinkTriggerBase* owner = Cast<ALinkTriggerBase>(GetOwner());
+		ALinkTrigger* owner = Cast<ALinkTrigger>(GetOwner());
 		if (IsValid(owner))
 		{
 			owner->bTriggerActive = bLinkActivated;
@@ -82,7 +82,7 @@ void ULinkComponent::SetLinkActivate(bool InVal)
 	{
 		bLinkActivated = InVal;
 
-		ALinkTriggerBase* owner= Cast<ALinkTriggerBase>(GetOwner());
+		ALinkTrigger* owner= Cast<ALinkTrigger>(GetOwner());
 		if (IsValid(owner))
 		{
 			owner->SetTriggerActivate(bLinkActivated);
@@ -104,7 +104,7 @@ bool ULinkComponent::CheckLinkedWithRoot()
 	
 	//Cache for Already Traversed.
 	TArray<ULinkComponent*> ElectricCompRemember;
-	TArray<ALinkEdgeBase*> ElectricEdgeRemember;
+	TArray<ALinkEdge*> ElectricEdgeRemember;
 
 	//first, Add Self.
 	ElectricComp.Add(this);
@@ -117,7 +117,7 @@ bool ULinkComponent::CheckLinkedWithRoot()
 
 		if (IsValid(popResult))
 		{
-			for (ALinkEdgeBase* i : popResult->LinkEdges)
+			for (ALinkEdge* i : popResult->LinkEdges)
 			{
 
 				//find Edge which is Currently Not Traversed.
@@ -192,9 +192,9 @@ bool ULinkComponent::CheckEdgeCanExist(ULinkComponent* OtherLinkComp)
 
 		//ignore Collision of Owner Actors
 		TArray<AActor*> arr1;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALinkTriggerBase::StaticClass(), arr1);
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALinkTrigger::StaticClass(), arr1);
 		TArray<AActor*> arr2;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALinkHoldBase::StaticClass(), arr2);
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALinkHold::StaticClass(), arr2);
 		ignores.Append(arr1);
 		ignores.Append(arr2);
 
@@ -249,7 +249,7 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 	}
 
 	//Check All LinkEdges which Has "OtherLinkComp" already Exist.
-	for (ALinkEdgeBase* i : LinkEdges)
+	for (ALinkEdge* i : LinkEdges)
 	{
 		bool temp = i->LinkComps.Find(OtherLinkComp) != -1 ? true : false;
 		if (temp)
@@ -264,7 +264,7 @@ void ULinkComponent::TrySpawnEdge(ULinkComponent* OtherLinkComp)
 	{
 		if (LinkEdgeClass)
 		{
-			ALinkEdgeBase* edge = GetWorld()->SpawnActorDeferred<ALinkEdgeBase>(LinkEdgeClass, GetComponentTransform(),nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+			ALinkEdge* edge = GetWorld()->SpawnActorDeferred<ALinkEdge>(LinkEdgeClass, GetComponentTransform(),nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 			if (IsValid(edge))
 			{
 				edge->InitializeCompRefs(this,OtherLinkComp);
@@ -314,7 +314,7 @@ void ULinkComponent::TryRemoveEdge(ULinkComponent* OtherLinkComp)
 	}
 
 	//get Ref of Edge that want to remove
-	ALinkEdgeBase* edgeToRemove = LinkEdges[index1];
+	ALinkEdge* edgeToRemove = LinkEdges[index1];
 
 	//Remove Edge Ref In Ref Arrays.
 	LinkEdges.RemoveAt(index1);

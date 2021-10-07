@@ -8,7 +8,7 @@
 
 class UGridComponent;
 class UBillboardComponent;
-class ABuildingBase;
+class ABuilding;
 class UInstancedStaticMeshComponent;
 UCLASS()
 class PROJECTLIFE_API AGridManager : public AActor
@@ -67,7 +67,7 @@ public:
 	UFUNCTION(CallInEditor, Category = "Spawn")
 		void RemoveAllGrids();
 
-	void HandleRequestBuild(TSubclassOf<ABuildingBase> WantToBuild, UGridComponent* RootGrid);
+	void HandleRequestBuild(TSubclassOf<ABuilding> WantToBuild, UGridComponent* RootGrid);
 
 	void DrawAvailableMesh(UGridComponent* InGrid);
 	void RemoveAvailableMesh();

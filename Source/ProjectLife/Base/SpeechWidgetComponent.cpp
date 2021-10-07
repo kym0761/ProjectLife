@@ -2,7 +2,7 @@
 
 
 #include "SpeechWidgetComponent.h"
-#include "../UI/SpeechBubbleBase.h"
+#include "../UI/SpeechBubbleWidget.h"
 USpeechWidgetComponent::USpeechWidgetComponent()
 {
 	//Don't false in WidgetComponent. or it won't do Working.
@@ -18,7 +18,7 @@ void USpeechWidgetComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	USpeechBubbleBase* bubbleRef = Cast<USpeechBubbleBase>(GetUserWidgetObject());
+	USpeechBubbleWidget* bubbleRef = Cast<USpeechBubbleWidget>(GetUserWidgetObject());
 	if (bubbleRef)
 	{
 		bubbleRef->OnSpeechEnd.AddDynamic(this, &USpeechWidgetComponent::SpeechEnd);
@@ -33,7 +33,7 @@ void USpeechWidgetComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void USpeechWidgetComponent::SpeechTrigger(FString InString)
 {
-	USpeechBubbleBase* bubbleRef = Cast<USpeechBubbleBase>(GetUserWidgetObject());
+	USpeechBubbleWidget* bubbleRef = Cast<USpeechBubbleWidget>(GetUserWidgetObject());
 
 	if(bubbleRef)
 	{

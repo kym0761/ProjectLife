@@ -7,8 +7,8 @@
 #include "LinkManager.generated.h"
 
 class ULinkComponent;
-class ALinkEdgeBase;
-//class ULinkEdges;
+class ALinkEdge;
+
 
 UCLASS()
 class PROJECTLIFE_API ALinkManager : public AActor
@@ -23,7 +23,7 @@ public:
 		TArray<ULinkComponent*> Links;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Refs")
-		TSubclassOf<ALinkEdgeBase> EdgeClass;
+		TSubclassOf<ALinkEdge> EdgeClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Refs")
 		float MaxDistanceForEdge;

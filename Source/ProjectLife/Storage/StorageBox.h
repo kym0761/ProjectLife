@@ -8,7 +8,7 @@
 #include "StorageBox.generated.h"
 
 class UInventoryComponent;
-class UStorageWidgetBase;
+class UStorageWidget;
 /**
  * 
  */

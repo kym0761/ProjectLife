@@ -16,7 +16,6 @@ class ABasicWeapon;
 class USpeechWidgetComponent;
 class ADamageTextActor;
 class USceneComponent;
-//class APhysicsHoldBase;
 //class AFarmingTool;
 UENUM(BlueprintType)
 enum class ECameraType : uint8

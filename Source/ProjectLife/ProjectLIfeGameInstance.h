@@ -6,7 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "ProjectLIfeGameInstance.generated.h"
 
-class UQuestBase;
+class UQuest;
 
 /**
  * 
@@ -19,14 +19,14 @@ class PROJECTLIFE_API UProjectLIfeGameInstance : public UGameInstance
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		TArray<TSubclassOf<UQuestBase>> Quests;
+		TArray<TSubclassOf<UQuest>> Quests;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		TArray<TSubclassOf<UQuestBase>> CompleteQuests;
+		TArray<TSubclassOf<UQuest>> CompleteQuests;
 
 	UFUNCTION(BlueprintCallable)
-		void AddQuest(TSubclassOf<UQuestBase> InQuest);
+		void AddQuest(TSubclassOf<UQuest> InQuest);
 
 	UFUNCTION(BlueprintCallable)
-	void QuestClear(TSubclassOf<UQuestBase> WantToClear);
+	void QuestClear(TSubclassOf<UQuest> WantToClear);
 };

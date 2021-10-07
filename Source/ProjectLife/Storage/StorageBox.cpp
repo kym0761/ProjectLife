@@ -4,7 +4,7 @@
 #include "StorageBox.h"
 #include "../Inventory/InventoryComponent.h"
 #include "Blueprint/UserWidget.h"
-#include "StorageWidgetBase.h"
+#include "StorageWidget.h"
 #include "../Base/BasicCharacter.h"
 #include "Components/SphereComponent.h"
 #include "../Base/BasicPlayerController.h"

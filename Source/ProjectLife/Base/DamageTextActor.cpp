@@ -3,7 +3,7 @@
 
 #include "DamageTextActor.h"
 #include "Components/WidgetComponent.h"
-#include "../UI/DamageTextWidgetBase.h"
+#include "../UI/DamageTextWidget.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
@@ -34,7 +34,7 @@ void ADamageTextActor::BeginPlay()
 	if (DamageTextClass)
 	{
 		WidgetComponent->SetWidgetClass(DamageTextClass);
-		UDamageTextWidgetBase* damageWidget = Cast<UDamageTextWidgetBase>(WidgetComponent->GetWidget());
+		UDamageTextWidget* damageWidget = Cast<UDamageTextWidget>(WidgetComponent->GetWidget());
 		if (damageWidget)
 		{
 			damageWidget->SetDamageText(AppliedDamage);

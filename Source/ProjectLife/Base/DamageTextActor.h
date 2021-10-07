@@ -7,7 +7,7 @@
 #include "DamageTextActor.generated.h"
 
 class UWidgetComponent;
-class UDamageTextWidgetBase;
+class UDamageTextWidget;
 class UProjectileMovementComponent;
 UCLASS()
 class PROJECTLIFE_API ADamageTextActor : public AActor
@@ -22,7 +22,7 @@ public:
 		UWidgetComponent* WidgetComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-		TSubclassOf<UDamageTextWidgetBase> DamageTextClass;
+		TSubclassOf<UDamageTextWidget> DamageTextClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage")
 		float AppliedDamage;

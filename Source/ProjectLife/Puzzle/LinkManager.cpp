@@ -3,10 +3,10 @@
 
 #include "LinkManager.h"
 #include "Kismet/GameplayStatics.h"
-#include "LinkHoldBase.h"
-#include "LinkTriggerBase.h"
+#include "LinkHold.h"
+#include "LinkTrigger.h"
 #include "LinkComponent.h"
-#include "LinkEdgeBase.h"
+#include "LinkEdge.h"
 
 // Sets default values
 ALinkManager::ALinkManager()
