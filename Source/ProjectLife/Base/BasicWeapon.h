@@ -25,7 +25,7 @@ public:
 		UStatComponent* OwnerStatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-		UEquipmentItemData* WeaponData;
+		FEquipmentItemData WeaponData;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

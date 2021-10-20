@@ -11,6 +11,8 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../Base/BasicPlayerController.h"
 
+#include "../ProjectLIfeGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 void UEquipSlot::NativeConstruct()
 {
@@ -48,34 +50,41 @@ void UEquipSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointe
 	//Make New Equip Slot For Drag.
 	if (IsValid(EquipmentCompRef))
 	{
-		UEquipmentItemData* equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+		FEquipmentItemData equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 
-		if (IsValid(equipmentItemData))
+
+		//Issue Potential
+		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		FItemData itemData; //TODO
+		if (IsValid(gameInstance))
 		{
-			if (IsValid(EquipSlotClass))
-			{
-				UEquipSlot* dragDisplay = CreateWidget<UEquipSlot>(GetOwningPlayer(), EquipSlotClass);
+			itemData = gameInstance->GetItemDataFromTable(equipmentItemData.Name);
+		}
 
-				if (IsValid(dragDisplay))
+		if (IsValid(EquipSlotClass))
+		{
+			UEquipSlot* dragDisplay = CreateWidget<UEquipSlot>(GetOwningPlayer(), EquipSlotClass);
+
+			if (IsValid(dragDisplay))
+			{
+				if (IsValid(itemData.Thumbnail))
 				{
-					if (IsValid(equipmentItemData->Thumbnail))
-					{
-						dragDisplay->SlotImage->SetBrushFromTexture(equipmentItemData->Thumbnail);
-					}
-
-					UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
-					dragDropOper->Payload = this;
-					dragDropOper->DefaultDragVisual = dragDisplay;
-					dragDropOper->Pivot = EDragPivot::CenterCenter;
-
-					OutOperation = dragDropOper;
+					dragDisplay->SlotImage->SetBrushFromTexture(itemData.Thumbnail);
 				}
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("EquipSlotClass is not Exist. Set Equip Class First."));
+
+				UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
+				dragDropOper->Payload = this;
+				dragDropOper->DefaultDragVisual = dragDisplay;
+				dragDropOper->Pivot = EDragPivot::CenterCenter;
+
+				OutOperation = dragDropOper;
 			}
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("EquipSlotClass is not Exist. Set Equip Class First."));
+		}
+		
 	}
 }
 
@@ -101,47 +110,38 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 				{
 					//Inventory Data of Valid Index.
 					FItemDataSlot itemDataSlot = inventoryRef->InventoryArray[index];
-					if (IsValid(itemDataSlot.ItemData))
+					FItemData itemData = itemDataSlot.ItemData;
+
+					if (itemData.ItemType == EItemType::Equipment)
 					{
+						FEquipmentItemData equipmentItemData; // TODO
 
-						UItemData* itemData = itemDataSlot.ItemData.GetDefaultObject();
-						if (IsValid(itemData))
+						if (equipmentItemData.EquipmentType == SlotEquipmentType)
 						{
-							UEquipmentItemData* equipmentItemData = Cast<UEquipmentItemData>(itemData);
-							if (IsValid(equipmentItemData))
+							FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+
+							bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
+							if (bSucceed)
 							{
-								if (equipmentItemData->EquipmentType == SlotEquipmentType)
-								{
-									UEquipmentItemData* currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
-
-									bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
-									if (bSucceed)
-									{
-										//Equipment item Data is Valid, set slot's Values.
-										//if not, Reset slot's Values.
-										if (IsValid(currentEquipment))
-										{
-											FItemDataSlot temp;
-											temp.ItemData = currentEquipment->GetClass();
-											temp.Quantity = 1;
-											inventoryRef->InventoryArray[index] = temp;
-										}
-										else
-										{
-											FItemDataSlot temp;
-											temp.Quantity = 0;
-											inventoryRef->InventoryArray[index] = temp;
-										}
-
-										ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-										if (playerController)
-										{
-											playerController->UpdateInventory();
-										}
-										return true;
-									}
-								}
+								FItemDataSlot temp;
+								//TODO equipmentData to item data.
+								//temp.ItemData = currentEquipment;
+								temp.Quantity = 1;
+								inventoryRef->InventoryArray[index] = temp;
 							}
+							else
+							{
+								FItemDataSlot temp;
+								temp.Quantity = 0;
+								inventoryRef->InventoryArray[index] = temp;
+							}
+
+							ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+							if (playerController)
+							{
+								playerController->UpdateInventory();
+							}
+							return true;
 						}
 					}
 				}
@@ -156,11 +156,10 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 			{
 				if (IsValid(dropped->EquipmentCompRef) && IsValid(EquipmentCompRef) && EquipmentSlot == dropped->EquipmentSlot)
 				{
-					UEquipmentItemData* CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
-					UEquipmentItemData* droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
+					FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+					FEquipmentItemData droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
 					
-					if (IsValid(CurrentEquipmentData) && IsValid(droppedEquipmentData))
-					{
+
 						dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
 						EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
 
@@ -172,7 +171,7 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 
 						return true;
 
-					}
+					
 				}
 			}
 		}
@@ -187,15 +186,23 @@ void UEquipSlot::UpdateSlot()
 
 	if (EquipmentCompRef)
 	{
-		UEquipmentItemData* equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
-		if (IsValid(equipmentItemData))
+		FEquipmentItemData equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+		
+		// TODO..
+		//Issue Potential
+		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		FItemData itemData; //TODO
+		if (IsValid(gameInstance))
 		{
-			if (IsValid(SlotImage) && IsValid(equipmentItemData->Thumbnail))//Set Image
-			{
-				SlotImage->SetBrushFromTexture(equipmentItemData->Thumbnail);
-				//UE_LOG(LogTemp, Warning, TEXT("Image Updated"));
-			}
+			itemData = gameInstance->GetItemDataFromTable(equipmentItemData.Name);
 		}
+
+		if (IsValid(SlotImage) && IsValid(itemData.Thumbnail))//Set Image
+		{
+			SlotImage->SetBrushFromTexture(itemData.Thumbnail);
+			//UE_LOG(LogTemp, Warning, TEXT("Image Updated"));
+		}
+		
 
 	}
 }

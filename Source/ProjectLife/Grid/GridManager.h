@@ -59,15 +59,15 @@ public:
 	UFUNCTION(CallInEditor, Category = "Spawn")
 		void SpawnGrids();
 
-	void SetNearGrids();
-
 	/*
 	* Remove All Grids
 	*/
 	UFUNCTION(CallInEditor, Category = "Spawn")
 		void RemoveAllGrids();
 
-	void HandleRequestBuild(TSubclassOf<ABuilding> WantToBuild, UGridComponent* RootGrid);
+	bool HandleRequestBuild(TSubclassOf<ABuilding> WantToBuild, UGridComponent* RootGrid);
+	bool HandleDeleteBuilding(ABuilding* WantToDelete);
+
 
 	void DrawAvailableMesh(UGridComponent* InGrid);
 	void RemoveAvailableMesh();

@@ -92,14 +92,13 @@ void UStatComponent::ClearAdditionalStat()
 	AdditionalCriticalHit = 0.0f;
 }
 
-void UStatComponent::ApplyAdditionalStat(UEquipmentItemData* InData)
+void UStatComponent::ApplyAdditionalStat(FEquipmentItemData InData)
 {
 	//Not Finished.
-	if (IsValid(InData))
-	{
-		AdditionalAttack += InData->Attack;
-		AdditionalDefense += InData->Defense;
-		AdditionalCriticalHit += InData->CriticalHit;
-	}
+
+	AdditionalAttack += InData.Attack;
+	AdditionalDefense += InData.Defense;
+	AdditionalCriticalHit += InData.CriticalHit;
+
 }
 

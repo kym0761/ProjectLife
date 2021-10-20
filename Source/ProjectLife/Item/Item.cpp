@@ -10,6 +10,10 @@
 #include "../Base/BasicPlayerController.h"
 #include "../Base/BasicWeapon.h"
 // Sets default values
+
+#include "../ProjectLIfeGameInstance.h"
+#include "Kismet/GameplayStatics.h"
+
 AItem::AItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -54,7 +58,7 @@ void AItem::Interact_Implementation(APawn* InteractCauser)
 	
 	if (player)
 	{
-		bool bSucceeded = player->Inventory->AddItemToInventory(ItemDataSlot);
+		bool bSucceeded = player->Inventory->AddItemToInventory(ItemName, Quantity);
 		//Add Succeeded, Update UI & Delete Item Actor.
 		if (bSucceeded)
 		{
@@ -72,28 +76,32 @@ void AItem::Interact_Implementation(APawn* InteractCauser)
 
 bool AItem::UseItem_Implementation()
 {
-	UItemData* itemdata = ItemDataSlot.ItemData.GetDefaultObject();
-
-	switch (itemdata->ItemType)
+	FItemData itemdata;
+	
+	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (IsValid(gameInstance))
 	{
-	case EItemType::Consumption:
-		UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Consumption"));
-		break;
-	case EItemType::Equipment:
-		UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Equipment"));
-		//if (ItemData.WeaponClass)
-		//{
-		//	UE_LOG(LogTemp, Warning, TEXT("Class Name : %s"), *ItemData.WeaponClass.GetDefaultObject()->ItemData.Name);
-		//}
-		break;
-	case EItemType::Resource:
-		UE_LOG(LogTemp, Warning, TEXT("Resource Item Will not Need Use Item function Maybe..?"));
-		break;
-	default:
-		UE_LOG(LogTemp, Warning, TEXT("I don't Know.."));
-		break;
+		itemdata = gameInstance->GetItemDataFromTable(ItemName);
+	
+		switch (itemdata.ItemType)
+		{
+		case EItemType::Consumption:
+			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Consumption"));
+			break;
+		case EItemType::Equipment:
+			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Equipment"));
+			break;
+		case EItemType::Resource:
+			UE_LOG(LogTemp, Warning, TEXT("Resource Item Will not Need Use Item function Maybe..?"));
+			break;
+		default:
+			UE_LOG(LogTemp, Warning, TEXT("I don't Know.."));
+			break;
+		}
+
+		return true;
 	}
 
-	return true;
+	return false;
 }
 

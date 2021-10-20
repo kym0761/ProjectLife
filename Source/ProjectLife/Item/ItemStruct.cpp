@@ -3,7 +3,7 @@
 
 #include "ItemStruct.h"
 
-UItemData::UItemData()
+FItemData::FItemData()
 {
 	Name = FString("");
 	Thumbnail = nullptr;
@@ -17,18 +17,14 @@ UItemData::UItemData()
 	ItemPrice = 0;
 }
 
-UConsumableItemData::UConsumableItemData()
-{
-}
-
 FItemDataSlot::FItemDataSlot()
 {
-	ItemData = nullptr;
 	Quantity = 1;
 }
 
-UEquipmentItemData::UEquipmentItemData()
+FEquipmentItemData::FEquipmentItemData()
 {
+	Name = FString("");
 	Attack = 0.0f;
 	Defense = 0.0f;
 	CriticalHit = 0.0f;
@@ -38,4 +34,9 @@ UEquipmentItemData::UEquipmentItemData()
 	Element = EElement::None;
 	DamageType = EDamageType::None;
 	WeaponClass = nullptr;
+}
+
+FConsumableItemData::FConsumableItemData()
+{
+	Name = FString("");
 }

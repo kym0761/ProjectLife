@@ -35,7 +35,7 @@ void AMeleeWeapon::OverlapAttackCollision(UPrimitiveComponent* OverlappedCompone
 		}
 		else
 		{
-			UGameplayStatics::ApplyDamage(OtherActor, WeaponData->Attack, nullptr, GetOwner(), UDamageType::StaticClass());
+			UGameplayStatics::ApplyDamage(OtherActor, WeaponData.Attack, nullptr, GetOwner(), UDamageType::StaticClass());
 		}
 
 	}

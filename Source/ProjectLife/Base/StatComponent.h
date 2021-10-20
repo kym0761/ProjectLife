@@ -70,5 +70,5 @@ public:
 
 	void ClearAdditionalStat();
 
-	void ApplyAdditionalStat(UEquipmentItemData* InData);
+	void ApplyAdditionalStat(FEquipmentItemData InData);
 };

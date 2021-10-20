@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "../Base/InteractiveInterface.h"
 #include "GameFramework/Actor.h"
+#include "BuildingInfo.h"
 #include "Building.generated.h"
 
 class UBoxComponent;
 class UStaticMeshComponent;
+class UGridComponent;
 
 UCLASS()
 class PROJECTLIFE_API ABuilding : public AActor, public IInteractive
@@ -34,7 +36,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 		int32 MaxGoldIncomeSave;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
+		FBuildingInfo BuildingInfo;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
+		UGridComponent* CurrentGrid;
 
 protected:
 	// Called when the game starts or when spawned

@@ -29,9 +29,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentSlot EquipmentSlot;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment") //deprecated
-	//	int32 EquipmentIndex;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentType SlotEquipmentType;
 	

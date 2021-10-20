@@ -32,14 +32,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 		UStaticMeshComponent* Mesh;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item") //deprecated
-	//	FItemDataStruct ItemData;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	//	FItemDataSlot ItemDataSlot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		FItemDataSlot ItemDataSlot;
+		FString ItemName;
 
-
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		int32 Quantity;
 
 protected:
 	// Called when the game starts or when spawned

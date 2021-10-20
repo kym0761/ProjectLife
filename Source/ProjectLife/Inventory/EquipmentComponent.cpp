@@ -6,6 +6,8 @@
 #include "../Base/StatComponent.h"
 #include "../Base/BasicWeapon.h"
 #include "../Base/BasicCharacter.h"
+#include "../ProjectLIfeGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UEquipmentComponent::UEquipmentComponent()
@@ -41,89 +43,41 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSl
 {
 	bool bEquipable = false;
 
+	FItemData itemData = InData.ItemData;
 
-	if (IsValid(InData.ItemData))
+	if (itemData.ItemType == EItemType::Equipment)
 	{
-		UItemData* itemData = InData.ItemData.GetDefaultObject();
-		if (IsValid(itemData))
+		FEquipmentItemData equipmentItemData;
+
+		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (IsValid(gameInstance))
 		{
-
-			UEquipmentItemData* equipmentItemData = Cast<UEquipmentItemData>(itemData);
-			if (IsValid(equipmentItemData))
-			{
-				//Check Valid.
-				switch (EquipmentSlot)
-				{
-				case EEquipmentSlot::Weapon :
-					bEquipable = equipmentItemData->EquipmentType == EEquipmentType::Weapon;
-					break;
-				case EEquipmentSlot::Shield:
-					bEquipable = equipmentItemData->EquipmentType == EEquipmentType::Shield;
-					break;
-				case EEquipmentSlot::Armor:
-					bEquipable = equipmentItemData->EquipmentType == EEquipmentType::Armor;
-					break;
-				case EEquipmentSlot::Accessory1:
-				case EEquipmentSlot::Accessory2:
-					bEquipable = equipmentItemData->EquipmentType == EEquipmentType::Accessory;
-					break;
-				default:
-					break;
-				}
-
-				if (bEquipable)
-				{
-					switch (EquipmentSlot)
-					{
-					case EEquipmentSlot::Weapon:
-						WeaponData = equipmentItemData;
-						break;
-					case EEquipmentSlot::Shield:
-						ShieldData = equipmentItemData;
-						break;
-					case EEquipmentSlot::Armor:
-						ArmorData = equipmentItemData;
-						break;
-					case EEquipmentSlot::Accessory1:
-						AccessoryData1 = equipmentItemData;
-						break;
-					case EEquipmentSlot::Accessory2:
-						AccessoryData2 = equipmentItemData;
-						break;
-					default:
-						break;
-					}
-
-					ApplyEquipment();
-				}
-			}
+			equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
 		}
-	}
+		else
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Cannot Open Data Table..?"));
+			}
+			return false;
+		}
 
-	return bEquipable;
-}
-
-bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, UEquipmentItemData* InData)
-{
-	bool bEquipable = false;
-
-	if (IsValid(InData))
-	{
 		//Check Valid.
 		switch (EquipmentSlot)
 		{
 		case EEquipmentSlot::Weapon:
-			bEquipable = InData->EquipmentType == EEquipmentType::Weapon;
+			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Weapon);
 			break;
 		case EEquipmentSlot::Shield:
-			bEquipable = InData->EquipmentType == EEquipmentType::Shield;
+			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Shield);
 			break;
 		case EEquipmentSlot::Armor:
-			bEquipable = InData->EquipmentType == EEquipmentType::Armor;
+			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Armor);
 			break;
 		case EEquipmentSlot::Accessory1:
 		case EEquipmentSlot::Accessory2:
-			bEquipable = InData->EquipmentType == EEquipmentType::Accessory;
+			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Accessory);
 			break;
 		default:
 			break;
@@ -134,19 +88,19 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, UEquipmentI
 			switch (EquipmentSlot)
 			{
 			case EEquipmentSlot::Weapon:
-				WeaponData = InData;
+				WeaponData = equipmentItemData;
 				break;
 			case EEquipmentSlot::Shield:
-				ShieldData = InData;
+				ShieldData = equipmentItemData;
 				break;
 			case EEquipmentSlot::Armor:
-				ArmorData = InData;
+				ArmorData = equipmentItemData;
 				break;
 			case EEquipmentSlot::Accessory1:
-				AccessoryData1 = InData;
+				AccessoryData1 = equipmentItemData;
 				break;
 			case EEquipmentSlot::Accessory2:
-				AccessoryData2 = InData;
+				AccessoryData2 = equipmentItemData;
 				break;
 			default:
 				break;
@@ -156,10 +110,64 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, UEquipmentI
 		}
 	}
 
-	return false;
+	return bEquipable;
 }
 
-UEquipmentItemData* UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipmentslot)
+bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentItemData InData)
+{
+	bool bEquipable = false;
+
+	//Check Valid.
+	switch (EquipmentSlot)
+	{
+	case EEquipmentSlot::Weapon:
+		bEquipable = (InData.EquipmentType == EEquipmentType::Weapon);
+		break;
+	case EEquipmentSlot::Shield:
+		bEquipable = (InData.EquipmentType == EEquipmentType::Shield);
+		break;
+	case EEquipmentSlot::Armor:
+		bEquipable = (InData.EquipmentType == EEquipmentType::Armor);
+		break;
+	case EEquipmentSlot::Accessory1:
+	case EEquipmentSlot::Accessory2:
+		bEquipable = (InData.EquipmentType == EEquipmentType::Accessory);
+		break;
+	default:
+		break;
+	}
+
+	if (bEquipable)
+	{
+		switch (EquipmentSlot)
+		{
+		case EEquipmentSlot::Weapon:
+			WeaponData = InData;
+			break;
+		case EEquipmentSlot::Shield:
+			ShieldData = InData;
+			break;
+		case EEquipmentSlot::Armor:
+			ArmorData = InData;
+			break;
+		case EEquipmentSlot::Accessory1:
+			AccessoryData1 = InData;
+			break;
+		case EEquipmentSlot::Accessory2:
+			AccessoryData2 = InData;
+			break;
+		default:
+			break;
+		}
+
+		ApplyEquipment();
+	}
+
+	return bEquipable;
+}
+
+
+FEquipmentItemData UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipmentslot)
 {
 	switch (Equipmentslot)
 	{
@@ -173,92 +181,10 @@ UEquipmentItemData* UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipme
 		return AccessoryData1;
 	case EEquipmentSlot::Accessory2:
 		return AccessoryData2;
-	default:
-		return nullptr;
+	default: // maybe not needed.
+		return FEquipmentItemData();
 	}
 }
-
-
-//bool UEquipmentComponent::SetEquipWithIndex(int32 Index, FItemDataSlot InData)
-//{
-//
-//	bool bEquipable = false;
-//
-//	switch (Index)
-//	{
-//	case 0:
-//		bEquipable = EEquipmentType::Weapon == InData.EquipmentType || InData.ItemType == EItemType::None;
-//		break;
-//	case 1:
-//		bEquipable = EEquipmentType::Shield == InData.EquipmentType || InData.ItemType == EItemType::None;
-//		break;
-//	case 2:
-//		bEquipable = EEquipmentType::Armor == InData.EquipmentType || InData.ItemType == EItemType::None;
-//		break;
-//	case 3:
-//	case 4:
-//		bEquipable = EEquipmentType::Accessory == InData.EquipmentType || InData.ItemType == EItemType::None;
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	if (bEquipable)
-//	{
-//		switch (Index)
-//		{
-//		case 0:
-//			WeaponData = InData;
-//			break;
-//		case 1:
-//			ShieldData = InData;
-//			break;
-//		case 2:
-//			ArmorData = InData;
-//			break;
-//		case 3:
-//			AccessoryData1 = InData;
-//			break;
-//		case 4:
-//			AccessoryData2 = InData;
-//			break;
-//		default:
-//			break;
-//		}
-//
-//		//Apply Equipment to Stat when Update Equipment Data.
-//		ApplyEquipment();
-//	}
-//	
-//
-//	return bEquipable;
-//}
-
-//FItemDatalost UEquipmentComponent::GetEquipWithIndex(int32 Index)
-//{
-//
-//	switch (Index)
-//	{
-//	case 0:
-//		return WeaponData;
-//
-//	case 1:
-//		return ShieldData;
-//
-//	case 2:
-//		return ArmorData;
-//
-//	case 3:
-//		return AccessoryData1;
-//
-//	case 4:
-//		return AccessoryData2;
-//
-//	default:
-//		return FItemDataStruct();
-//
-//	}
-//}
 
 bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex)
 {
@@ -267,23 +193,13 @@ bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInven
 
 	if (IsValid(Inventory))
 	{
+
 		FItemDataSlot inInventory = Inventory->InventoryArray[InventoryIndex];
-		if (IsValid(inInventory.ItemData))
+
+		if (inInventory.ItemData.ItemType == EItemType::Equipment)
 		{
-			UItemData* itemData = inInventory.ItemData.GetDefaultObject();
-
-			if (IsValid(itemData))
-			{
-
-				//Failed if inventory item is not Equipment.
-				UEquipmentItemData* equipmentItemData = Cast<UEquipmentItemData>(itemData);
-				UEquipmentItemData* temp = GetEquipmentData(Equipmentslot);
-				if (IsValid(equipmentItemData) && IsValid(temp))
-				{
-					bool bSucceed = SetEquipment(Equipmentslot, inInventory);
-					return bSucceed;
-				}
-			}
+			bool bSucceed = SetEquipment(Equipmentslot, inInventory);
+			return bSucceed;
 		}
 	}
 	return false;
@@ -311,19 +227,26 @@ void UEquipmentComponent::ApplyEquipment()
 	}
 
 	//add New Weapon.
-	if (IsValid(WeaponData->WeaponClass))
+	if (IsValid(WeaponData.WeaponClass))
 	{
 		ABasicCharacter* OwnerCharacter = Cast<ABasicCharacter>(GetOwner());
 		if (OwnerCharacter)
 		{
 			FActorSpawnParameters params;
 			params.Owner = GetOwner();
-			CurrentWeapon = GetWorld()->SpawnActor<ABasicWeapon>(WeaponData->WeaponClass,FTransform::Identity, params);
+			CurrentWeapon = GetWorld()->SpawnActor<ABasicWeapon>(WeaponData.WeaponClass,FTransform::Identity, params);
 			CurrentWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 			
 			if (GEngine)
 			{
 				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, TEXT("Weapon Equip OK"));
+			}
+		}
+		else
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, TEXT("Weapon Equip failed because WeaponClass is Null."));
 			}
 		}
 	}

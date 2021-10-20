@@ -40,45 +40,43 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 
 	if (IsValid(InventoryRef))
 	{
-		if (IsValid(InventoryRef->InventoryArray[InventoryIndex].ItemData))
+		FItemData itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData;
+
+		if (IsValid(ItemSlotClass))
 		{
-			UItemData* itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData.GetDefaultObject();
+			//Create DragDisplayUI
+			UItemSlot* dragDisplay = CreateWidget<UItemSlot>(GetOwningPlayer(), ItemSlotClass);
 
-			if (IsValid(itemData))
+			if (IsValid(dragDisplay))
 			{
-				if (IsValid(ItemSlotClass))
+				//Set Default Image and Number.
+				if (IsValid(itemData.Thumbnail))
 				{
-					//Create DragDisplayUI
-					UItemSlot* dragDisplay = CreateWidget<UItemSlot>(GetOwningPlayer(), ItemSlotClass);
-
-					if (IsValid(dragDisplay))
-					{
-						//Set Default Image and Number.
-						if (itemData->Thumbnail)
-						{
-							dragDisplay->SlotImage->SetBrushFromTexture(itemData->Thumbnail);
-						}
-						dragDisplay->SlotItemNum->SetText(FText::GetEmpty());
-
-						//Make DragDropEvent And Assign it.
-						UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
-						dragDropOper->Payload = this;
-						dragDropOper->DefaultDragVisual = dragDisplay;
-						dragDropOper->Pivot = EDragPivot::CenterCenter;
-
-						OutOperation = dragDropOper;
-					}
-					else
-					{
-						UE_LOG(LogTemp, Warning, TEXT("dragDisplay Create Failed."));
-					}
+					dragDisplay->SlotImage->SetBrushFromTexture(itemData.Thumbnail);
 				}
+				dragDisplay->SlotItemNum->SetText(FText::GetEmpty());
+
+				//Make DragDropEvent And Assign it.
+				UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
+				dragDropOper->Payload = this;
+				dragDropOper->DefaultDragVisual = dragDisplay;
+				dragDropOper->Pivot = EDragPivot::CenterCenter;
+
+				OutOperation = dragDropOper;
 			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("dragDisplay Create Failed."));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ItemSlotClass is not Exist. Add Slot Class Please."));
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ItemSlotClass is not Exist. Add Slot Class Please."));
+		UE_LOG(LogTemp, Warning, TEXT("InventoryRef is not Exist..."));
 	}
 }
 
@@ -172,52 +170,35 @@ void UItemSlot::UpdateSlot()
 
 	if (IsValid(InventoryRef) && InventoryRef->InventoryArray.IsValidIndex(InventoryIndex))
 	{
-		if (IsValid(InventoryRef->InventoryArray[InventoryIndex].ItemData))
-		{
-			UItemData* itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData.GetDefaultObject();
+			FItemData itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData;
 
-			if (IsValid(itemData))
+			if (IsValid(SlotImage))//Set Image
 			{
-				if (IsValid(SlotImage))//Set Image
+				if (IsValid(itemData.Thumbnail))
 				{
-					if (IsValid(itemData->Thumbnail))
-					{
-						SlotImage->SetBrushFromTexture(itemData->Thumbnail);
-					}
-					else
-					{
-						SlotImage->SetBrushFromTexture(nullptr);
-					}
+					SlotImage->SetBrushFromTexture(itemData.Thumbnail);
 				}
-
-				if (IsValid(SlotItemNum))//Set Number
+				else
 				{
-					FText QuantityText;
-
-					if (itemData->bIsStackable)
-					{
-						QuantityText = FText::FromString(FString::FromInt(InventoryRef->InventoryArray[InventoryIndex].Quantity));
-					}
-					else
-					{
-						QuantityText = FText::GetEmpty();
-					}
-
-					SlotItemNum->SetText(QuantityText);
+					SlotImage->SetBrushFromTexture(nullptr);
 				}
 			}
-		}
-		else // set void
-		{
-			if (IsValid(SlotImage))
+
+			if (IsValid(SlotItemNum))//Set Number
 			{
-				SlotImage->SetBrushFromTexture(nullptr);
+				FText QuantityText;
+
+				if (itemData.bIsStackable)
+				{
+					QuantityText = FText::FromString(FString::FromInt(InventoryRef->InventoryArray[InventoryIndex].Quantity));
+				}
+				else
+				{
+					QuantityText = FText::GetEmpty();
+				}
+
+				SlotItemNum->SetText(QuantityText);
 			}
-			if (IsValid(SlotItemNum))
-			{
-				SlotItemNum->SetText(FText::GetEmpty());
-			}
-		}	
 	}
 	else // set void
 	{

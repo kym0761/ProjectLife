@@ -5,6 +5,8 @@
 #include "Components/BillboardComponent.h"
 #include "GridComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "../Building/Building.h"
+#include "../Building/BuildingInfo.h"
 
 // Sets default values
 AGridManager::AGridManager()
@@ -20,10 +22,9 @@ AGridManager::AGridManager()
 	AvailableInstMesh->SetupAttachment(RootComponent);
 	AvailableInstMesh->SetCollisionProfileName(TEXT("NoCollision"));
 
-
+	//default X,Y Offset
 	X = 0;
 	Y = 0;
-
 	Offset = 130.0f;
 }
 
@@ -59,6 +60,7 @@ void AGridManager::SpawnGrids()
 		{
 			FString compNamestr = FString::FromInt(i) + FString("/") + FString::FromInt(j);
 			FName compName = FName(*compNamestr);
+			
 			UGridComponent* grid = NewObject<UGridComponent>(this, GridCompClass, compName);
 			if (IsValid(grid))
 			{
@@ -74,55 +76,56 @@ void AGridManager::SpawnGrids()
 		}
 	}
 
-	SetNearGrids();
+
+	//SetNearGrids();
 
 }
 
-void AGridManager::SetNearGrids()
-{
-	for (TPair<FString, UGridComponent*> gridPair : GridMap)
-	{
-		UGridComponent* grid = gridPair.Value;
-
-		int32 x = grid->X;
-		int32 y = grid->Y;
-
-		FString keyLeft = FString::FromInt(x) + FString("/") + FString::FromInt(y - 1);
-		bool bHasLeft = GridMap.Contains(keyLeft);
-
-		FString keyRight = FString::FromInt(x) + FString("/") + FString::FromInt(y + 1);
-		bool bHasRight = GridMap.Contains(keyRight);
-
-		FString keyUp = FString::FromInt(x + 1) + FString("/") + FString::FromInt(y);
-		bool bHasUp = GridMap.Contains(keyUp);
-
-		FString keyDown = FString::FromInt(x - 1) + FString("/") + FString::FromInt(y);
-		bool bHasDown = GridMap.Contains(keyDown);
-
-
-		if (bHasLeft)
-		{
-			grid->NearGrids.Add(GridMap[keyLeft]);
-		}
-
-		if (bHasRight)
-		{
-			grid->NearGrids.Add(GridMap[keyRight]);
-		}
-
-		if (bHasUp)
-		{
-			grid->NearGrids.Add(GridMap[keyUp]);
-		}
-
-		if (bHasDown)
-		{
-			grid->NearGrids.Add(GridMap[keyDown]);
-		}
-	}
-
-
-}
+//void AGridManager::SetNearGrids()
+//{
+//	for (TPair<FString, UGridComponent*> gridPair : GridMap)
+//	{
+//		UGridComponent* grid = gridPair.Value;
+//
+//		int32 x = grid->X;
+//		int32 y = grid->Y;
+//
+//		FString keyLeft = FString::FromInt(x) + FString("/") + FString::FromInt(y - 1);
+//		bool bHasLeft = GridMap.Contains(keyLeft);
+//
+//		FString keyRight = FString::FromInt(x) + FString("/") + FString::FromInt(y + 1);
+//		bool bHasRight = GridMap.Contains(keyRight);
+//
+//		FString keyUp = FString::FromInt(x + 1) + FString("/") + FString::FromInt(y);
+//		bool bHasUp = GridMap.Contains(keyUp);
+//
+//		FString keyDown = FString::FromInt(x - 1) + FString("/") + FString::FromInt(y);
+//		bool bHasDown = GridMap.Contains(keyDown);
+//
+//
+//		if (bHasLeft)
+//		{
+//			grid->NearGrids.Add(GridMap[keyLeft]);
+//		}
+//
+//		if (bHasRight)
+//		{
+//			grid->NearGrids.Add(GridMap[keyRight]);
+//		}
+//
+//		if (bHasUp)
+//		{
+//			grid->NearGrids.Add(GridMap[keyUp]);
+//		}
+//
+//		if (bHasDown)
+//		{
+//			grid->NearGrids.Add(GridMap[keyDown]);
+//		}
+//	}
+//
+//
+//}
 
 void AGridManager::RemoveAllGrids()
 {
@@ -160,104 +163,137 @@ void AGridManager::RemoveAllGrids()
 
 }
 
-void AGridManager::HandleRequestBuild(TSubclassOf<ABuilding> WantToBuild, UGridComponent* RootGrid)
+bool AGridManager::HandleRequestBuild(TSubclassOf<ABuilding> WantToBuild, UGridComponent* RootGrid)
 {
+	FBuildingInfo buildingInfo = WantToBuild.GetDefaultObject()->BuildingInfo;
+
+	if (IsValid(WantToBuild) && IsValid(RootGrid))
+	{
+		FString selectedGridKey = FString::FromInt(RootGrid->X) + FString("/") + FString::FromInt(RootGrid->Y);
+
+		if (GridMap.Contains(selectedGridKey) && (RootGrid == GridMap[selectedGridKey]))
+		{
+			int32 x = RootGrid->X;
+			int32 y = RootGrid->Y;
+
+			//check Valid Grid.
+			for (int32 i = 0; i < buildingInfo.SizeX; i++)
+			{
+				for (int32 j = 0; j < buildingInfo.SizeY; j++)
+				{
+					FString key = FString::FromInt(x + i) + FString("/") + FString::FromInt(y + j);
+					if (GridMap.Contains(key))
+					{
+						if (IsValid(GridMap[key]->Occupying))
+						{
+							if (GEngine)
+							{
+								GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Something is Occupying..."));
+							}
+							return false;
+						}
+					}
+					else //invalid Grid
+					{
+						if (GEngine)
+						{
+							GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Not Valid Grid"));
+						}
+
+						return false;
+					}
+				}
+
+			}
 
 
-	//FSize size = WantToBuild.GetDefaultObject()->Size;
+			FActorSpawnParameters spawnParam;
+			ABuilding* building = GetWorld()->SpawnActor<ABuilding>(WantToBuild, RootGrid->GetComponentLocation(), FRotator::ZeroRotator, spawnParam);
 
-	//if (IsValid(WantToBuild) && IsValid(SelectedGrid))
-	//{
-	//	FString selectedGridKey = FString::FromInt(SelectedGrid->X) + FString("/") + FString::FromInt(SelectedGrid->Y);
+			building->CurrentGrid = GridMap[selectedGridKey];
 
-	//	if (GridMap.Contains(selectedGridKey))
-	//	{
-	//		bool bCanBuild = true;
+			for (int32 i = 0; i < buildingInfo.SizeX; i++)
+			{
+				for (int32 j = 0; j < buildingInfo.SizeY; j++)
+				{
+					FString key = FString::FromInt(x + i) + FString("/") + FString::FromInt(y + j);
+					if (GridMap.Contains(key))
+					{
+						GridMap[key]->Occupying = building;
+					}
+				}
+			}
 
-	//		int x = SelectedGrid->X;
-	//		int y = SelectedGrid->Y;
-
-	//		for (int32 i = 0; i < size.X; i++)
-	//		{
-	//			for (int32 j = 0; j < size.Y; j++)
-	//			{
-	//				FString key = FString::FromInt(x + i) + FString("/") + FString::FromInt(y + j);
-	//				if (GridMap.Contains(key))
-	//				{
-	//					if (IsValid(GridMap[key]->Occupying))
-	//					{
-	//						if (GEngine)
-	//						{
-	//							GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Something is Occupying..."));
-	//						}
-	//						bCanBuild = false;
-	//						break;
-	//					}
-	//				}
-	//				else
-	//				{
-	//					if (GEngine)
-	//					{
-	//						GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Not Existed Position"));
-	//					}
-	//					bCanBuild = false;
-	//					break;
-	//				}
-	//			}
+		}
+		else
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Not Existed in Grid Map"));
+			}
+			return false;
+		}
 
 
-	//			if (bCanBuild == false)
-	//			{
-	//				break;
-	//			}
+	}
+	else
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Invalid BuildingClass or RootGrid"));
+		}
+		return false;
+	}
 
-	//		}
+	return true;
+}
 
-	//		if (bCanBuild)
-	//		{
-	//			FActorSpawnParameters spawnParam;
-	//			ABuilding* building = GetWorld()->SpawnActor<ABuilding>(WantToBuild, SelectedGrid->GetComponentLocation(), FRotator::ZeroRotator, spawnParam);
+bool AGridManager::HandleDeleteBuilding(ABuilding* WantToDelete)
+{
+	if (!IsValid(WantToDelete))
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Invalid Building"));
+		}
+		return false;
+	}
 
+	UGridComponent* currentGrid = WantToDelete->CurrentGrid;
+	FBuildingInfo buildingInfo = WantToDelete->BuildingInfo;
 
-	//			for (int32 i = 0; i < size.X; i++)
-	//			{
-	//				for (int32 j = 0; j < size.Y; j++)
-	//				{
-	//					FString key = FString::FromInt(x + i) + FString("/") + FString::FromInt(y + j);
-	//					if (GridMap.Contains(key))
-	//					{
-	//						GridMap[key]->Occupying = building;
-	//						building->OccupyingGrids.Add(GridMap[key]);
-	//					}
-	//					else
-	//					{
-	//						if (GEngine)
-	//						{
-	//							GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Not Existed Position"));
-	//						}
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (GEngine)
-	//		{
-	//			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Not Existed in Grid Map"));
-	//		}
-	//	}
+	FString CurrentGridkey = FString::FromInt(currentGrid->X) + FString("/") + FString::FromInt(currentGrid->Y);
 
+	if (IsValid(currentGrid) && GridMap.Contains(CurrentGridkey) && (currentGrid == GridMap[CurrentGridkey]))
+	{
+		int32 x = currentGrid->X;
+		int32 y = currentGrid->Y;
 
-	//}
-	//else
-	//{
-	//	if (GEngine)
-	//	{
-	//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("UnValid BuildingClass or GridComponent*"));
-	//	}
-	//}
+		for (int32 i = 0; i < buildingInfo.SizeX; i++)
+		{
+			for (int32 j = 0; j < buildingInfo.SizeY; j++)
+			{
+				FString key = FString::FromInt(x + i) + FString("/") + FString::FromInt(y + j);
+				if (GridMap.Contains(key))
+				{
+					GridMap[key]->Occupying = nullptr;
+				}
+			}
+		}
 
+		WantToDelete->Destroy();
+
+	}
+	else
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Invalid GridRef in BuildingActor"));
+		}
+		return false;
+	}
+
+	return true;
 }
 
 void AGridManager::DrawAvailableMesh(UGridComponent* InGrid)

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Item/ItemStruct.h"
 #include "ProjectLIfeGameInstance.generated.h"
 
 class UQuest;
@@ -24,9 +25,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
 		TArray<TSubclassOf<UQuest>> CompleteQuests;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
+		class UDataTable* ItemDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
+		class UDataTable* EquipmentDataTable;
+
 	UFUNCTION(BlueprintCallable)
 		void AddQuest(TSubclassOf<UQuest> InQuest);
 
 	UFUNCTION(BlueprintCallable)
 	void QuestClear(TSubclassOf<UQuest> WantToClear);
+
+
+	FItemData GetItemDataFromTable(FString Name);
+	FEquipmentItemData GetEquipmentItemDataFromTable(FString Name);
+
+
 };

@@ -37,9 +37,11 @@ public:
 
 	bool CheckInventoryHasSpace();
 
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool AddItemToInventory(FItemDataSlot ItemDataSlot);
-		
+
+	bool AddItemToInventory(FItemDataSlot ItemDataSlot);
+	bool AddItemToInventory(FString ItemName, int32 Quantity);
+
+
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		void PopItemFromInventory(int32 Index);
 

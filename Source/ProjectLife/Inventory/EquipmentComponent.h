@@ -9,6 +9,7 @@
 
 class UInventoryComponent;
 class ABasicWeapon;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIFE_API UEquipmentComponent : public UActorComponent
 {
@@ -19,17 +20,17 @@ public:
 	UEquipmentComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		UEquipmentItemData* WeaponData;
+		FEquipmentItemData WeaponData;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		UEquipmentItemData* ShieldData;
+		FEquipmentItemData ShieldData;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		UEquipmentItemData* ArmorData;
+		FEquipmentItemData ArmorData;
 
 	/* 2 Slot for Accessories*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		UEquipmentItemData* AccessoryData1;
+		FEquipmentItemData AccessoryData1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		UEquipmentItemData* AccessoryData2;
+		FEquipmentItemData AccessoryData2;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment")
 		ABasicWeapon* CurrentWeapon;
@@ -43,9 +44,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	bool SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSlot InData);
-	bool SetEquipment(EEquipmentSlot EquipmentSlot, UEquipmentItemData* InData);
+	bool SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentItemData InData);
 
-	UEquipmentItemData* GetEquipmentData(EEquipmentSlot Equipmentslot);
+	FEquipmentItemData GetEquipmentData(EEquipmentSlot Equipmentslot);
 	bool SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex);
 
 	void ApplyEquipment();

@@ -74,34 +74,29 @@ void UShoppingSlot::InitShoppingSlot(AShoppingActor* ShopOwner, int32 Index)
 		AItem* item = ShopOwner->Items[Index].GetDefaultObject();
 		if (item)
 		{
-			FItemDataSlot itemDataSlot = item->ItemDataSlot;
+			FItemDataSlot itemDataSlot;// = item->ItemDataSlot;
+			
+			FItemData itemData = itemDataSlot.ItemData;
 
-			if (IsValid(itemDataSlot.ItemData))
+			if (IsValid(SlotImage) && IsValid(itemData.Thumbnail))
 			{
-				UItemData* itemData = itemDataSlot.ItemData.GetDefaultObject();
-
-				if (IsValid(itemData))
-				{
-
-					if (IsValid(SlotImage) && IsValid(itemData->Thumbnail))
-					{
-						SlotImage->SetBrushFromTexture(itemData->Thumbnail);
-					}
-
-					if (IsValid(SlotItemName))
-					{
-						SlotItemName->SetText(FText::FromString(itemData->Name));
-					}
-
-					if (IsValid(SlotItemPrice))
-					{
-						FString priceText = FString::FromInt(itemData->ItemPrice) + FString("$");
-						SlotItemPrice->SetText(FText::FromString(priceText));
-					}
-
-					ItemDataSlot = itemDataSlot;
-				}
+				SlotImage->SetBrushFromTexture(itemData.Thumbnail);
 			}
+
+			if (IsValid(SlotItemName))
+			{
+				SlotItemName->SetText(FText::FromString(itemData.Name));
+			}
+
+			if (IsValid(SlotItemPrice))
+			{
+				FString priceText = FString::FromInt(itemData.ItemPrice) + FString("$");
+				SlotItemPrice->SetText(FText::FromString(priceText));
+			}
+
+			ItemDataSlot = itemDataSlot;
+				
+			
 		}
 	}
 }

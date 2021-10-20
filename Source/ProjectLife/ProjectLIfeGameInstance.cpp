@@ -3,6 +3,7 @@
 
 #include "ProjectLIfeGameInstance.h"
 #include "Quest/Quest.h"
+#include "Item/ItemStruct.h"
 
 void UProjectLIfeGameInstance::AddQuest(TSubclassOf<UQuest> InQuest)
 {
@@ -77,4 +78,28 @@ void UProjectLIfeGameInstance::QuestClear(TSubclassOf<UQuest> WantToClear)
 		CompleteQuests.Add(Quests[questIndex]);
 		Quests.RemoveAt(questIndex);
 	}
+}
+
+FItemData UProjectLIfeGameInstance::GetItemDataFromTable(FString Name)
+{
+	if (IsValid(ItemDataTable))
+	{
+		FItemData* itemData = ItemDataTable->FindRow<FItemData>(FName(*Name), "");
+
+		return *itemData; // Some Issue Potentially?
+	}
+
+	return FItemData();
+}
+
+FEquipmentItemData UProjectLIfeGameInstance::GetEquipmentItemDataFromTable(FString Name)
+{
+	if (IsValid(EquipmentDataTable))
+	{
+		FEquipmentItemData* EquipmentData = EquipmentDataTable->FindRow<FEquipmentItemData>(FName(*Name), "");
+
+		return *EquipmentData; // Some Issue Potentially?
+	}
+
+	return FEquipmentItemData();
 }

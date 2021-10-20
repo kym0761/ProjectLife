@@ -30,8 +30,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
 		int32 Y;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
-		TArray<UGridComponent*> NearGrids;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
+	//	TArray<UGridComponent*> NearGrids;
 
 public:
 
