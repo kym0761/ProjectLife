@@ -9,6 +9,7 @@
 
 class AItem;
 class ABasicWeapon;
+class UStaticMesh;
 
 UENUM(BlueprintType)
 enum class EItemType: uint8
@@ -74,6 +75,8 @@ struct FItemData : public FTableRowBase
 		EItemRarity ItemRarity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 ItemPrice;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		UStaticMesh* ItemMesh;
 
 	FItemData();
 };

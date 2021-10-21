@@ -26,9 +26,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment")
 		UEquipmentComponent* EquipmentCompRef;
 	
+	//Set Equipment Slot Type
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentSlot EquipmentSlot;
 
+	//Set What Type is Available
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentType SlotEquipmentType;
 	

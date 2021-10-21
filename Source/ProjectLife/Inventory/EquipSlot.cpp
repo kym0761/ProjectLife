@@ -93,7 +93,6 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
 
-
 	if (InOperation)
 	{
 		//if a dropped slot is a Item Slot
@@ -116,6 +115,16 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 					{
 						FEquipmentItemData equipmentItemData; // TODO
 
+						UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+						if (IsValid(gameInstance))
+						{
+							equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
+						}
+						else
+						{
+							return false;
+						}
+
 						if (equipmentItemData.EquipmentType == SlotEquipmentType)
 						{
 							FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
@@ -125,7 +134,12 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 							{
 								FItemDataSlot temp;
 								//TODO equipmentData to item data.
-								//temp.ItemData = currentEquipment;
+								if (IsValid(gameInstance))
+								{
+									temp.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);;
+								}
+
+								
 								temp.Quantity = 1;
 								inventoryRef->InventoryArray[index] = temp;
 							}
