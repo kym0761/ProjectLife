@@ -79,6 +79,15 @@ struct FItemData : public FTableRowBase
 		UStaticMesh* ItemMesh;
 
 	FItemData();
+
+	FORCEINLINE bool operator==(const FItemData& Other)
+	{
+		return (Name == Other.Name);
+	}
+	FORCEINLINE bool operator!=(const FItemData& Other)
+	{
+		return !(Name == Other.Name);
+	}
 };
 
 USTRUCT(BlueprintType)
@@ -108,6 +117,15 @@ struct FEquipmentItemData : public FTableRowBase
 		TSubclassOf<ABasicWeapon> WeaponClass;
 
 	FEquipmentItemData();
+
+	FORCEINLINE bool operator==(const FEquipmentItemData& Other)
+	{
+		return (Name == Other.Name);
+	}
+	FORCEINLINE bool operator!=(const FEquipmentItemData& Other)
+	{
+		return !(Name == Other.Name);
+	}
 };
 
 USTRUCT(BlueprintType)

@@ -82,11 +82,19 @@ void UProjectLIfeGameInstance::QuestClear(TSubclassOf<UQuest> WantToClear)
 
 FItemData UProjectLIfeGameInstance::GetItemDataFromTable(FString Name)
 {
+	if (!(Name.Len() > 0))
+	{
+		return FItemData();
+	}
+
 	if (IsValid(ItemDataTable))
 	{
 		FItemData* itemData = ItemDataTable->FindRow<FItemData>(FName(*Name), "");
 
-		return *itemData; // Some Issue Potentially?
+		if (itemData != nullptr)
+		{
+			return *itemData; // Some Issue Potentially?
+		}
 	}
 
 	return FItemData();
@@ -94,11 +102,21 @@ FItemData UProjectLIfeGameInstance::GetItemDataFromTable(FString Name)
 
 FEquipmentItemData UProjectLIfeGameInstance::GetEquipmentItemDataFromTable(FString Name)
 {
+
+	if (!(Name.Len() > 0))
+	{
+		return FEquipmentItemData();
+	}
+	
+
 	if (IsValid(EquipmentDataTable))
 	{
 		FEquipmentItemData* EquipmentData = EquipmentDataTable->FindRow<FEquipmentItemData>(FName(*Name), "");
 
-		return *EquipmentData; // Some Issue Potentially?
+		if (EquipmentData != nullptr)
+		{
+			return *EquipmentData; // Some Issue Potentially?
+		}
 	}
 
 	return FEquipmentItemData();

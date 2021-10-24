@@ -8,6 +8,7 @@
 #include "../Storage/StorageWidget.h"
 #include "Animation/WidgetAnimation.h"
 #include "InteractNotifyWidget.h"
+#include "../Equipment/EquipmentWidget.h"
 
 void UMainHUD::NativeConstruct()
 {
@@ -51,6 +52,14 @@ void UMainHUD::ToggleInventory()
 			PlayAnimationForward(InventoryAnimation);
 		}
 
+	}
+}
+
+void UMainHUD::UpdateEquipment()
+{
+	if (IsValid(Widget_Equipment))
+	{
+		Widget_Equipment->UpdateEquipmentWidget();
 	}
 }
 

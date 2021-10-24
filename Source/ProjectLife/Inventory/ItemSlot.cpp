@@ -11,8 +11,8 @@
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../Base/BasicPlayerController.h"
-#include "EquipSlot.h"
-#include "EquipmentComponent.h"
+#include "../Equipment/EquipSlot.h"
+#include "../Equipment/EquipmentComponent.h"
 
 //#include "Kismet/KismetInputLibrary.h"
 //#include "Blueprint/SlateBlueprintLibrary.h"
@@ -41,6 +41,11 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 	if (IsValid(InventoryRef))
 	{
 		FItemData itemData = InventoryRef->InventoryArray[InventoryIndex].ItemData;
+
+		if (itemData == FItemData())
+		{
+			return;
+		}
 
 		if (IsValid(ItemSlotClass))
 		{
@@ -106,10 +111,11 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 						if (playerController)
 						{
-							UE_LOG(LogTemp,Warning,TEXT("Attempt Update"));
+							//UE_LOG(LogTemp,Warning,TEXT("Attempt Update Inventory"));
 							playerController->UpdateInventory();
+							return true;
 						}
-						return true;
+
 					}
 				}
 			}
@@ -118,23 +124,30 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 		/*EquipSlot, similar With [Item Slot] code*/
 		{
 			UEquipSlot* droppedEquipSlot = Cast<UEquipSlot>(InOperation->Payload);
-			if (IsValid( droppedEquipSlot))
+			if (IsValid(droppedEquipSlot))
 			{
 				UEquipmentComponent* equipmentComp = droppedEquipSlot->EquipmentCompRef;
 				EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
 
-				if (equipmentComp)
+				if (IsValid(equipmentComp))
 				{
 					bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentslot, InventoryRef, InventoryIndex);
 					if (bSucceed)
 					{
+						UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip OK? "));
+
 						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 						if (playerController)
 						{
-							UE_LOG(LogTemp, Warning, TEXT("Attempt Update"));
+							//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
 							playerController->UpdateInventory();
+							playerController->UpdateEquipment();
+							return true;
 						}
-						return true;
+					}
+					else
+					{
+						UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
 					}
 				}
 			}
@@ -142,7 +155,7 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InOperation is Not Valid."));
+		UE_LOG(LogTemp, Warning, TEXT("InOperation in ItemSlot is NULL."));
 	}
 
 

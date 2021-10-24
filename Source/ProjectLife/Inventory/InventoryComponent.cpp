@@ -154,91 +154,6 @@ bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 		}
 	}
 
-	//if (IsValid(itemData))
-	//{
-
-	//	UE_LOG(LogTemp, Warning, TEXT("%s"), *itemData->Name);
-
-	//	if (itemData->bIsStackable && itemData->MaxQuantity < ItemDataSlot.Quantity)
-	//	{
-	//		//UE_LOG(LogTemp, Warning, TEXT("Item Quantity which Over the MaxQuantity is Impossible. so, Item Quantity will be set to MaxQuantity."));
-	//		ItemDataSlot.Quantity = itemData->MaxQuantity;
-	//	}
-
-	//	if (itemData->bIsStackable)
-	//	{
-	//		//Add Quantity of an identical item
-	//		for (int32 i = 0; i < InventoryArray.Num(); i++)
-	//		{
-	//			if (IsValid(InventoryArray[i].ItemData) && InventoryArray[i].ItemData == itemData->GetClass())
-	//			{
-	//				UE_LOG(LogTemp, Warning, TEXT("%s"), *itemData->Name);
-	//				UE_LOG(LogTemp, Warning, TEXT("%s"), *InventoryArray[i].ItemData.GetDefaultObject()->Name);
-
-	//				if (InventoryArray[i].Quantity + ItemDataSlot.Quantity <= InventoryArray[i].ItemData.GetDefaultObject()->MaxQuantity) // check enough for Max Quantity
-	//				{
-	//					InventoryArray[i].Quantity += ItemDataSlot.Quantity;
-	//					return true;
-	//				}
-	//			}
-	//		}
-
-	//		//if loop ended, there is no identical Item OR the Identical Item Slot is Full. so, Use Empty Inventory Space.
-	//		if (bHasSpace)
-	//		{
-	//			for (int32 i = 0; i < InventoryArray.Num(); i++)
-	//			{
-	//				//Identical Item
-	//				if (IsValid(InventoryArray[i].ItemData)&& InventoryArray[i].ItemData== itemData->GetClass())
-	//				{
-	//					//check excceed
-	//					if (InventoryArray[i].Quantity + ItemDataSlot.Quantity > InventoryArray[i].ItemData.GetDefaultObject()->MaxQuantity)
-	//					{
-	//						int32 temp = InventoryArray[i].Quantity + ItemDataSlot.Quantity;
-	//						InventoryArray[i].Quantity = InventoryArray[i].ItemData.GetDefaultObject()->MaxQuantity;
-	//						ItemDataSlot.Quantity = temp - InventoryArray[i].Quantity;
-	//						break; //temp Quantity won't excceed MaxQuantity. so, go to the Next Procedure.
-	//					}
-	//					else// if not excceed, join and End Function.
-	//					{
-	//						InventoryArray[i].Quantity += ItemDataSlot.Quantity;
-	//						return true;
-	//					}
-	//				}
-
-	//			}
-
-	//			//if there is LeftOver, just Add in Empty Space.
-	//			for (int32 i = 0; i < InventoryArray.Num(); i++)
-	//			{
-	//				if (InventoryArray[i].ItemData == nullptr)
-	//				{
-	//					InventoryArray[i] = ItemDataSlot;
-	//					return true;
-	//				}
-	//			}
-	//		}
-	//	}
-	//	else // Can't Stackable Item. - etc)Equipment, Accessory.. - this will be Just Assigned in Empty Space.
-	//	{
-	//		if (bHasSpace)
-	//		{
-	//			for (int32 i = 0; i < InventoryArray.Num(); i++)
-	//			{
-	//				if (InventoryArray[i].ItemData == nullptr)
-	//				{
-	//					InventoryArray[i] = ItemDataSlot;
-	//					return true;
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	////else 
-	////{
-	////	UE_LOG(LogTemp,Warning,TEXT("Item Data Is Not Valid."));
-	////}
-
 	//UE_LOG(LogTemp, Warning, TEXT("Add to Inventory Failed."));
 	////there is no Enough Space to Pick it up.
 	return false;
@@ -246,6 +161,8 @@ bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 
 bool UInventoryComponent::AddItemToInventory(FString ItemName, int32 Quantity)
 {
+	// add item data from gameinstance's data table.
+
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
 	if (IsValid(gameInstance))
@@ -255,11 +172,6 @@ bool UInventoryComponent::AddItemToInventory(FString ItemName, int32 Quantity)
 		FItemDataSlot itemDataSlot;
 		itemDataSlot.ItemData = itemData;
 		itemDataSlot.Quantity = Quantity;
-
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(256, 5.0f, FColor::Silver, TEXT("OK1"));
-		}
 
 		bool bSucceed = AddItemToInventory(itemDataSlot);
 		return bSucceed;
@@ -326,7 +238,7 @@ bool UInventoryComponent::SwapInventoryItem(int32 CurrentInventoryIndex, UInvent
 			return true;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("S&J Failed"));
+	UE_LOG(LogTemp, Warning, TEXT("Swap & Join Failed"));
 	return false;
 }
 

@@ -14,7 +14,7 @@
 #include "BasicWeapon.h"
 #include "Blueprint/UserWidget.h" // CreateWidget
 #include "BasicPlayerController.h"
-#include "../Inventory/EquipmentComponent.h"
+#include "../Equipment/EquipmentComponent.h"
 #include "SpeechWidgetComponent.h"
 #include "DamageTextActor.h"
 #include "Components/SceneComponent.h"

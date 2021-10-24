@@ -2,7 +2,7 @@
 
 
 #include "EquipmentComponent.h"
-#include "InventoryComponent.h"
+#include "../Inventory/InventoryComponent.h"
 #include "../Base/StatComponent.h"
 #include "../Base/BasicWeapon.h"
 #include "../Base/BasicCharacter.h"
@@ -109,6 +109,33 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSl
 			ApplyEquipment();
 		}
 	}
+	else if (itemData == FItemData())
+	{
+		switch (EquipmentSlot)
+		{
+		case EEquipmentSlot::Weapon:
+			WeaponData = FEquipmentItemData();
+			break;
+		case EEquipmentSlot::Shield:
+			ShieldData = FEquipmentItemData();
+			break;
+		case EEquipmentSlot::Armor:
+			ArmorData = FEquipmentItemData();
+			break;
+		case EEquipmentSlot::Accessory1:
+			AccessoryData1 = FEquipmentItemData();
+			break;
+		case EEquipmentSlot::Accessory2:
+			AccessoryData2 = FEquipmentItemData();
+			break;
+		default:
+			break;
+		}
+
+		bEquipable = true;
+
+		ApplyEquipment();
+	}
 
 	return bEquipable;
 }
@@ -117,44 +144,29 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentI
 {
 	bool bEquipable = false;
 
-	//Check Valid.
-	switch (EquipmentSlot)
-	{
-	case EEquipmentSlot::Weapon:
-		bEquipable = (InData.EquipmentType == EEquipmentType::Weapon);
-		break;
-	case EEquipmentSlot::Shield:
-		bEquipable = (InData.EquipmentType == EEquipmentType::Shield);
-		break;
-	case EEquipmentSlot::Armor:
-		bEquipable = (InData.EquipmentType == EEquipmentType::Armor);
-		break;
-	case EEquipmentSlot::Accessory1:
-	case EEquipmentSlot::Accessory2:
-		bEquipable = (InData.EquipmentType == EEquipmentType::Accessory);
-		break;
-	default:
-		break;
-	}
-
-	if (bEquipable)
+	if (InData == FEquipmentItemData())
 	{
 		switch (EquipmentSlot)
 		{
 		case EEquipmentSlot::Weapon:
-			WeaponData = InData;
+			WeaponData = FEquipmentItemData();
+			bEquipable = true;
 			break;
 		case EEquipmentSlot::Shield:
-			ShieldData = InData;
+			ShieldData = FEquipmentItemData();
+			bEquipable = true;
 			break;
 		case EEquipmentSlot::Armor:
-			ArmorData = InData;
+			ArmorData = FEquipmentItemData();
+			bEquipable = true;
 			break;
 		case EEquipmentSlot::Accessory1:
-			AccessoryData1 = InData;
+			AccessoryData1 = FEquipmentItemData();
+			bEquipable = true;
 			break;
 		case EEquipmentSlot::Accessory2:
-			AccessoryData2 = InData;
+			AccessoryData2 = FEquipmentItemData();
+			bEquipable = true;
 			break;
 		default:
 			break;
@@ -162,6 +174,55 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentI
 
 		ApplyEquipment();
 	}
+	else
+	{
+		//Check Valid.
+		switch (EquipmentSlot)
+		{
+		case EEquipmentSlot::Weapon:
+			bEquipable = (InData.EquipmentType == EEquipmentType::Weapon);
+			break;
+		case EEquipmentSlot::Shield:
+			bEquipable = (InData.EquipmentType == EEquipmentType::Shield);
+			break;
+		case EEquipmentSlot::Armor:
+			bEquipable = (InData.EquipmentType == EEquipmentType::Armor);
+			break;
+		case EEquipmentSlot::Accessory1:
+		case EEquipmentSlot::Accessory2:
+			bEquipable = (InData.EquipmentType == EEquipmentType::Accessory);
+			break;
+		default:
+			break;
+		}
+
+		if (bEquipable)
+		{
+			switch (EquipmentSlot)
+			{
+			case EEquipmentSlot::Weapon:
+				WeaponData = InData;
+				break;
+			case EEquipmentSlot::Shield:
+				ShieldData = InData;
+				break;
+			case EEquipmentSlot::Armor:
+				ArmorData = InData;
+				break;
+			case EEquipmentSlot::Accessory1:
+				AccessoryData1 = InData;
+				break;
+			case EEquipmentSlot::Accessory2:
+				AccessoryData2 = InData;
+				break;
+			default:
+				break;
+			}
+
+			ApplyEquipment();
+		}
+	}
+
 
 	return bEquipable;
 }
@@ -189,24 +250,47 @@ FEquipmentItemData UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipmen
 bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex)
 {
 	//Swap Equip <-> Inventory.
-
-
 	if (IsValid(Inventory))
 	{
-
 		FItemDataSlot inInventory = Inventory->InventoryArray[InventoryIndex];
+		
+		FEquipmentItemData currentEquipment = GetEquipmentData(Equipmentslot);
 
-		if (inInventory.ItemData.ItemType == EItemType::Equipment)
+		FItemDataSlot fromEquipment;
+
+		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (IsValid(gameInstance))
+		{
+			fromEquipment.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
+			if (fromEquipment.ItemData == FItemData())
+			{
+				fromEquipment.Quantity = 0;
+			}
+			else
+			{
+				fromEquipment.Quantity = 1;
+			}
+		}
+
+		if (inInventory.ItemData.ItemType == EItemType::Equipment || (inInventory.ItemData == FItemData()) )
 		{
 			bool bSucceed = SetEquipment(Equipmentslot, inInventory);
+			if (bSucceed)
+			{
+				Inventory->InventoryArray[InventoryIndex] = fromEquipment;
+			}
+
 			return bSucceed;
 		}
+
 	}
+
 	return false;
 }
 
 void UEquipmentComponent::ApplyEquipment()
 {
+	//TODO : Only Do it When Weapon is Changed?
 
 	//Remove past Weapon.
 	if (CurrentWeapon)

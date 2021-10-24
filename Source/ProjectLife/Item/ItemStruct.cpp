@@ -15,6 +15,7 @@ FItemData::FItemData()
 	ItemType = EItemType::None;
 	ItemRarity = EItemRarity::Normal;
 	ItemPrice = 0;
+	ItemMesh = nullptr;
 }
 
 FItemDataSlot::FItemDataSlot()

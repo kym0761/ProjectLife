@@ -113,3 +113,11 @@ void ABasicPlayerController::UnnotifyInteract()
 		MainHUDRef->UnnotifyInteract();
 	}
 }
+
+void ABasicPlayerController::UpdateEquipment()
+{
+	if (IsValid(MainHUDRef))
+	{
+		MainHUDRef->UpdateEquipment();
+	}
+}

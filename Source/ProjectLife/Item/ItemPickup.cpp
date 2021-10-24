@@ -43,6 +43,7 @@ void AItemPickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//item 정보가 없을 시에는 랜덤 정보를 가져와서 템을 생성함.
 	if (ItemName.IsEmpty())
 	{
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));

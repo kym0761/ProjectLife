@@ -33,9 +33,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 		UStaticMeshComponent* Mesh;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	//FItemDataSlot ItemDataSlot;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString ItemName;
 

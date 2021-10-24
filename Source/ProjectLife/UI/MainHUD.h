@@ -11,7 +11,7 @@ class UInventoryWidget;
 class UConditionWidget;
 class UStorageWidget;
 class UInteractNotifyWidget;
-
+class UEquipmentWidget;
 class UWidgetAnimation;
 
 class AAbility;
@@ -40,6 +40,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UStorageWidget* Widget_Storage;
 
+	UPROPERTY(Meta = (BindWidget))
+		UEquipmentWidget* Widget_Equipment;
 
 	UPROPERTY()
 		bool bInventoryUsing;
@@ -59,6 +61,8 @@ public:
 
 	void UpdateInventory();
 	void ToggleInventory();
+
+	void UpdateEquipment();
 
 	void ToggleStorageWidget(AActor* StorageActorRef);
 

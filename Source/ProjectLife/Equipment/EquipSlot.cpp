@@ -4,8 +4,8 @@
 #include "EquipSlot.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Components/Image.h"
-#include "ItemSlot.h"
-#include "InventoryComponent.h"
+#include "../Inventory/ItemSlot.h"
+#include "../Inventory/InventoryComponent.h"
 #include "EquipmentComponent.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -50,12 +50,17 @@ void UEquipSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointe
 	//Make New Equip Slot For Drag.
 	if (IsValid(EquipmentCompRef))
 	{
+		//current
 		FEquipmentItemData equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 
+		if (equipmentItemData == FEquipmentItemData())
+		{
+			return;
+		}
 
-		//Issue Potential
+		//it can have some Issue Potentially
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		FItemData itemData; //TODO
+		FItemData itemData;
 		if (IsValid(gameInstance))
 		{
 			itemData = gameInstance->GetItemDataFromTable(equipmentItemData.Name);
@@ -92,7 +97,6 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
-
 	if (InOperation)
 	{
 		//if a dropped slot is a Item Slot
@@ -119,13 +123,15 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 						if (IsValid(gameInstance))
 						{
 							equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
+
+							//UE_LOG(LogTemp, Warning, TEXT("Get Equip Slot Data"));
 						}
 						else
 						{
 							return false;
 						}
 
-						if (equipmentItemData.EquipmentType == SlotEquipmentType)
+						if (equipmentItemData.EquipmentType == EquipmentType)
 						{
 							FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 
@@ -133,31 +139,46 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 							if (bSucceed)
 							{
 								FItemDataSlot temp;
-								//TODO equipmentData to item data.
-								if (IsValid(gameInstance))
+								if (IsValid(gameInstance) && currentEquipment != FEquipmentItemData())
 								{
-									temp.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);;
+									temp.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
 								}
 
-								
-								temp.Quantity = 1;
+								if (temp.ItemData == FItemData())
+								{
+									temp.Quantity = 0;
+									//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 0"));
+								}
+								else
+								{
+									temp.Quantity = 1;
+									//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 1"));
+								}
+
 								inventoryRef->InventoryArray[index] = temp;
 							}
-							else
-							{
-								FItemDataSlot temp;
-								temp.Quantity = 0;
-								inventoryRef->InventoryArray[index] = temp;
-							}
+							//else
+							//{
+							//	UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : Set Equipment() is failed"));
+							//}
 
 							ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 							if (playerController)
 							{
 								playerController->UpdateInventory();
+								playerController->UpdateEquipment();
+								return true;
 							}
-							return true;
 						}
 					}
+				}
+				else if (!IsValid(inventoryRef))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(inventoryRef) is not valid"));
+				}
+				else if (!IsValid(EquipmentCompRef))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(EquipmentCompRef) is not valid"));
 				}
 			}
 		}
@@ -168,24 +189,26 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 			UEquipSlot* dropped = Cast<UEquipSlot>(InOperation->Payload);
 			if (IsValid(dropped))
 			{
-				if (IsValid(dropped->EquipmentCompRef) && IsValid(EquipmentCompRef) && EquipmentSlot == dropped->EquipmentSlot)
+				if (IsValid(dropped->EquipmentCompRef) && IsValid(EquipmentCompRef) && (EquipmentType == dropped->EquipmentType) && (EquipmentSlot != dropped->EquipmentSlot))
 				{
 					FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 					FEquipmentItemData droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
-					
 
-						dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
-						EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
+					bool s1 = dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
+					bool s2 = EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
 
-						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-						if (playerController)
-						{
-							playerController->UpdateInventory();
-						}
+					if ((s1 && s2) == false)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Something is Not Right."));
+					}
 
+					ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+					if (playerController)
+					{
+						playerController->UpdateInventory();
+						playerController->UpdateEquipment();
 						return true;
-
-					
+					}
 				}
 			}
 		}
@@ -202,19 +225,23 @@ void UEquipSlot::UpdateSlot()
 	{
 		FEquipmentItemData equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 		
-		// TODO..
-		//Issue Potential
+
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		FItemData itemData; //TODO
+		FItemData itemData;
 		if (IsValid(gameInstance))
 		{
 			itemData = gameInstance->GetItemDataFromTable(equipmentItemData.Name);
+			//UE_LOG(LogTemp, Warning, TEXT("Get Item Data.."));
 		}
 
 		if (IsValid(SlotImage) && IsValid(itemData.Thumbnail))//Set Image
 		{
 			SlotImage->SetBrushFromTexture(itemData.Thumbnail);
 			//UE_LOG(LogTemp, Warning, TEXT("Image Updated"));
+		}
+		else //empty
+		{
+			SlotImage->SetBrushFromTexture(nullptr);
 		}
 		
 

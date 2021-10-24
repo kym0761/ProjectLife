@@ -32,7 +32,7 @@ public:
 
 	//Set What Type is Available
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		EEquipmentType SlotEquipmentType;
+		EEquipmentType EquipmentType;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TSubclassOf<UEquipSlot> EquipSlotClass;
