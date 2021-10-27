@@ -9,16 +9,17 @@
 #include "ConfirmShopping.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 
+
+
 void UShoppingSlot::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-
+	ShopOwnerRef = nullptr;
 }
 
 FReply UShoppingSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	return FReply::Handled();
@@ -32,7 +33,6 @@ void UShoppingSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPoi
 
 bool UShoppingSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
 	return false;
@@ -42,18 +42,18 @@ FReply UShoppingSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const F
 {
 	Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, TEXT("ButtonUP"));
-	}
+	//if (GEngine)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, TEXT("ButtonUP"));
+	//}
 
 	if (ConfirmShoppingClass)
 	{
 		UConfirmShopping* confirmShopping = CreateWidget<UConfirmShopping>(GetOwningPlayer(), ConfirmShoppingClass);
 		if (confirmShopping)
 		{
+			confirmShopping->InitConfirmShopping(ShopOwnerRef, ItemIndex);
 			confirmShopping->AddToViewport();
-			confirmShopping->ItemDataSlot = ItemDataSlot;
 		}
 	}
 	else
@@ -63,40 +63,45 @@ FReply UShoppingSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const F
 			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, TEXT("ConfirmShoppingWidget is Not Exist"));
 		}
 	}
+
 	return FReply::Handled();
 }
 
 void UShoppingSlot::InitShoppingSlot(AShoppingActor* ShopOwner, int32 Index)
 {
-	if (ShopOwner && ShopOwner->Items.IsValidIndex(Index))
+	if (IsValid(ShopOwner) && ShopOwner->Items.IsValidIndex(Index))
 	{
+		FItemData itemData = ShopOwner->Items[Index];
 
-		AItem* item = ShopOwner->Items[Index].GetDefaultObject();
-		if (item)
+		if (IsValid(SlotImage) && IsValid(itemData.Thumbnail))
 		{
-			FItemDataSlot itemDataSlot;// = item->ItemDataSlot;
-			
-			FItemData itemData = itemDataSlot.ItemData;
-
-			if (IsValid(SlotImage) && IsValid(itemData.Thumbnail))
-			{
-				SlotImage->SetBrushFromTexture(itemData.Thumbnail);
-			}
-
-			if (IsValid(SlotItemName))
-			{
-				SlotItemName->SetText(FText::FromString(itemData.Name));
-			}
-
-			if (IsValid(SlotItemPrice))
-			{
-				FString priceText = FString::FromInt(itemData.ItemPrice) + FString("$");
-				SlotItemPrice->SetText(FText::FromString(priceText));
-			}
-
-			ItemDataSlot = itemDataSlot;
-				
-			
+			SlotImage->SetBrushFromTexture(itemData.Thumbnail);
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("FAILED"));
+		}
+			
+		if (IsValid(SlotItemName))
+		{
+			SlotItemName->SetText(FText::FromString(itemData.Name));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("FAILED"));
+		}
+
+		if (IsValid(SlotItemPrice))
+		{
+			FString priceText = FString::FromInt(itemData.ItemPrice) + FString("$");
+			SlotItemPrice->SetText(FText::FromString(priceText));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("FAILED"));
+		}
+
+		ItemIndex = Index;
+		ShopOwnerRef = ShopOwner;
 	}
 }

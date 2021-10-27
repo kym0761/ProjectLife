@@ -29,8 +29,11 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* SlotItemPrice;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button")
-		FItemDataSlot ItemDataSlot;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Button")
+		int32 ItemIndex;
+
+	UPROPERTY()
+	AShoppingActor* ShopOwnerRef;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button")
 		TSubclassOf<UConfirmShopping> ConfirmShoppingClass;

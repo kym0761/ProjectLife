@@ -151,3 +151,18 @@ struct FItemDataSlot
 
 	FItemDataSlot();
 };
+
+USTRUCT(BlueprintType)
+struct FShopItemData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		FString ItemName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		bool bLimited;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		int32 Quantity;
+
+	FShopItemData();
+};

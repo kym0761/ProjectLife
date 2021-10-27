@@ -8,7 +8,7 @@
 #include "ProjectLIfeGameInstance.generated.h"
 
 class UQuest;
-
+class UDataTable;
 /**
  * 
  */
@@ -26,10 +26,10 @@ public:
 		TArray<TSubclassOf<UQuest>> CompleteQuests;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		class UDataTable* ItemDataTable;
+		UDataTable* ItemDataTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		class UDataTable* EquipmentDataTable;
+		UDataTable* EquipmentDataTable;
 
 	UFUNCTION(BlueprintCallable)
 		void AddQuest(TSubclassOf<UQuest> InQuest);

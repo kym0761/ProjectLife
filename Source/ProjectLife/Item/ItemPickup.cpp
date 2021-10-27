@@ -94,35 +94,35 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 
 }
 
-bool AItemPickup::UseItem_Implementation()
-{
-
-	FItemData itemdata;
-
-	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (IsValid(gameInstance))
-	{
-		itemdata = gameInstance->GetItemDataFromTable(ItemName);
-
-		switch (itemdata.ItemType)
-		{
-		case EItemType::Consumption:
-			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Consumption"));
-			break;
-		case EItemType::Equipment:
-			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Equipment"));
-			break;
-		case EItemType::Resource:
-			UE_LOG(LogTemp, Warning, TEXT("Resource Item Will not Need Use Item function Maybe..?"));
-			break;
-		default:
-			UE_LOG(LogTemp, Warning, TEXT("I don't Know.."));
-			break;
-		}
-
-		return true;
-	}
-
-	return false;
-}
+//bool AItemPickup::UseItem_Implementation()
+//{
+//
+//	FItemData itemdata;
+//
+//	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+//	if (IsValid(gameInstance))
+//	{
+//		itemdata = gameInstance->GetItemDataFromTable(ItemName);
+//
+//		switch (itemdata.ItemType)
+//		{
+//		case EItemType::Consumption:
+//			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Consumption"));
+//			break;
+//		case EItemType::Equipment:
+//			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Equipment"));
+//			break;
+//		case EItemType::Resource:
+//			UE_LOG(LogTemp, Warning, TEXT("Resource Item Will not Need Use Item function Maybe..?"));
+//			break;
+//		default:
+//			UE_LOG(LogTemp, Warning, TEXT("I don't Know.."));
+//			break;
+//		}
+//
+//		return true;
+//	}
+//
+//	return false;
+//}
 

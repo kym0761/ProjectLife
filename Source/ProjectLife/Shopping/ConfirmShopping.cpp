@@ -6,6 +6,7 @@
 #include "Components/TextBlock.h"
 #include "../Inventory/InventoryComponent.h"
 #include "../Base/BasicPlayerController.h"
+#include "ShoppingActor.h"
 
 void UConfirmShopping::NativeConstruct()
 {
@@ -47,7 +48,6 @@ void UConfirmShopping::NativeConstruct()
 		TextBlock_Quantity->SynchronizeProperties();
 	}
 
-	Quantity = 0;
 }
 
 void UConfirmShopping::Clicked_OK()
@@ -57,12 +57,8 @@ void UConfirmShopping::Clicked_OK()
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 	if (IsValid(inventory))
 	{
-		FItemDataSlot temp = ItemDataSlot;
-		temp.Quantity = Quantity;
-
-		//UE_LOG(LogTemp, Warning, TEXT(" ItemData Name : %s"), *temp.ItemData.GetDefaultObject()->Name);
-
-		bool bSucceed = inventory->Transaction(temp);
+		//TODO : Transaction move to ShoppingActor
+		bool bSucceed = ShopOwnerRef->Transaction(inventory, Quantity, ItemIndex);
 		if (bSucceed)
 		{
 			ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
@@ -89,16 +85,17 @@ void UConfirmShopping::Clicked_Plus()
 {
 	int32 tempQuantity = Quantity + 1;
 	bool bAffordable = false;
+
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 	if (inventory)
 	{
-		int32 tempPrice = tempQuantity * ItemDataSlot.ItemData.ItemPrice;
+		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
 		bAffordable = inventory->CheckEnoughMoney(tempPrice);
 	}
 
 	if (bAffordable)
 	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ItemDataSlot.ItemData.MaxQuantity);
+		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
 	}
 	else
 	{
@@ -113,13 +110,13 @@ void UConfirmShopping::Clicked_10Plus()
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 	if (inventory)
 	{
-		int32 tempPrice = tempQuantity * ItemDataSlot.ItemData.ItemPrice;
+		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
 		bAffordable = inventory->CheckEnoughMoney(tempPrice);
 	}
 
 	if (bAffordable)
 	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ItemDataSlot.ItemData.MaxQuantity);
+		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
 	}
 	else
 	{
@@ -129,15 +126,28 @@ void UConfirmShopping::Clicked_10Plus()
 
 void UConfirmShopping::Clicked_Minus()
 {
-	Quantity = FMath::Clamp(Quantity - 1, 0, ItemDataSlot.ItemData.MaxQuantity);
+	Quantity = FMath::Clamp(Quantity - 1, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
 }
 
 void UConfirmShopping::Clicked_10Minus()
 {
-	Quantity = FMath::Clamp(Quantity - 10, 0, ItemDataSlot.ItemData.MaxQuantity);
+	Quantity = FMath::Clamp(Quantity - 10, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
 }
 
 FText UConfirmShopping::SetQuantityText()
 {
 	return FText::FromString(FString::FromInt(Quantity));
+}
+
+void UConfirmShopping::InitConfirmShopping(AShoppingActor* ShopOwner, int32 Index)
+{
+	if (IsValid(ShopOwner) && ShopOwner->Items.IsValidIndex(Index))
+	{
+		ShopOwnerRef = ShopOwner;
+		ItemIndex = Index;
+	}
+	else // if not valid, Delete.
+	{
+		RemoveFromParent();
+	}
 }

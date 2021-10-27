@@ -20,7 +20,7 @@ FItemData::FItemData()
 
 FItemDataSlot::FItemDataSlot()
 {
-	Quantity = 1;
+	Quantity = 0;
 }
 
 FEquipmentItemData::FEquipmentItemData()
@@ -40,4 +40,11 @@ FEquipmentItemData::FEquipmentItemData()
 FConsumableItemData::FConsumableItemData()
 {
 	Name = FString("");
+}
+
+FShopItemData::FShopItemData()
+{
+	ItemName = FString();
+	bLimited = false;
+	Quantity = 1;
 }

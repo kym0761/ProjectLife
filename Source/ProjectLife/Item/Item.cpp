@@ -19,23 +19,6 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	SetRootComponent(Box);
-	Box->InitBoxExtent(FVector(32.0f));
-	Box->SetCollisionProfileName(TEXT("Item"));
-	//Collision->SetVisibility(false);
-	Box->ShapeColor = FColor::Black;
-	Box->SetSimulatePhysics(true);
-	Box->GetBodyInstance()->bLockXRotation = true;
-	Box->GetBodyInstance()->bLockYRotation = true;
-	Box->GetBodyInstance()->bLockZRotation = true;
-
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->InitSphereRadius(64.0f);
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned
@@ -52,28 +35,6 @@ void AItem::Tick(float DeltaTime)
 
 }
 
-void AItem::Interact_Implementation(APawn* InteractCauser)
-{
-	ABasicCharacter* player = Cast<ABasicCharacter>(InteractCauser);
-	
-	if (player)
-	{
-		bool bSucceeded = player->Inventory->AddItemToInventory(ItemName, Quantity);
-		//Add Succeeded, Update UI & Delete Item Actor.
-		if (bSucceeded)
-		{
-			ABasicPlayerController* playerController = player->GetController<ABasicPlayerController>();
-			if (playerController)
-			{
-				playerController->UpdateInventory();
-			}
-
-			Destroy();
-		}
-	}
-	
-}
-
 bool AItem::UseItem_Implementation()
 {
 	FItemData itemdata;
@@ -87,15 +48,19 @@ bool AItem::UseItem_Implementation()
 		{
 		case EItemType::Consumption:
 			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Consumption"));
+			SetLifeSpan(0.1f);
 			break;
 		case EItemType::Equipment:
 			UE_LOG(LogTemp, Warning, TEXT("C++ UseItem(), Type is Equipment"));
+			SetLifeSpan(0.1f);
 			break;
 		case EItemType::Resource:
 			UE_LOG(LogTemp, Warning, TEXT("Resource Item Will not Need Use Item function Maybe..?"));
+			SetLifeSpan(0.1f);
 			break;
 		default:
 			UE_LOG(LogTemp, Warning, TEXT("I don't Know.."));
+			SetLifeSpan(0.1f);
 			break;
 		}
 

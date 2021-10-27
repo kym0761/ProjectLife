@@ -77,7 +77,7 @@ bool UInventoryComponent::AddItemToInventory(FItemDataSlot ItemDataSlot)
 
 	FItemData itemData = ItemDataSlot.ItemData;
 
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *itemData.Name);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *itemData.Name);
 
 	if (itemData.bIsStackable && itemData.MaxQuantity < ItemDataSlot.Quantity)
 	{
@@ -263,7 +263,7 @@ bool UInventoryComponent::UseItemInInventory(int32 InventoryIndex)
 
 				//Use Item
 				bool bSucceed = item->UseItem();
-				item->SetLifeSpan(0.1f);
+				//item->SetLifeSpan(0.1f);
 
 				//if Item Use success
 				if (bSucceed)
@@ -320,19 +320,19 @@ bool UInventoryComponent::CheckEnoughMoney(int32 ToCompare)
 	return false;
 }
 
-bool UInventoryComponent::Transaction(FItemDataSlot InValue)
-{
-	int32 totalPrice = InValue.ItemData.ItemPrice * InValue.Quantity;
-
-	if (Money >= totalPrice)
-	{
-		bool bAddSucceed = AddItemToInventory(InValue);
-		if (bAddSucceed)
-		{
-			return SpendMoney(totalPrice);
-		}
-	}
-
-	return false;
-}
+//bool UInventoryComponent::Transaction(FItemDataSlot InValue)
+//{
+//	int32 totalPrice = InValue.ItemData.ItemPrice * InValue.Quantity;
+//
+//	if (Money >= totalPrice)
+//	{
+//		bool bAddSucceed = AddItemToInventory(InValue);
+//		if (bAddSucceed)
+//		{
+//			return SpendMoney(totalPrice);
+//		}
+//	}
+//
+//	return false;
+//}
 

@@ -50,8 +50,8 @@ public:
 	//Pickup Item.
 	void Interact_Implementation(APawn* InteractCauser);
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Item")
-		bool UseItem();
-	bool UseItem_Implementation();
+	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Item")
+	//	bool UseItem();
+	//bool UseItem_Implementation();
 
 };

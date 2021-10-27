@@ -9,6 +9,8 @@
 
 class UButton;
 class UTextBlock;
+class AShoppingActor;
+
 /**
  * 
  */
@@ -36,12 +38,13 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_Quantity;
 
-	//FItemDataSlot? or UItemData?
-	UPROPERTY()
-		FItemDataSlot ItemDataSlot;
-
 	UPROPERTY()
 		int32 Quantity;
+
+	UPROPERTY()
+		AShoppingActor* ShopOwnerRef;
+	UPROPERTY()
+		int32 ItemIndex;
 
 	virtual void NativeConstruct() override;
 
@@ -58,8 +61,9 @@ public:
 		void Clicked_Minus();
 	UFUNCTION()
 		void Clicked_10Minus();
-
 	UFUNCTION()
 		FText SetQuantityText();
+
+	void InitConfirmShopping(AShoppingActor* ShopOwner, int32 Index);
 
 };

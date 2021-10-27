@@ -27,7 +27,8 @@ FReply UEquipSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FP
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	//if (GEngine)
-	//{
+	//{ 
+	// ////ENUM PRINT CODE
 	//	UEnum* enumptr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EEquipmentType"), true);
 	//	if (enumptr)
 	//	{
@@ -194,13 +195,8 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 					FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 					FEquipmentItemData droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
 
-					bool s1 = dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
-					bool s2 = EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
-
-					if ((s1 && s2) == false)
-					{
-						UE_LOG(LogTemp, Warning, TEXT("Something is Not Right."));
-					}
+					dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
+					EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
 
 					ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 					if (playerController)
@@ -243,7 +239,5 @@ void UEquipSlot::UpdateSlot()
 		{
 			SlotImage->SetBrushFromTexture(nullptr);
 		}
-		
-
 	}
 }

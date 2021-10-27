@@ -11,6 +11,8 @@
 class Aitem;
 class UBoxComponent;
 class UShoppingWidget;
+class UDataTable;
+class UInventoryComponent;
 
 UCLASS()
 class PROJECTLIFE_API AShoppingActor : public AActor, public IInteractive
@@ -24,8 +26,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* ShoppingCollision;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
-		TArray<TSubclassOf<AItem>> Items;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
+		TArray<FShopItemData> ShopItems;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
+	TArray<FItemData> Items;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingWidget> ShoppingWidgetClass;
@@ -33,15 +38,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Shopping")
 		UShoppingWidget* ShoppingWidgetRef;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
+		UDataTable* ShoppingDataTable;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void InitShop();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
+
+	bool Transaction(UInventoryComponent* InventoryForPlayer, int32 Quantity, int32 Index);
 };

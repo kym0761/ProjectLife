@@ -13,24 +13,13 @@ class USphereComponent;
 class UStaticMeshComponent;
 
 UCLASS()
-class PROJECTLIFE_API AItem : public AActor , public IInteractive
+class PROJECTLIFE_API AItem : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
 	AItem();
-
-	//Needed for Main Collision.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
-		UBoxComponent* Box;
-
-	//Needed For Detection.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
-		USphereComponent* Sphere;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
-		UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString ItemName;
@@ -46,11 +35,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//Pickup Item.
-	void Interact_Implementation(APawn* InteractCauser);
-
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent,Category ="Item")
 		bool UseItem();
-		bool UseItem_Implementation();
+		virtual bool UseItem_Implementation();
 
 };
