@@ -319,20 +319,3 @@ bool UInventoryComponent::CheckEnoughMoney(int32 ToCompare)
 
 	return false;
 }
-
-//bool UInventoryComponent::Transaction(FItemDataSlot InValue)
-//{
-//	int32 totalPrice = InValue.ItemData.ItemPrice * InValue.Quantity;
-//
-//	if (Money >= totalPrice)
-//	{
-//		bool bAddSucceed = AddItemToInventory(InValue);
-//		if (bAddSucceed)
-//		{
-//			return SpendMoney(totalPrice);
-//		}
-//	}
-//
-//	return false;
-//}
-

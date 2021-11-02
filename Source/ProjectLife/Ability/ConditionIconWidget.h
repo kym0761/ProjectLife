@@ -18,7 +18,7 @@ class PROJECTLIFE_API UConditionIconWidget : public UUserWidget
 
 public:
 
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (BindWidget))
 		UImage* ConditionImage;
 
 	//Buff or DeBuff
@@ -27,5 +27,6 @@ public:
 
 	virtual void NativeConstruct() override;
 
+	UFUNCTION(BlueprintCallable)
 	void InitIcon(AAbility* ConditionActorRef);
 };

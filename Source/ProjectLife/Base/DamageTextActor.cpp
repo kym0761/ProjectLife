@@ -10,7 +10,7 @@
 ADamageTextActor::ADamageTextActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
 	SetRootComponent(WidgetComponent);
@@ -21,7 +21,6 @@ ADamageTextActor::ADamageTextActor()
 	ProjectileMovement->MaxSpeed = 100.0f;
 	ProjectileMovement->ProjectileGravityScale = 0.05f;
 	ProjectileMovement->Velocity = FVector(0.0f,0.0f,100.0f);
-
 
 	InitialLifeSpan = 1.5f;
 }

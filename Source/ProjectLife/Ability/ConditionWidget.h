@@ -19,7 +19,7 @@ class PROJECTLIFE_API UConditionWidget : public UUserWidget
 	
 public:
 
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (BindWidget))
 		UHorizontalBox* ConditionBox;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")

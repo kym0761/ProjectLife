@@ -54,6 +54,4 @@ public:
 
 	bool CheckEnoughMoney(int32 ToCompare);
 
-	//bool Transaction(FItemDataSlot InValue);
-
 };

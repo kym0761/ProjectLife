@@ -172,8 +172,14 @@ FReply UItemSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPoin
 		if (bSucceed)
 		{
 			UpdateSlot();
+
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage((int32)FMath::Rand(), 5.0f, FColor::Turquoise, TEXT("Using Item in your Inventory"));
+			}
 		}
 	}
+
 	return FReply::Handled();
 }
 

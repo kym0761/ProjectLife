@@ -16,6 +16,8 @@ class ABasicWeapon;
 class USpeechWidgetComponent;
 class ADamageTextActor;
 class USceneComponent;
+class UAbilityComponent;
+
 //class AFarmingTool;
 UENUM(BlueprintType)
 enum class ECameraType : uint8
@@ -53,11 +55,14 @@ public:
 
 	//StatComponent.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UStatComponent* Stat;
+		UStatComponent* StatComponent;
 
 	//EquipmentComponent
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UEquipmentComponent* Equipment;
+		UEquipmentComponent* EquipmentComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+		UAbilityComponent* AbilityComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TSubclassOf<ABasicWeapon> WeaponClass;

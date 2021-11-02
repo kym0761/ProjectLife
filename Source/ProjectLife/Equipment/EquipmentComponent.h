@@ -21,14 +21,18 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FEquipmentItemData WeaponData;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FEquipmentItemData ShieldData;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FEquipmentItemData ArmorData;
-
+	
 	/* 2 Slot for Accessories*/
+	/*Accessory1*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FEquipmentItemData AccessoryData1;
+	/*Accessory2*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FEquipmentItemData AccessoryData2;
 

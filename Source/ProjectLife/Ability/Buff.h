@@ -17,11 +17,8 @@ class PROJECTLIFE_API ABuff : public AAbility
 public:
 	ABuff();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buff")
-		FBuffDataStruct BuffData;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Buff")
-		float CurrentDurationTime;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buff")
+	//	FBuffDataStruct BuffData;
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,13 +26,4 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintImplementableEvent)
-		void PlayBuff();
-		void PlayBuff_Implementation();
-	
-	UFUNCTION(BlueprintImplementableEvent)
-		void EndBuff();
-		void EndBuff_Implementation();
-
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 };

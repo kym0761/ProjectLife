@@ -22,6 +22,8 @@
 #include "../Grid/GridComponent.h"
 #include "../Grid/GridManager.h"
 
+#include "../Ability/AbilityComponent.h"
+
 // Sets default values
 ABasicCharacter::ABasicCharacter()
 {
@@ -51,9 +53,9 @@ ABasicCharacter::ABasicCharacter()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, 270.0f, 0.0f));
 
 	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
-	Stat = CreateDefaultSubobject<UStatComponent>(TEXT("Stat"));
-	Equipment = CreateDefaultSubobject<UEquipmentComponent>(TEXT("Equipment"));
-
+	StatComponent = CreateDefaultSubobject<UStatComponent>(TEXT("StatComponent"));
+	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>(TEXT("EquipmentComponent"));
+	AbilityComponent = CreateDefaultSubobject<UAbilityComponent>(TEXT("AbilityComponent"));
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
@@ -69,6 +71,8 @@ ABasicCharacter::ABasicCharacter()
 	bHoldSomething = false;
 
 	CurrentHold = nullptr;
+
+
 }
 
 // Called when the game starts or when spawned
@@ -90,10 +94,10 @@ float ABasicCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 
 	//TODO : ReMake Take Damage.
 
-	if (Stat) // Only Stat is Exist...
+	if (IsValid(StatComponent)) // Only Stat is Exist...
 	{
 
-		if (Stat->HP <= 0.0f)
+		if (StatComponent->HP <= 0.0f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("HP is 0"));
 
@@ -121,7 +125,7 @@ float ABasicCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		//	UE_LOG(LogTemp, Warning, TEXT("NULL?"));
 		//}
 
-		Stat->DealDamage(damageResult);
+		StatComponent->DealDamage(damageResult);
 		//UE_LOG(LogTemp, Warning, TEXT("Current HP : %f"), Stat->HP);
 
 		if (DamageTextActorClass)

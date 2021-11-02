@@ -3,6 +3,7 @@
 
 #include "Buff.h"
 #include "../Base/BasicPlayerController.h"
+
 ABuff::ABuff()
 {
 
@@ -12,9 +13,9 @@ void ABuff::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurrentDurationTime = BuffData.BuffDuration;
+	//CurrentDurationTime = BuffData.BuffDuration;
 
-	PlayBuff();
+	//PlayBuff();
 
 	if (GetOwner())
 	{
@@ -45,35 +46,35 @@ void ABuff::Tick(float DeltaTime)
 	}
 }
 
-void ABuff::PlayBuff_Implementation()
-{
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-2, 5.0f, FColor::Magenta, TEXT("Play Buff.. Please Override it."));
-	}
-
-}
-
-void ABuff::EndBuff_Implementation()
-{
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-2, 5.0f, FColor::Magenta, TEXT("End Buff.. Please Override it."));
-	}
-}
-
-void ABuff::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	EndBuff();
-
-	if (GetOwner())
-	{
-		ABasicPlayerController* playerController = Cast<APawn>(GetOwner())->GetController<ABasicPlayerController>();
-		if (playerController)
-		{
-			//call to Add BuffIcon to ConditionUI.
-			playerController->RemoveConditionIcon(this);
-		}
-	}
-}
+//void ABuff::PlayBuff_Implementation()
+//{
+//
+//	if (GEngine)
+//	{
+//		GEngine->AddOnScreenDebugMessage(-2, 5.0f, FColor::Magenta, TEXT("Play Buff.. Please Override it."));
+//	}
+//
+//}
+//
+//void ABuff::EndBuff_Implementation()
+//{
+//	if (GEngine)
+//	{
+//		GEngine->AddOnScreenDebugMessage(-2, 5.0f, FColor::Magenta, TEXT("End Buff.. Please Override it."));
+//	}
+//}
+//
+//void ABuff::EndPlay(const EEndPlayReason::Type EndPlayReason)
+//{
+//	EndBuff();
+//
+//	if (GetOwner())
+//	{
+//		ABasicPlayerController* playerController = Cast<APawn>(GetOwner())->GetController<ABasicPlayerController>();
+//		if (playerController)
+//		{
+//			//call to Add BuffIcon to ConditionUI.
+//			playerController->RemoveConditionIcon(this);
+//		}
+//	}
+//}

@@ -17,11 +17,9 @@ class PROJECTLIFE_API ADeBuff : public AAbility
 public:
 	ADeBuff();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DeBuff")
-		FDeBuffDataStruct DeBuffData;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DeBuff")
+	//	FDeBuffDataStruct DeBuffData;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DeBuff")
-		float CurrentDurationTime;
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,14 +27,14 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintImplementableEvent)
-		void PlayDeBuff();
-		void PlayDeBuff_Implementation();
+	//UFUNCTION(BlueprintImplementableEvent)
+	//	void PlayDeBuff();
+	//	void PlayDeBuff_Implementation();
 
-	UFUNCTION(BlueprintImplementableEvent)
-		void EndDeBuff();
-		void EndDeBuff_Implementation();
+	//UFUNCTION(BlueprintImplementableEvent)
+	//	void EndDeBuff();
+	//	void EndDeBuff_Implementation();
 
 
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+	//virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 };
