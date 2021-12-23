@@ -10,19 +10,14 @@
 ADamageTextActor::ADamageTextActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
 	SetRootComponent(WidgetComponent);
 	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 
-	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed = 100.0f;
-	ProjectileMovement->MaxSpeed = 100.0f;
-	ProjectileMovement->ProjectileGravityScale = 0.05f;
-	ProjectileMovement->Velocity = FVector(0.0f,0.0f,100.0f);
-
 	InitialLifeSpan = 1.5f;
+	Speed = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +36,6 @@ void ADamageTextActor::BeginPlay()
 		}
 	}
 
-
 }
 
 // Called every frame
@@ -49,5 +43,6 @@ void ADamageTextActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	SetActorLocation(GetActorLocation() + FVector::UpVector * DeltaTime * Speed);
 }
 

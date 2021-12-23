@@ -42,8 +42,7 @@ enum class EGameElementType : uint8
 	Grass UMETA(DisplayName = "Grass"),
 	Earth UMETA(DisplayName = "Earth"),
 	Light UMETA(DisplayName = "Light"),
-	Dark UMETA(DisplayName = "Dark")
-	
+	Dark UMETA(DisplayName = "Dark")	
 };
 
 

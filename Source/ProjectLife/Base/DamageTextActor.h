@@ -8,7 +8,7 @@
 
 class UWidgetComponent;
 class UDamageTextWidget;
-class UProjectileMovementComponent;
+//class UProjectileMovementComponent;
 UCLASS()
 class PROJECTLIFE_API ADamageTextActor : public AActor
 {
@@ -27,8 +27,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage")
 		float AppliedDamage;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage")
-		UProjectileMovementComponent* ProjectileMovement;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage" Meta = (ClampMin = 0.0f, ClampMax = 200.0f))
+		float Speed;
 
 protected:
 	// Called when the game starts or when spawned

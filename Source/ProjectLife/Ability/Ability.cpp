@@ -49,7 +49,7 @@ void AAbility::StartAbility()
 	//then Begin Ability.
 	BeginActive();
 
-	//then ActivatingAbility will be turned On.
+	//then PassiveAbility will be turned On.
 	ActivatePassive();
 	
 	//timer setting when it has a Duration.
@@ -112,13 +112,13 @@ void AAbility::AbilityEndTimerFunction()
 	}
 	//else
 	//{
-	//	//if (GEngine)
-	//	//{
-	//	//	FString str = TEXT("currentTime ---> ")
-	//	//		+ FString::SanitizeFloat(CurrentDurationTime);
+	//	if (GEngine)
+	//	{
+	//		FString str = TEXT("currentTime ---> ")
+	//			+ FString::SanitizeFloat(CurrentDurationTime);
 
-	//	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
-	//	//}
+	//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
+	//	}
 	//}
 
 	CurrentDurationTime = FMath::Clamp(CurrentDurationTime - 1.0f, 0.0f, AbilityData.Duration);

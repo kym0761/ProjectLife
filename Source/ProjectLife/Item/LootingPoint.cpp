@@ -39,6 +39,8 @@ void ALootingPoint::SpawnLooting()
 	{
 		if (IsValid(ItemPickupClass))
 		{
+			//TODO : 스폰 목록 만들고 목록대로 스폰해주기.
+
 			GetWorld()->SpawnActor<AItemPickup>(ItemPickupClass, GetActorLocation(), GetActorRotation());
 		}
 	}
