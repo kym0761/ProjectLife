@@ -22,7 +22,7 @@ public:
 		UBillboardComponent* Billboard;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Looting", Meta = (ClampMin = 0.0f, ClampMax = 100.0f))
-		float probabilityRate = 25.0f;
+		float ProbabilityRate;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Looting")
 		TSubclassOf<AItemPickup> ItemPickupClass;

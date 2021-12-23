@@ -8,7 +8,7 @@
 
 class UWidgetComponent;
 class UDamageTextWidget;
-//class UProjectileMovementComponent;
+
 UCLASS()
 class PROJECTLIFE_API ADamageTextActor : public AActor
 {
@@ -18,16 +18,16 @@ public:
 	// Sets default values for this actor's properties
 	ADamageTextActor();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DamageText")
 		UWidgetComponent* WidgetComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DamageText")
 		TSubclassOf<UDamageTextWidget> DamageTextClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DamageText")
 		float AppliedDamage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage" Meta = (ClampMin = 0.0f, ClampMax = 200.0f))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DamageText", Meta = (ClampMin = 0.0f, ClampMax = 200.0f))
 		float Speed;
 
 protected:

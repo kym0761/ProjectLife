@@ -4,8 +4,7 @@
 #include "ConditionIconWidget.h"
 #include "Components/Image.h"
 #include "Ability.h"
-#include "Buff.h"
-#include "DeBuff.h"
+
 void UConditionIconWidget::NativeConstruct()
 {
 	Super::NativeConstruct();

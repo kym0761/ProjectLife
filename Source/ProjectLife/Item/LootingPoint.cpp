@@ -13,7 +13,8 @@ ALootingPoint::ALootingPoint()
 
 	Billboard = CreateDefaultSubobject<UBillboardComponent>(TEXT("Billboard"));
 	SetRootComponent(Billboard);
-
+	
+	ProbabilityRate = 25.0f;
 }
 
 // Called when the game starts or when spawned
@@ -35,7 +36,7 @@ void ALootingPoint::SpawnLooting()
 {
 	float rand = FMath::FRandRange(0.0f, 100.0f);
 
-	if (rand <= probabilityRate)
+	if (rand <= ProbabilityRate)
 	{
 		if (IsValid(ItemPickupClass))
 		{
