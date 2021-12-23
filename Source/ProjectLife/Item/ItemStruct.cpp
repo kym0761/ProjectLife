@@ -30,10 +30,10 @@ FEquipmentItemData::FEquipmentItemData()
 	Defense = 0.0f;
 	CriticalHit = 0.0f;
 	EquipmentType = EEquipmentType::None;
-	AttackType = EAttackType::None;
-	AttackRangeType = EAttackRangeType::None;
-	Element = EElement::None;
-	DamageType = EDamageType::None;
+	AttackType = EGameAttackType::None;
+	AttackRangeType = EGameAttackRangeType::None;
+	ElementType = EGameElementType::None;
+	DamageType = EGameDamageType::None;
 	WeaponClass = nullptr;
 }
 

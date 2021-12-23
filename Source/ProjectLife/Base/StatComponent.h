@@ -69,6 +69,8 @@ public:
 		
 
 	void ClearAdditionalStat();
+	void ClearStatCoefficient();
 
 	void ApplyAdditionalStat(FEquipmentItemData InData);
+	//void ApplyStatCoefficient();
 };

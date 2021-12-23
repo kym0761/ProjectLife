@@ -106,13 +106,13 @@ struct FEquipmentItemData : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentType EquipmentType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		EAttackType AttackType;
+		EGameAttackType AttackType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		EAttackRangeType AttackRangeType;
+		EGameAttackRangeType AttackRangeType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		EDamageType DamageType;
+		EGameDamageType DamageType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-		EElement Element;
+		EGameElementType ElementType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		TSubclassOf<ABasicWeapon> WeaponClass;
 

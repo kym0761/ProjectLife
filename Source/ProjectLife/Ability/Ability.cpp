@@ -32,41 +32,55 @@ void AAbility::SetAbilityOwner(AActor* Value)
 	}
 }
 
-void AAbility::BeginAbility()
+void AAbility::StartAbility()
 {
+	//it Called First Time When Start Ability
+	//first, register Ability To Owner's AbilityComponent.
 	if (IsValid(AbilityOwner))
 	{
 		UAbilityComponent* abilityComponent = AbilityOwner->FindComponentByClass<UAbilityComponent>();
-		
-		if (IsValid( abilityComponent))
+
+		if (IsValid(abilityComponent))
 		{
 			abilityComponent->AddAbility(this);
-			ActivateAbility();
-			if (AbilityData.bIsInifinity == false)
-			{
-				CurrentDurationTime = AbilityData.Duration;
-				//Timer setting
-				GetWorldTimerManager().SetTimer(AbilityCountdownTimer, this, &AAbility::AbilityTimerFunction, 1.0f, true, 1.0f);
-			}
 		}
-		else 
-		{
-			return;
-		}
+	}
 
+	//then Begin Ability.
+	BeginActive();
+
+	//then ActivatingAbility will be turned On.
+	ActivatePassive();
+	
+	//timer setting when it has a Duration.
+	if (AbilityData.bIsInifinity == false)
+	{
+		CurrentDurationTime = AbilityData.Duration;
+		//Timer setting
+		GetWorldTimerManager().SetTimer(AbilityCountdownTimer, this, &AAbility::AbilityEndTimerFunction, 1.0f, true, 1.0f);
 	}
 }
 
-void AAbility::ActivateAbility_Implementation()
+void AAbility::BeginActive_Implementation()
 {
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, TEXT("ActivateAbility.. Please Override it."));
+		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, TEXT("BeginActive.. Please Override it."));
+	}
+}
+
+void AAbility::ActivatePassive_Implementation()
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, TEXT("ActivatePassive.. Please Override it."));
 	}
 }
 
 void AAbility::EndAbility_Implementation()
 {
+	//It may be call when Ability Actor Destroyed.
+
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, TEXT("EndAbility.. Please Override it."));
@@ -88,15 +102,25 @@ void AAbility::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 }
 
-void AAbility::AbilityTimerFunction()
+void AAbility::AbilityEndTimerFunction()
 {
-	CurrentDurationTime = FMath::Clamp(CurrentDurationTime - 1.0f, 0.0f, AbilityData.Duration);
-
 	if (CurrentDurationTime <= 0.0f)
 	{
 		CurrentDurationTime = 0.0f;
-		Destroy();
 		GetWorldTimerManager().ClearTimer(AbilityCountdownTimer);
+		Destroy();
 	}
+	//else
+	//{
+	//	//if (GEngine)
+	//	//{
+	//	//	FString str = TEXT("currentTime ---> ")
+	//	//		+ FString::SanitizeFloat(CurrentDurationTime);
+
+	//	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
+	//	//}
+	//}
+
+	CurrentDurationTime = FMath::Clamp(CurrentDurationTime - 1.0f, 0.0f, AbilityData.Duration);
 }
 

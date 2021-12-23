@@ -10,7 +10,7 @@
 #include "AttackStruct.Generated.h"
 
 UENUM(BlueprintType)
-enum class EAttackType : uint8
+enum class EGameAttackType : uint8
 {
 	None UMETA(DisplayName = "None"),
 	Point UMETA(DisplayName = "Point"),
@@ -18,7 +18,7 @@ enum class EAttackType : uint8
 };
 
 UENUM(BlueprintType)
-enum class EAttackRangeType : uint8
+enum class EGameAttackRangeType : uint8
 {
 	None UMETA(DisplayName = "None"),
 	Melee UMETA(DisplayName = "Melee"),
@@ -26,7 +26,7 @@ enum class EAttackRangeType : uint8
 };
 
 UENUM(BlueprintType)
-enum class EDamageType : uint8
+enum class EGameDamageType : uint8
 {
 	None UMETA(DisplayName = "None"),
 	Physical UMETA(DisplayName = "Physical"),
@@ -34,7 +34,7 @@ enum class EDamageType : uint8
 };
 
 UENUM(BlueprintType)
-enum class EElement : uint8
+enum class EGameElementType : uint8
 {
 	None UMETA(DisplayName = "None"),
 	Fire UMETA(DisplayName = "Fire"),

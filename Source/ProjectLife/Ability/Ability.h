@@ -38,21 +38,26 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//temp
+	UFUNCTION(BlueprintCallable)
 	void SetAbilityOwner(AActor* Value);
 
-	//temporally Can Call In Blueprint.
 	UFUNCTION(BlueprintCallable)
-	void BeginAbility();
+	void StartAbility();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void ActivateAbility();
-	virtual void ActivateAbility_Implementation();
+	UFUNCTION(BlueprintNativeEvent)
+	void BeginActive();
+	virtual void BeginActive_Implementation();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent)
+	void ActivatePassive();
+	virtual void ActivatePassive_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent)
 	void EndAbility();
 	virtual void EndAbility_Implementation();
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
-	void AbilityTimerFunction();
+	void AbilityEndTimerFunction();
 };

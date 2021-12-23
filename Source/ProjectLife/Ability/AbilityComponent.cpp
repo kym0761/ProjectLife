@@ -3,6 +3,8 @@
 
 #include "AbilityComponent.h"
 #include "Ability.h"
+#include "../Base/StatComponent.h"
+
 // Sets default values for this component's properties
 UAbilityComponent::UAbilityComponent()
 {
@@ -44,13 +46,34 @@ void UAbilityComponent::RemoveAbility(AAbility* AbilityToRemove)
 
 void UAbilityComponent::CommitAbility()
 {
+	//AActor* owner = GetOwner();
+
+	//if (IsValid(owner))
+	//{
+	//	for (AAbility* ability : AbilityArray)
+	//	{
+	//		//ability;
+	//	}
+	//}
+}
+
+void UAbilityComponent::ReEvalueateAbility()
+{
 	AActor* owner = GetOwner();
 
 	if (IsValid(owner))
 	{
-		for (AAbility* ability : AbilityArray)
+		UStatComponent* statComponent = owner->FindComponentByClass<UStatComponent>();
+
+		if (IsValid(statComponent))
 		{
-			//ability;
+			//statComponent->
+
+
+			for (AAbility* ability : AbilityArray)
+			{
+				//ability;
+			}
 		}
 	}
 }

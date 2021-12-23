@@ -5,11 +5,21 @@
 
 FAbilityDataStruct::FAbilityDataStruct()
 {
+	Thumbnail = nullptr;
+
+	bIsInifinity = false;
 	Duration = 5.0f;
 	Cooldown = 5.0f;
-	AbilityEffectAmount = 20.0f;
+	
 	AbilityType = EAbilityType::None;
-	bIsInifinity = false;
+	
+	AbilityEffectAmount1 = 20.0f;
+	AbilityEffectAmount2 = 00.0f;
+	AbilityEffectAmount3 = 00.0f;
+	
+	AbilityCoefficientAmount1 = 0.0f;
+	AbilityCoefficientAmount2 = 0.0f;
+	AbilityCoefficientAmount3 = 0.0f;
+
 	CastingTime = 2.0f;
-	Thumbnail = nullptr;
 }

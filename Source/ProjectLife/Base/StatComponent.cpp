@@ -92,6 +92,12 @@ void UStatComponent::ClearAdditionalStat()
 	AdditionalCriticalHit = 0.0f;
 }
 
+void UStatComponent::ClearStatCoefficient()
+{
+	AttackCoefficient = 1.0f;
+	DefenseCoefficient = 1.0f;
+}
+
 void UStatComponent::ApplyAdditionalStat(FEquipmentItemData InData)
 {
 	//Not Finished.

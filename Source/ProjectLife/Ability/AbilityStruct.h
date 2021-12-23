@@ -23,19 +23,30 @@ struct FAbilityDataStruct : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		UTexture2D* Thumbnail;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		bool bIsInifinity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		float Duration;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		float Cooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityEffectAmount;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		EAbilityType AbilityType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		bool bIsInifinity;
+		float AbilityEffectAmount1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		float AbilityEffectAmount2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		float AbilityEffectAmount3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		float AbilityCoefficientAmount1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		float AbilityCoefficientAmount2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+		float AbilityCoefficientAmount3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		float CastingTime;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		UTexture2D* Thumbnail;
 
 
 
