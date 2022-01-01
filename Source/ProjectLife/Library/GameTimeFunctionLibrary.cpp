@@ -13,6 +13,16 @@ FString UGameTimeFunctionLibrary::Conv_GameTimeToString(FGameTime InGameTime)
 	return InGameTime.ToString();
 }
 
+int32 UGameTimeFunctionLibrary::GetYear_GameTime(FGameTime InGameTime)
+{
+	return InGameTime.Year;
+}
+
+int32 UGameTimeFunctionLibrary::GetMonth_GameTime(FGameTime InGameTime)
+{
+	return InGameTime.Month;
+}
+
 int32 UGameTimeFunctionLibrary::GetDay_GameTime(FGameTime InGameTime)
 {
 	return InGameTime.Day;

@@ -36,12 +36,12 @@ void UAbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 void UAbilityComponent::AddAbility(AAbility* AbilityToAdd)
 {
-	AbilityArray.Add(AbilityToAdd);
+	AbilityMap.Add(AbilityToAdd->GetName(), AbilityToAdd);
 }
 
 void UAbilityComponent::RemoveAbility(AAbility* AbilityToRemove)
 {
-	AbilityArray.Remove(AbilityToRemove);
+	AbilityMap.Remove(AbilityToRemove->GetName());
 }
 
 void UAbilityComponent::CommitAbility()
@@ -59,22 +59,21 @@ void UAbilityComponent::CommitAbility()
 
 void UAbilityComponent::ReEvalueateAbility()
 {
-	AActor* owner = GetOwner();
+	//AActor* owner = GetOwner();
 
-	if (IsValid(owner))
-	{
-		UStatComponent* statComponent = owner->FindComponentByClass<UStatComponent>();
+	//if (IsValid(owner))
+	//{
+	//	UStatComponent* statComponent = owner->FindComponentByClass<UStatComponent>();
 
-		if (IsValid(statComponent))
-		{
-			//statComponent->
+	//	if (IsValid(statComponent))
+	//	{
+	//		//statComponent->
 
+	//		//for (auto& ability : AbilityMap)
+	//		//{
 
-			for (AAbility* ability : AbilityArray)
-			{
-				//ability;
-			}
-		}
-	}
+	//		//}
+	//	}
+	//}
 }
 

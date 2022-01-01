@@ -18,7 +18,7 @@ public:
 	UAbilityComponent();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability")
-	TArray<AAbility*> AbilityArray;
+		TMap<FString, AAbility*> AbilityMap;
 
 protected:
 	// Called when the game starts

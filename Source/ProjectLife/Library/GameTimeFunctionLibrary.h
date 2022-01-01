@@ -24,6 +24,12 @@ public: // if this is a problem. just make sure it for only Conv_ Functions.
 		static FString Conv_GameTimeToString(FGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure)
+		static int32 GetYear_GameTime(FGameTime InGameTime);
+
+	UFUNCTION(BlueprintPure)
+		static int32 GetMonth_GameTime(FGameTime InGameTime);
+
+	UFUNCTION(BlueprintPure)
 		static int32 GetDay_GameTime(FGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure)

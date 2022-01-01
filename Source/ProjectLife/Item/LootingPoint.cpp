@@ -34,6 +34,7 @@ void ALootingPoint::Tick(float DeltaTime)
 
 void ALootingPoint::SpawnLooting()
 {
+	//Random Probability
 	float rand = FMath::FRandRange(0.0f, 100.0f);
 
 	if (rand <= ProbabilityRate)
@@ -42,7 +43,8 @@ void ALootingPoint::SpawnLooting()
 		{
 			//TODO : 스폰 목록 만들고 목록대로 스폰해주기.
 
-			GetWorld()->SpawnActor<AItemPickup>(ItemPickupClass, GetActorLocation(), GetActorRotation());
+			FVector LocationOffset(0.0f, 0.0f, 5.0f);
+			GetWorld()->SpawnActor<AItemPickup>(ItemPickupClass, GetActorLocation() + LocationOffset, GetActorRotation());
 		}
 	}
 
