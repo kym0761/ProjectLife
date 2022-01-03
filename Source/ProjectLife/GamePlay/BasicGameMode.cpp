@@ -9,16 +9,15 @@
 
 ABasicGameMode::ABasicGameMode()
 {
-	CurrentGameTime.Hour = 0;
-	CurrentGameTime.Minute = 0;
+
 }
 
-void ABasicGameMode::IncreaseDay(int32 IncDay)
-{
-	CurrentGameTime.Day += IncDay;
-
-	IncreaseGrowth();
-}
+//void ABasicGameMode::IncreaseDay(int32 IncDay)
+//{
+//	CurrentGameTime.Day += IncDay;
+//
+//	IncreaseGrowth();
+//}
 
 void ABasicGameMode::IncreaseGrowth(int32 IncGrowth)
 {

@@ -47,10 +47,10 @@ FReply UShoppingSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const F
 	//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Green, TEXT("ButtonUP"));
 	//}
 
-	if (ConfirmShoppingClass)
+	if (IsValid(ConfirmShoppingClass))
 	{
 		UConfirmShopping* confirmShopping = CreateWidget<UConfirmShopping>(GetOwningPlayer(), ConfirmShoppingClass);
-		if (confirmShopping)
+		if (IsValid(confirmShopping))
 		{
 			confirmShopping->InitConfirmShopping(ShopOwnerRef, ItemIndex);
 			confirmShopping->AddToViewport();

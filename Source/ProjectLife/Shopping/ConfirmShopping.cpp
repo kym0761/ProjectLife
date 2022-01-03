@@ -12,37 +12,37 @@ void UConfirmShopping::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (Button_OK)
+	if (IsValid(Button_OK))
 	{
 		Button_OK->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_OK);
 	}
 
-	if (Button_Cancel)
+	if (IsValid(Button_Cancel))
 	{
 		Button_Cancel->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Cancel);
 	}
 
-	if (Button_Plus)
+	if (IsValid(Button_Plus))
 	{
 		Button_Plus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Plus);
 	}
 
-	if (Button_10Plus)
+	if (IsValid(Button_10Plus))
 	{
 		Button_10Plus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_10Plus);
 	}
 
-	if (Button_Minus)
+	if (IsValid(Button_Minus))
 	{
 		Button_Minus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Minus);
 	}
 
-	if (Button_10Minus)
+	if (IsValid(Button_10Minus))
 	{
 		Button_10Minus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_10Minus);
 	}
 
-	if (TextBlock_Quantity)
+	if (IsValid(TextBlock_Quantity))
 	{
 		TextBlock_Quantity->TextDelegate.BindDynamic(this, &UConfirmShopping::SetQuantityText);
 		TextBlock_Quantity->SynchronizeProperties();
@@ -62,7 +62,7 @@ void UConfirmShopping::Clicked_OK()
 		if (bSucceed)
 		{
 			ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-			if (playerController)
+			if (IsValid(playerController))
 			{
 				playerController->UpdateInventory();
 			}
@@ -87,7 +87,7 @@ void UConfirmShopping::Clicked_Plus()
 	bool bAffordable = false;
 
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
-	if (inventory)
+	if (IsValid(inventory))
 	{
 		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
 		bAffordable = inventory->CheckEnoughMoney(tempPrice);
@@ -108,7 +108,7 @@ void UConfirmShopping::Clicked_10Plus()
 	int32 tempQuantity = Quantity + 10;
 	bool bAffordable = false;
 	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
-	if (inventory)
+	if (IsValid(inventory))
 	{
 		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
 		bAffordable = inventory->CheckEnoughMoney(tempPrice);

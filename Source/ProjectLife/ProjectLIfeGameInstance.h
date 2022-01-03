@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "Item/ItemStruct.h"
+#include "GamePlay/GameTimeStruct.h"
 #include "ProjectLIfeGameInstance.generated.h"
 
 class UQuest;
@@ -31,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
 		UDataTable* EquipmentDataTable;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
+		FGameTime GameTime = FGameTime();
+
 	UFUNCTION(BlueprintCallable)
 		void AddQuest(TSubclassOf<UQuest> InQuest);
 
@@ -40,6 +44,5 @@ public:
 
 	FItemData GetItemDataFromTable(FString Name);
 	FEquipmentItemData GetEquipmentItemDataFromTable(FString Name);
-
 
 };

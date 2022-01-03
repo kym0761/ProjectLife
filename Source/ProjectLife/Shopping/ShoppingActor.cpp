@@ -72,10 +72,10 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 
 	//Make UI For Shopping.
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
-	if (ShoppingWidgetClass && playerController)
+	if (IsValid(ShoppingWidgetClass) && IsValid(playerController))
 	{
 		ShoppingWidgetRef = CreateWidget<UShoppingWidget>(playerController, ShoppingWidgetClass);
-		if (ShoppingWidgetRef)
+		if (IsValid(ShoppingWidgetRef))
 		{
 			ShoppingWidgetRef->AddToViewport();
 			ShoppingWidgetRef->SetPositionInViewport(FVector2D(100, 100));

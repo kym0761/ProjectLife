@@ -14,13 +14,13 @@ void UShoppingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (MoneyTextBlock)
+	if (IsValid(MoneyTextBlock))
 	{
 		MoneyTextBlock->TextDelegate.BindDynamic(this, &UShoppingWidget::SetMoneyText);
 		MoneyTextBlock->SynchronizeProperties();
 	}
 
-	if (ExitButton)
+	if (IsValid(ExitButton))
 	{
 		ExitButton->OnClicked.AddDynamic(this, &UShoppingWidget::ExitButtonClicked);
 	}
@@ -31,13 +31,13 @@ void UShoppingWidget::NativeConstruct()
 
 FText UShoppingWidget::SetMoneyText()
 {
-	if (MoneyTextBlock)
+	if (IsValid(MoneyTextBlock))
 	{
 		ABasicCharacter* playerCharacter = GetOwningPlayerPawn<ABasicCharacter>();
-		if (playerCharacter)
+		if (IsValid(playerCharacter))
 		{
 			UInventoryComponent* inventory = playerCharacter->Inventory;
-			if (inventory)
+			if (IsValid(inventory))
 			{
 				FString inText = FString("Your Money : ") + FString::FromInt(inventory->Money);
 
@@ -58,7 +58,7 @@ void UShoppingWidget::ExitButtonClicked()
 
 void UShoppingWidget::InitShoppingWidget(AShoppingActor* ShopOwner)
 {
-	if (ShopOwner && ShoppingSlotClass)
+	if (IsValid(ShopOwner) && IsValid(ShoppingSlotClass))
 	{
 		for (int32 i = 0; i < ShopOwner->Items.Num(); i++)
 		{

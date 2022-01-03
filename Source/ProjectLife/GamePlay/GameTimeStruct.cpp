@@ -5,17 +5,15 @@
 
 FGameTime::FGameTime(int32 InYear, int32 InMonth, int32 InDay, int32 InHour, int32 InMinute)
 {
-	Year = FMath::Clamp(InYear, 0, MAXYEAR);
-	Month = FMath::Clamp(InMonth, 1, MAXMONTH);
-	Day = FMath::Clamp(InDay, 1, MAXDAY);
-	Hour = FMath::Clamp(InHour, 0, MAXHOUR - 1);
-	Minute = FMath::Clamp(InMinute, 0, MAXMINUTE - 1);
+	Year = FMath::Clamp(InYear, MINYEAR, MAXYEAR);
+	Month = FMath::Clamp(InMonth, MINMONTH, MAXMONTH);
+	Day = FMath::Clamp(InDay, MINDAY, MAXDAY);
+	Hour = FMath::Clamp(InHour, MINHOUR, MAXHOUR - 1);
+	Minute = FMath::Clamp(InMinute, MINMINUTE, MAXMINUTE - 1);
 }
 
 FGameTime FGameTime::operator+(const FGameTime& rValue)
 {
-	//todo : Need To Clamp And Adjust Hour And Minute Calculation.
-	
 	int32 year = this->Year + rValue.Year;
 	int32 month = this->Month + rValue.Month;
 	int32 day = this->Day + rValue.Day;
@@ -56,5 +54,5 @@ FGameTime FGameTime::operator+(const FGameTime& rValue)
 
 FString FGameTime::ToString()
 {
-	return FString::Printf(TEXT("Day : %d -- Hour : %d -- Minute : %d"), Day, Hour, Minute);
+	return FString::Printf(TEXT("| Year : %d -- Month : %d -- Day : %d -- Hour : %d -- Minute : %d |"), Year, Month, Day, Hour, Minute);
 }

@@ -7,7 +7,7 @@ FAbilityDataStruct::FAbilityDataStruct()
 {
 	Thumbnail = nullptr;
 
-	bIsInifinity = false;
+	AbilityDurabilityType = EAbilityDurabilityType::Limited;
 	Duration = 5.0f;
 	Cooldown = 5.0f;
 	

@@ -17,7 +17,7 @@ public:
 	AAbility();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	FAbilityDataStruct AbilityData;
+		FAbilityDataStruct AbilityData;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability")
 		float CurrentDurationTime;
@@ -38,7 +38,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//temp
+	//temp to set owner in blueprint test
 	UFUNCTION(BlueprintCallable)
 	void SetAbilityOwner(AActor* Value);
 
@@ -46,16 +46,29 @@ public:
 	void StartAbility();
 
 	UFUNCTION(BlueprintNativeEvent)
-	void BeginActive();
-	virtual void BeginActive_Implementation();
+	void ActivateActiveEffect();
+	virtual void ActivateActiveEffect_Implementation();
 
 	UFUNCTION(BlueprintNativeEvent)
-	void ActivatePassive();
-	virtual void ActivatePassive_Implementation();
+	void ActivatePassiveEffect();
+	virtual void ActivatePassiveEffect_Implementation();
 
+	//It may be call when Ability Actor Destroyed.
 	UFUNCTION(BlueprintNativeEvent)
 	void EndAbility();
 	virtual void EndAbility_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ActivateEndEffect();
+	virtual void ActivateEndEffect_Implementation();
+
+	//It May be Called when Dispelled or Ability Ended Un-Favorably.
+	UFUNCTION(BlueprintCallable)
+	void DestroyAbilityWithNoEndEffect();
+	
+	//it May be Called when Ability Ended Successfully.
+	UFUNCTION(BlueprintCallable)
+	void DestroyAbilityWithEndEffect();
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 

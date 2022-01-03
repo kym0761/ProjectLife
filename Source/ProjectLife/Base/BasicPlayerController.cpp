@@ -33,12 +33,13 @@ void ABasicPlayerController::OnPossess(APawn* InPawn)
 			if (IsValid(MainHUDRef))
 			{
 				MainHUDRef->AddToViewport();
-
+			}
+			else
+			{
 				if (GEngine)
 				{
-					GEngine->AddOnScreenDebugMessage(FMath::Rand(),2.5f,FColor::Black,TEXT("Main UI ON"));
+					GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Black, TEXT("Main UI Class Is Not Valid. if you see this, check the PlayerController's Class Reference"));
 				}
-
 			}
 		}
 	}

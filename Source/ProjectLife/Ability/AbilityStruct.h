@@ -10,10 +10,17 @@ UENUM(BlueprintType)
 enum class EAbilityType : uint8
 {
 	None UMETA(DisplayName = "None"),
-	Heal UMETA(DisplayName = "Heal"),
-	StatUp UMETA(DisplayName = "StatUp"),
-	Poison UMETA(DisplayName = "Poison"),
-	StatDown UMETA(DisplayName = "StatDown"),
+	Buff UMETA(DisplayName = "Buff"),
+	Debuff UMETA(DisplayName = "Debuff")
+
+};
+
+UENUM(BlueprintType)
+enum class EAbilityDurabilityType : uint8
+{
+	Once UMETA(DisplayName = "Once"),
+	Limited UMETA(DisplayName = "Limited"),
+	Infinite UMETA(DisplayName = "Infinite")
 
 };
 
@@ -26,7 +33,7 @@ struct FAbilityDataStruct : public FTableRowBase
 		UTexture2D* Thumbnail;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		bool bIsInifinity;
+		EAbilityDurabilityType AbilityDurabilityType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		float Duration;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
