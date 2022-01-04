@@ -29,20 +29,22 @@ public:
 		int32 Minute;
 
 	/*Do Not Motify These Carelessly*/
-	int32 MAXYEAR = 10000000;
-	int32 MINYEAR = 0;
+	static const int32 MAXYEAR = 10000000;
+	static const int32 MINYEAR = 0;
 
-	int32 MAXMONTH = 12;
-	int32 MINMONTH = 1;
+	static const int32 MAXMONTH = 12;
+	static const int32 MINMONTH = 1;
 
-	int32 MAXDAY = 28;
-	int32 MINDAY = 1;
+	static const int32 MAXDAY = 30;
+	static const int32 MINDAY = 1;
 
-	int32 MAXHOUR = 24;
-	int32 MINHOUR = 0;
+	static const int32 MAXHOUR = 24;
+	static const int32 MINHOUR = 0;
 
-	int32 MAXMINUTE = 60;
-	int32 MINMINUTE = 0;
+	static const int32 MAXMINUTE = 60;
+	static const int32 MINMINUTE = 0;
+
+	static const int32 WEEK = 7;
 	/*END*/
 
 
@@ -62,5 +64,16 @@ struct FMonthRow : public FTableRowBase
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString MonthTitle;
+		FString MonthName;
+};
+
+USTRUCT(BlueprintType)
+struct FSeasonRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString SeasonName;
 };

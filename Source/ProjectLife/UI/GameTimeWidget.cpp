@@ -61,11 +61,11 @@ FText UGameTimeWidget::SetMonthText()
 	{
 		int32 month = GameInstanceRef->GameTime.Month;
 		FString monthString = FString::FromInt(month);
-		FMonthRow* monthTitle = MonthTitleDataTable->FindRow<FMonthRow>(FName(*monthString), "");
+		FMonthRow* monthRow = MonthTitleDataTable->FindRow<FMonthRow>(FName(*monthString), "");
 
-		if (monthTitle != nullptr)
+		if (monthRow != nullptr)
 		{
-			return FText::FromString( *monthTitle->MonthTitle);
+			return FText::FromString( *monthRow->MonthName);
 		}
 	}
 	return FText();
