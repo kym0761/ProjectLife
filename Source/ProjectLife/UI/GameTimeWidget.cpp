@@ -49,7 +49,28 @@ FText UGameTimeWidget::SetYearText()
 	if (IsValid(GameInstanceRef))
 	{
 		int32 year = GameInstanceRef->GameTime.Year;
-		return UKismetTextLibrary::Conv_IntToText(year, false, true, 1, 324);
+
+		FText text = UKismetTextLibrary::Conv_IntToText(year, false, true, 1, 324);
+
+		FString temp = UKismetTextLibrary::Conv_TextToString(text);
+
+		switch (year)
+		{
+		case 1 :
+		temp += FString("st");
+		break;
+		case 2 :
+			temp += FString("nd");
+			break;
+		case 3:
+			temp += FString("rd");
+			break;
+		default:
+			temp += FString("th");
+			break;
+		}
+
+		return UKismetTextLibrary::Conv_StringToText(temp);
 	}
 
 	return FText();
@@ -76,7 +97,28 @@ FText UGameTimeWidget::SetDayText()
 	if (IsValid(GameInstanceRef))
 	{
 		int32 day = GameInstanceRef->GameTime.Day;
-		return UKismetTextLibrary::Conv_IntToText(day, false, true, 2, 324);
+
+		FText text = UKismetTextLibrary::Conv_IntToText(day, false, true, 1, 324);
+
+		FString temp = UKismetTextLibrary::Conv_TextToString(text);
+
+		switch (day)
+		{
+		case 1:
+			temp += FString("st");
+			break;
+		case 2:
+			temp += FString("nd");
+			break;
+		case 3:
+			temp += FString("rd");
+			break;
+		default:
+			temp += FString("th");
+			break;
+		}
+
+		return UKismetTextLibrary::Conv_StringToText(temp);
 	}
 
 	return FText();

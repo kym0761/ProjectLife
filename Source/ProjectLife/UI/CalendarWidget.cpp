@@ -30,45 +30,16 @@ void UCalendarWidget::InitCalendar()
 		int32 year = gameTime.Year;
 		int32 month = gameTime.Month;
 
-		if (GEngine)
-		{
-			FString str = TEXT("year : ") + FString::FromInt(year);
-
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
-		}
-
-		if (GEngine)
-		{
-			FString str = TEXT("month : ") + FString::FromInt(month);
-
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
-		}
-
 		int32 totalDay = (gameTime.Year * gameTime.MAXMONTH * gameTime.MAXDAY)
 			+ ((gameTime.Month - 1) * gameTime.MAXDAY);
-			
-
-		if (GEngine)
-		{
-			FString str = TEXT("totalDay : ") + FString::FromInt(totalDay);
-
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
-		}
 
 		//sun = 0, mon = 1 , tues = 2, weds = 3, thur = 4 , fri = 5, sat = 6
 		int32 firstDayOfMonth = totalDay % gameTime.WEEK;
-		//firstDayOfMonth = firstDayOfMonth == 0 ? 7 : firstDayOfMonth;
-		if (GEngine)
-		{
-			FString str = TEXT("firstDayOfMonth : ") + FString::FromInt(firstDayOfMonth);
 
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
-		}
 
 		int32 row = 0;
 		int32 column = 0;
 		int32 currentDay = 1;
-
 
 		for (column = 0; column < gameTime.WEEK; column++)
 		{
@@ -93,6 +64,7 @@ void UCalendarWidget::InitCalendar()
 			if (IsValid(dateSlot))
 			{
 				CalendarGridPanel->AddChildToUniformGrid(dateSlot, row, column);
+				dateSlot->SetDay(currentDay);
 				column++;
 				currentDay++;
 			}
