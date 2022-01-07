@@ -30,18 +30,18 @@ void UCalendarWidget::InitCalendar()
 		int32 year = gameTime.Year;
 		int32 month = gameTime.Month;
 
-		int32 totalDay = (gameTime.Year * gameTime.MAXMONTH * gameTime.MAXDAY)
-			+ ((gameTime.Month - 1) * gameTime.MAXDAY);
+		int32 totalDay = (gameTime.Year * FGameTime::MAXMONTH * FGameTime::MAXDAY)
+			+ ((gameTime.Month - 1) * FGameTime::MAXDAY);
 
 		//sun = 0, mon = 1 , tues = 2, weds = 3, thur = 4 , fri = 5, sat = 6
-		int32 firstDayOfMonth = totalDay % gameTime.WEEK;
+		int32 firstDayOfMonth = totalDay % FGameTime::WEEK;
 
 
 		int32 row = 0;
 		int32 column = 0;
 		int32 currentDay = 1;
 
-		for (column = 0; column < gameTime.WEEK; column++)
+		for (column = 0; column < FGameTime::WEEK; column++)
 		{
 			if (column < firstDayOfMonth)
 			{
@@ -69,14 +69,14 @@ void UCalendarWidget::InitCalendar()
 				currentDay++;
 			}
 
-			if (column >= gameTime.WEEK)
+			if (column >= FGameTime::WEEK)
 			{
 				row++;
 				column = 0;
 			}
 		}
 
-		while (column != 0 && column < gameTime.WEEK)
+		while (column != 0 && column < FGameTime::WEEK)
 		{
 			UCalendarDummySlot* dummySlot = CreateWidget<UCalendarDummySlot>(GetOwningPlayer(), CalendarDummySlotClass);
 			if (IsValid(dummySlot))

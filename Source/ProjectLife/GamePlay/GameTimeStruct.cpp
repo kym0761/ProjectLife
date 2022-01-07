@@ -5,11 +5,11 @@
 
 FGameTime::FGameTime(int32 InYear, int32 InMonth, int32 InDay, int32 InHour, int32 InMinute)
 {
-	Year = FMath::Clamp(InYear, MINYEAR, MAXYEAR);
-	Month = FMath::Clamp(InMonth, MINMONTH, MAXMONTH);
-	Day = FMath::Clamp(InDay, MINDAY, MAXDAY);
-	Hour = FMath::Clamp(InHour, MINHOUR, MAXHOUR - 1);
-	Minute = FMath::Clamp(InMinute, MINMINUTE, MAXMINUTE - 1);
+	Year = FMath::Clamp(InYear, 0, MAXYEAR);
+	Month = FMath::Clamp(InMonth, 0, MAXMONTH);
+	Day = FMath::Clamp(InDay, 0, MAXDAY);
+	Hour = FMath::Clamp(InHour, 0, MAXHOUR - 1);
+	Minute = FMath::Clamp(InMinute, 0, MAXMINUTE - 1);
 }
 
 FGameTime FGameTime::operator+(const FGameTime& rValue)
@@ -19,6 +19,12 @@ FGameTime FGameTime::operator+(const FGameTime& rValue)
 	int32 day = this->Day + rValue.Day;
 	int32 hour = this->Hour + rValue.Hour;
 	int32 minute = this->Minute + rValue.Minute;
+
+	/*to Avoid Overflow or Unwanted Calculations.*/
+	if (year < 0 || month < 0 || day < 0 || hour < 0 || minute < 0)
+	{
+		return *this;
+	}
 
 	if (minute >= MAXMINUTE)
 	{

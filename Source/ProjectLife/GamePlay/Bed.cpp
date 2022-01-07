@@ -17,9 +17,6 @@ ABed::ABed()
 	//Box->SetCollisionProfileName(TEXT("Item"));
 	//Collision->SetVisibility(false);
 	//Box->ShapeColor = FColor::Black;
-	//Box->GetBodyInstance()->bLockXRotation = true;
-	//Box->GetBodyInstance()->bLockYRotation = true;
-	//Box->GetBodyInstance()->bLockZRotation = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);

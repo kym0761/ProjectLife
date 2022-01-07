@@ -30,20 +30,10 @@ public:
 
 	/*Do Not Motify These Carelessly*/
 	static const int32 MAXYEAR = 10000000;
-	static const int32 MINYEAR = 0;
-
 	static const int32 MAXMONTH = 12;
-	static const int32 MINMONTH = 1;
-
 	static const int32 MAXDAY = 30;
-	static const int32 MINDAY = 1;
-
 	static const int32 MAXHOUR = 24;
-	static const int32 MINHOUR = 0;
-
 	static const int32 MAXMINUTE = 60;
-	static const int32 MINMINUTE = 0;
-
 	static const int32 WEEK = 7;
 	/*END*/
 
