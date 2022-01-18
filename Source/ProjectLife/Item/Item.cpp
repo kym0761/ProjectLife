@@ -5,15 +5,10 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "../Base/BasicCharacter.h"
-#include "../Inventory/InventoryComponent.h"
-#include "../Base/BasicPlayerController.h"
-#include "../Base/BasicWeapon.h"
-// Sets default values
-
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
+// Sets default values
 AItem::AItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.

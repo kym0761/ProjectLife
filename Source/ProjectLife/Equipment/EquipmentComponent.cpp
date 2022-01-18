@@ -8,8 +8,6 @@
 #include "../Base/BasicCharacter.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-
-#include "../ProjectLIfeGameInstance.h"
 #include "../Inventory/InventoryManager.h"
 
 // Sets default values for this component's properties

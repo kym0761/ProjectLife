@@ -8,7 +8,6 @@
 #include "../Base/BasicCharacter.h"
 #include "../Inventory/InventoryComponent.h"
 #include "../Base/BasicPlayerController.h"
-#include "../Base/BasicWeapon.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "../Inventory/InventoryManager.h"

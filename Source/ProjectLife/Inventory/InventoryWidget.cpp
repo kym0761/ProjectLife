@@ -6,8 +6,6 @@
 #include "ItemSlot.h"
 #include "InventoryComponent.h"
 #include "../Base/BasicPlayerController.h"
-#include "../Equipment/EquipSlot.h"
-#include "../Equipment/EquipmentComponent.h"
 
 
 void UInventoryWidget::NativeConstruct()

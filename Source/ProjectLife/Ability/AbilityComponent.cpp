@@ -3,7 +3,7 @@
 
 #include "AbilityComponent.h"
 #include "Ability.h"
-#include "../Base/StatComponent.h"
+//#include "../Base/StatComponent.h"
 
 // Sets default values for this component's properties
 UAbilityComponent::UAbilityComponent()

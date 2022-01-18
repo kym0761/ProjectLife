@@ -3,7 +3,6 @@
 
 #include "GrowthComponent.h"
 #include "Components/StaticMeshComponent.h"
-//#include "Engine/StaticMesh.h"
 
 // Sets default values for this component's properties
 UGrowthComponent::UGrowthComponent()

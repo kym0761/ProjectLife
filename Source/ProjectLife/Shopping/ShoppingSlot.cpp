@@ -5,7 +5,6 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "ShoppingActor.h"
-#include "../Item/Item.h"
 #include "ConfirmShopping.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 
