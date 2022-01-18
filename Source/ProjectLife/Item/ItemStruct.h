@@ -57,6 +57,7 @@ struct FItemData : public FTableRowBase
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
@@ -95,6 +96,7 @@ struct FEquipmentItemData : public FTableRowBase
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FString Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
@@ -126,6 +128,10 @@ struct FEquipmentItemData : public FTableRowBase
 	{
 		return !(Name == Other.Name);
 	}
+
+	bool IsSameEquipment(const FEquipmentItemData Other);
+	bool IsEmpty();
+
 };
 
 USTRUCT(BlueprintType)
@@ -133,6 +139,7 @@ struct FConsumableItemData : public FTableRowBase
 {
 	GENERATED_BODY()
 
+public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString Name;
 
@@ -144,12 +151,25 @@ struct FItemDataSlot
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		FItemData ItemData;
+		FString ItemName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 Quantity;
 
 	FItemDataSlot();
+
+	FORCEINLINE bool operator==(const FItemDataSlot& Other)
+	{
+		return (ItemName == Other.ItemName);
+	}
+	FORCEINLINE bool operator!=(const FItemDataSlot& Other)
+	{
+		return !(ItemName == Other.ItemName);
+	}
+
+	bool IsSameItem(const FItemDataSlot Other);
+	bool IsEmpty();
 };
 
 USTRUCT(BlueprintType)
@@ -157,6 +177,7 @@ struct FShopItemData : public FTableRowBase
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString ItemName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
@@ -165,4 +186,5 @@ struct FShopItemData : public FTableRowBase
 		int32 Quantity;
 
 	FShopItemData();
+
 };

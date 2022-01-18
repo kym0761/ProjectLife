@@ -21,17 +21,14 @@ public:
 
 	UGridComponent();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
 		AActor* Occupying;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
 		int32 X;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
 		int32 Y;
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
-	//	TArray<UGridComponent*> NearGrids;
 
 public:
 

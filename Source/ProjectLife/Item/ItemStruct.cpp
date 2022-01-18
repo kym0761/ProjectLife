@@ -20,7 +20,18 @@ FItemData::FItemData()
 
 FItemDataSlot::FItemDataSlot()
 {
+	ItemName = FString("");
 	Quantity = 0;
+}
+
+bool FItemDataSlot::IsSameItem(const FItemDataSlot Other)
+{
+	return (ItemName == Other.ItemName);
+}
+
+bool FItemDataSlot::IsEmpty()
+{
+	return ItemName == FString("") || Quantity == 0;
 }
 
 FEquipmentItemData::FEquipmentItemData()
@@ -35,6 +46,16 @@ FEquipmentItemData::FEquipmentItemData()
 	ElementType = EGameElementType::None;
 	DamageType = EGameDamageType::None;
 	WeaponClass = nullptr;
+}
+
+bool FEquipmentItemData::IsSameEquipment(const FEquipmentItemData Other)
+{
+	return (Name == Other.Name);
+}
+
+bool FEquipmentItemData::IsEmpty()
+{
+	return (Name == FString(""));
 }
 
 FConsumableItemData::FConsumableItemData()

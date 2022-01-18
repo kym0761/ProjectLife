@@ -23,21 +23,24 @@ public:
 	AItemPickup();
 
 	//Needed for Main Collision.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* Box;
 
 	//Needed For Detection.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		USphereComponent* Sphere;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		FString ItemName;
+		FItemDataSlot ItemDataSlot;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		int32 Quantity;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	//	FString ItemName;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	//	int32 Quantity;
 
 protected:
 	// Called when the game starts or when spawned

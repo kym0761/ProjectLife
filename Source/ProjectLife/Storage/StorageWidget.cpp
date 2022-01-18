@@ -23,20 +23,20 @@ void UStorageWidget::NativeConstruct()
 
 void UStorageWidget::InitStorage(AActor* StorageActorRef)
 {
-	UInventoryComponent* inventoryComp = StorageActorRef->FindComponentByClass<UInventoryComponent>();
+	//UInventoryComponent* inventoryComp = StorageActorRef->FindComponentByClass<UInventoryComponent>();
 
-	if (inventoryComp)
-	{
-		if (inventoryComp->InventoryArray.IsValidIndex(ItemSlotArray.Num() - 1))
-		{
-			for (int32 i = 0; i < ItemSlotArray.Num(); i++)
-			{
-				ItemSlotArray[i]->InventoryRef = inventoryComp;
-				ItemSlotArray[i]->InventoryIndex = i;
-				ItemSlotArray[i]->UpdateSlot();
-			}
-		}
-	}
+	//if (inventoryComp)
+	//{
+	//	if (inventoryComp->InventoryArray.IsValidIndex(ItemSlotArray.Num() - 1))
+	//	{
+	//		for (int32 i = 0; i < ItemSlotArray.Num(); i++)
+	//		{
+	//			ItemSlotArray[i]->InventoryRef = inventoryComp;
+	//			ItemSlotArray[i]->InventoryIndex = i;
+	//			ItemSlotArray[i]->UpdateSlot();
+	//		}
+	//	}
+	//}
 }
 
 void UStorageWidget::UpdateStorage()

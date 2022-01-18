@@ -9,6 +9,9 @@
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "../ProjectLIfeGameInstance.h"
+#include "../Inventory/InventoryManager.h"
+
 // Sets default values for this component's properties
 UEquipmentComponent::UEquipmentComponent()
 {
@@ -43,98 +46,99 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSl
 {
 	bool bEquipable = false;
 
-	FItemData itemData = InData.ItemData;
+	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (itemData.ItemType == EItemType::Equipment)
+	if (IsValid(gameInstance))
 	{
-		FEquipmentItemData equipmentItemData;
+		FItemData itemData = gameInstance->GetItemDataFromTable(InData.ItemName);
 
-		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (IsValid(gameInstance))
+		if (itemData.ItemType == EItemType::Equipment)
 		{
+			FEquipmentItemData equipmentItemData;
+
 			equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
-		}
-		else
-		{
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Cannot Open Data Table..?"));
-			}
-			return false;
-		}
 
-		//Check Valid.
-		switch (EquipmentSlot)
-		{
-		case EEquipmentSlot::Weapon:
-			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Weapon);
-			break;
-		case EEquipmentSlot::Shield:
-			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Shield);
-			break;
-		case EEquipmentSlot::Armor:
-			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Armor);
-			break;
-		case EEquipmentSlot::Accessory1:
-		case EEquipmentSlot::Accessory2:
-			bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Accessory);
-			break;
-		default:
-			break;
-		}
-
-		if (bEquipable)
-		{
+			//Check Valid.
 			switch (EquipmentSlot)
 			{
 			case EEquipmentSlot::Weapon:
-				WeaponData = equipmentItemData;
+				bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Weapon);
 				break;
 			case EEquipmentSlot::Shield:
-				ShieldData = equipmentItemData;
+				bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Shield);
 				break;
 			case EEquipmentSlot::Armor:
-				ArmorData = equipmentItemData;
+				bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Armor);
 				break;
 			case EEquipmentSlot::Accessory1:
-				AccessoryData1 = equipmentItemData;
-				break;
 			case EEquipmentSlot::Accessory2:
-				AccessoryData2 = equipmentItemData;
+				bEquipable = (equipmentItemData.EquipmentType == EEquipmentType::Accessory);
 				break;
 			default:
 				break;
 			}
 
+			if (bEquipable)
+			{
+				switch (EquipmentSlot)
+				{
+				case EEquipmentSlot::Weapon:
+					WeaponData = equipmentItemData;
+					break;
+				case EEquipmentSlot::Shield:
+					ShieldData = equipmentItemData;
+					break;
+				case EEquipmentSlot::Armor:
+					ArmorData = equipmentItemData;
+					break;
+				case EEquipmentSlot::Accessory1:
+					AccessoryData1 = equipmentItemData;
+					break;
+				case EEquipmentSlot::Accessory2:
+					AccessoryData2 = equipmentItemData;
+					break;
+				default:
+					break;
+				}
+
+				ApplyEquipment();
+			}
+		}
+		else if (itemData == FItemData())
+		{
+			switch (EquipmentSlot)
+			{
+			case EEquipmentSlot::Weapon:
+				WeaponData = FEquipmentItemData();
+				break;
+			case EEquipmentSlot::Shield:
+				ShieldData = FEquipmentItemData();
+				break;
+			case EEquipmentSlot::Armor:
+				ArmorData = FEquipmentItemData();
+				break;
+			case EEquipmentSlot::Accessory1:
+				AccessoryData1 = FEquipmentItemData();
+				break;
+			case EEquipmentSlot::Accessory2:
+				AccessoryData2 = FEquipmentItemData();
+				break;
+			default:
+				break;
+			}
+
+			bEquipable = true;
+
 			ApplyEquipment();
 		}
 	}
-	else if (itemData == FItemData())
+	else
 	{
-		switch (EquipmentSlot)
+		if (GEngine)
 		{
-		case EEquipmentSlot::Weapon:
-			WeaponData = FEquipmentItemData();
-			break;
-		case EEquipmentSlot::Shield:
-			ShieldData = FEquipmentItemData();
-			break;
-		case EEquipmentSlot::Armor:
-			ArmorData = FEquipmentItemData();
-			break;
-		case EEquipmentSlot::Accessory1:
-			AccessoryData1 = FEquipmentItemData();
-			break;
-		case EEquipmentSlot::Accessory2:
-			AccessoryData2 = FEquipmentItemData();
-			break;
-		default:
-			break;
+			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.0f, FColor::Blue, TEXT("Cannot Open Data Table..?"));
 		}
-
-		bEquipable = true;
-
-		ApplyEquipment();
+		return false;
 	}
 
 	return bEquipable;
@@ -144,7 +148,7 @@ bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentI
 {
 	bool bEquipable = false;
 
-	if (InData == FEquipmentItemData())
+	if (InData.IsEmpty())
 	{
 		switch (EquipmentSlot)
 		{
@@ -247,42 +251,63 @@ FEquipmentItemData UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipmen
 	}
 }
 
-bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex)
+bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, int32 InventoryNumber, int32 SlotNumber)
 {
-	//Swap Equip <-> Inventory.
-	if (IsValid(Inventory))
+	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
+
+	if (IsValid(inventoryManager))
 	{
-		FItemDataSlot inInventory = Inventory->InventoryArray[InventoryIndex];
-		
 		FEquipmentItemData currentEquipment = GetEquipmentData(Equipmentslot);
+		
+		FItemDataSlot fromEquipmentToInventory;
 
-		FItemDataSlot fromEquipment;
-
+		//장비 데이터를 FItemDataSlot으로 변환.
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		if (IsValid(gameInstance))
 		{
-			fromEquipment.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
-			if (fromEquipment.ItemData == FItemData())
+			FItemData itemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
+			if (fromEquipmentToInventory.ItemName == itemData.Name && fromEquipmentToInventory.ItemName == FString(""))
 			{
-				fromEquipment.Quantity = 0;
+				//Invalid
+				fromEquipmentToInventory.Quantity = 0;
 			}
 			else
 			{
-				fromEquipment.Quantity = 1;
+				//Valid
+				fromEquipmentToInventory.Quantity = 1;
+				fromEquipmentToInventory.ItemName = itemData.Name;
 			}
-		}
 
-		if (inInventory.ItemData.ItemType == EItemType::Equipment || (inInventory.ItemData == FItemData()) )
-		{
-			bool bSucceed = SetEquipment(Equipmentslot, inInventory);
-			if (bSucceed)
+			//장비와 바꿀 인벤토리 아이템의 데이터.
+			FItemDataSlot inInventory = inventoryManager->GetInventoryItem(InventoryNumber, SlotNumber);
+			FItemData itemData_InInventory = gameInstance->GetItemDataFromTable(inInventory.ItemName);
+
+			//인벤토리 데이터가 장비라면 장비를 교체함.
+			if (itemData_InInventory.ItemType == EItemType::Equipment || (itemData_InInventory == FItemData()))
 			{
-				Inventory->InventoryArray[InventoryIndex] = fromEquipment;
+				bool bSucceed = SetEquipment(Equipmentslot, inInventory);
+				if (bSucceed)
+				{
+					inventoryManager->SetInventoryItem(InventoryNumber,SlotNumber, fromEquipmentToInventory);
+				}
+
+				return true;
 			}
+			else
+			{
+				if (inInventory.IsEmpty()) // 빈 인벤토리 슬롯인지 확인
+				{
+					inventoryManager->SetInventoryItem(InventoryNumber, SlotNumber, fromEquipmentToInventory);
+					SetEquipment(Equipmentslot, FItemDataSlot());
 
-			return bSucceed;
+					return true;
+				}
+				else
+				{
+					//비어있지 않았다면 스왑하지 않기.
+				}
+			}
 		}
-
 	}
 
 	return false;

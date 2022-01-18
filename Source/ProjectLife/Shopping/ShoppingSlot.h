@@ -29,13 +29,13 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* SlotItemPrice;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Button")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
 		int32 ItemIndex;
 
 	UPROPERTY()
 	AShoppingActor* ShopOwnerRef;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UConfirmShopping> ConfirmShoppingClass;
 
 	virtual void NativeConstruct() override;

@@ -31,7 +31,7 @@ void UShoppingWidget::NativeConstruct()
 
 FText UShoppingWidget::SetMoneyText()
 {
-	if (IsValid(MoneyTextBlock))
+	/*if (IsValid(MoneyTextBlock))
 	{
 		ABasicCharacter* playerCharacter = GetOwningPlayerPawn<ABasicCharacter>();
 		if (IsValid(playerCharacter))
@@ -44,7 +44,7 @@ FText UShoppingWidget::SetMoneyText()
 				return FText::FromString(inText);
 			}
 		}
-	}
+	}*/
 
 	return FText::GetEmpty();
 }

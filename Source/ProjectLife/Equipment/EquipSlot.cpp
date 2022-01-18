@@ -54,7 +54,7 @@ void UEquipSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointe
 		//current
 		FEquipmentItemData equipmentItemData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 
-		if (equipmentItemData == FEquipmentItemData())
+		if (equipmentItemData.IsEmpty())
 		{
 			return;
 		}
@@ -98,117 +98,117 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
-	if (InOperation)
-	{
-		//if a dropped slot is a Item Slot
-		//Get ItemData And Equip it if it is EquipmentData.
-		{
-			UItemSlot* dropped = Cast<UItemSlot>(InOperation->Payload);
-			if (IsValid(dropped))
-			{
-				//Get Drop's Inventory & Index
-				UInventoryComponent* inventoryRef = dropped->InventoryRef;
-				int32 index = dropped->InventoryIndex;
+	//if (InOperation)
+	//{
+	//	//if a dropped slot is a Item Slot
+	//	//Get ItemData And Equip it if it is EquipmentData.
+	//	{
+	//		UItemSlot* dropped = Cast<UItemSlot>(InOperation->Payload);
+	//		if (IsValid(dropped))
+	//		{
+	//			//Get Drop's Inventory & Index
+	//			UInventoryComponent* inventoryRef = dropped->InventoryRef;
+	//			int32 index = dropped->InventoryIndex;
 
-				if (IsValid(inventoryRef) && IsValid(EquipmentCompRef))
-				{
-					//Inventory Data of Valid Index.
-					FItemDataSlot itemDataSlot = inventoryRef->InventoryArray[index];
-					FItemData itemData = itemDataSlot.ItemData;
+	//			if (IsValid(inventoryRef) && IsValid(EquipmentCompRef))
+	//			{
+	//				//Inventory Data of Valid Index.
+	//				FItemDataSlot itemDataSlot = inventoryRef->InventoryArray[index];
+	//				FItemData itemData = itemDataSlot.ItemData;
 
-					if (itemData.ItemType == EItemType::Equipment)
-					{
-						FEquipmentItemData equipmentItemData; // TODO
+	//				if (itemData.ItemType == EItemType::Equipment)
+	//				{
+	//					FEquipmentItemData equipmentItemData; // TODO
 
-						UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-						if (IsValid(gameInstance))
-						{
-							equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
+	//					UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	//					if (IsValid(gameInstance))
+	//					{
+	//						equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
 
-							//UE_LOG(LogTemp, Warning, TEXT("Get Equip Slot Data"));
-						}
-						else
-						{
-							return false;
-						}
+	//						//UE_LOG(LogTemp, Warning, TEXT("Get Equip Slot Data"));
+	//					}
+	//					else
+	//					{
+	//						return false;
+	//					}
 
-						if (equipmentItemData.EquipmentType == EquipmentType)
-						{
-							FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+	//					if (equipmentItemData.EquipmentType == EquipmentType)
+	//					{
+	//						FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
 
-							bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
-							if (bSucceed)
-							{
-								FItemDataSlot temp;
-								if (IsValid(gameInstance) && currentEquipment != FEquipmentItemData())
-								{
-									temp.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
-								}
+	//						bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
+	//						if (bSucceed)
+	//						{
+	//							FItemDataSlot temp;
+	//							if (IsValid(gameInstance) && currentEquipment != FEquipmentItemData())
+	//							{
+	//								temp.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
+	//							}
 
-								if (temp.ItemData == FItemData())
-								{
-									temp.Quantity = 0;
-									//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 0"));
-								}
-								else
-								{
-									temp.Quantity = 1;
-									//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 1"));
-								}
+	//							if (temp.ItemData == FItemData())
+	//							{
+	//								temp.Quantity = 0;
+	//								//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 0"));
+	//							}
+	//							else
+	//							{
+	//								temp.Quantity = 1;
+	//								//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 1"));
+	//							}
 
-								inventoryRef->InventoryArray[index] = temp;
-							}
-							//else
-							//{
-							//	UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : Set Equipment() is failed"));
-							//}
+	//							inventoryRef->InventoryArray[index] = temp;
+	//						}
+	//						//else
+	//						//{
+	//						//	UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : Set Equipment() is failed"));
+	//						//}
 
-							ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-							if (playerController)
-							{
-								playerController->UpdateInventory();
-								playerController->UpdateEquipment();
-								return true;
-							}
-						}
-					}
-				}
-				else if (!IsValid(inventoryRef))
-				{
-					UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(inventoryRef) is not valid"));
-				}
-				else if (!IsValid(EquipmentCompRef))
-				{
-					UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(EquipmentCompRef) is not valid"));
-				}
-			}
-		}
+	//						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+	//						if (playerController)
+	//						{
+	//							playerController->UpdateInventory();
+	//							playerController->UpdateEquipment();
+	//							return true;
+	//						}
+	//					}
+	//				}
+	//			}
+	//			else if (!IsValid(inventoryRef))
+	//			{
+	//				UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(inventoryRef) is not valid"));
+	//			}
+	//			else if (!IsValid(EquipmentCompRef))
+	//			{
+	//				UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(EquipmentCompRef) is not valid"));
+	//			}
+	//		}
+	//	}
 
-		//if drop is Equip slot. Maybe Accessory? ex) accessory1 <->accessory2 swap.
-		//other Equipment Slot Will not Valid.. because there is no other Weapon Slot or Armor slot, etc... in game...
-		{
-			UEquipSlot* dropped = Cast<UEquipSlot>(InOperation->Payload);
-			if (IsValid(dropped))
-			{
-				if (IsValid(dropped->EquipmentCompRef) && IsValid(EquipmentCompRef) && (EquipmentType == dropped->EquipmentType) && (EquipmentSlot != dropped->EquipmentSlot))
-				{
-					FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
-					FEquipmentItemData droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
+	//	//if drop is Equip slot. Maybe Accessory? ex) accessory1 <->accessory2 swap.
+	//	//other Equipment Slot Will not Valid.. because there is no other Weapon Slot or Armor slot, etc... in game...
+	//	{
+	//		UEquipSlot* dropped = Cast<UEquipSlot>(InOperation->Payload);
+	//		if (IsValid(dropped))
+	//		{
+	//			if (IsValid(dropped->EquipmentCompRef) && IsValid(EquipmentCompRef) && (EquipmentType == dropped->EquipmentType) && (EquipmentSlot != dropped->EquipmentSlot))
+	//			{
+	//				FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+	//				FEquipmentItemData droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
 
-					dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
-					EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
+	//				dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
+	//				EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
 
-					ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-					if (playerController)
-					{
-						playerController->UpdateInventory();
-						playerController->UpdateEquipment();
-						return true;
-					}
-				}
-			}
-		}
-	}
+	//				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+	//				if (playerController)
+	//				{
+	//					playerController->UpdateInventory();
+	//					playerController->UpdateEquipment();
+	//					return true;
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	return false;
 }

@@ -20,10 +20,10 @@ public:
 	ABed();
 
 	//Needed for Main Collision.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* Box;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UStaticMeshComponent* Mesh;
 
 protected:

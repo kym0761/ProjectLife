@@ -11,10 +11,10 @@ struct FBuildingInfo : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DeBuff")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 SizeX;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DeBuff")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 SizeY;
 
 

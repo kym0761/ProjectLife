@@ -11,12 +11,17 @@ void UGameTimeWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	InitGameTimeWidget();
+}
+
+void UGameTimeWidget::InitGameTimeWidget()
+{
 	if (TextBlock_Year)
 	{
-		TextBlock_Year->TextDelegate.BindDynamic(this,&UGameTimeWidget::SetYearText);
+		TextBlock_Year->TextDelegate.BindDynamic(this, &UGameTimeWidget::SetYearText);
 		TextBlock_Year->SynchronizeProperties();
 	}
-	
+
 	if (TextBlock_Month)
 	{
 		TextBlock_Month->TextDelegate.BindDynamic(this, &UGameTimeWidget::SetMonthText);

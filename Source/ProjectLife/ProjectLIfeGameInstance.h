@@ -6,9 +6,9 @@
 #include "Engine/GameInstance.h"
 #include "Item/ItemStruct.h"
 #include "GamePlay/GameTimeStruct.h"
+#include "Quest/Quest.h"
 #include "ProjectLIfeGameInstance.generated.h"
 
-class UQuest;
 class UDataTable;
 /**
  * 
@@ -21,10 +21,7 @@ class PROJECTLIFE_API UProjectLIfeGameInstance : public UGameInstance
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		TArray<TSubclassOf<UQuest>> Quests;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		TArray<TSubclassOf<UQuest>> CompleteQuests;
+		TArray<FQuest> QuestList;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
 		UDataTable* ItemDataTable;
@@ -36,11 +33,13 @@ public:
 		FGameTime GameTime = FGameTime();
 
 	UFUNCTION(BlueprintCallable)
-		void AddQuest(TSubclassOf<UQuest> InQuest);
+		void AddQuest(FString QuestName);
 
 	UFUNCTION(BlueprintCallable)
-	void QuestClear(TSubclassOf<UQuest> WantToClear);
+		TArray<FQuest> GetAllQuests();
 
+	UFUNCTION(BlueprintCallable)
+		void ClearQuest(FString QuestName);
 
 	FItemData GetItemDataFromTable(FString Name);
 	FEquipmentItemData GetEquipmentItemDataFromTable(FString Name);

@@ -37,3 +37,18 @@ int32 UGameTimeFunctionLibrary::GetMinute_GameTime(FGameTime InGameTime)
 {
 	return InGameTime.Minute;
 }
+
+FGameTime UGameTimeFunctionLibrary::GetMorning_GameTime()
+{
+	return FGameTime::Morning();
+}
+
+FGameTime UGameTimeFunctionLibrary::GetNoon_GameTime()
+{
+	return FGameTime::Noon();
+}
+
+FGameTime UGameTimeFunctionLibrary::GetEvening_GameTime()
+{
+	return FGameTime::Evening();
+}

@@ -11,6 +11,7 @@
 #include "../Base/BasicWeapon.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "../Inventory/InventoryManager.h"
 
 // Sets default values
 AItemPickup::AItemPickup()
@@ -44,7 +45,7 @@ void AItemPickup::BeginPlay()
 	Super::BeginPlay();
 	
 	//item 정보가 없을 시에는 랜덤 정보를 가져와서 템을 생성함.
-	if (ItemName.IsEmpty())
+	if (ItemDataSlot.IsEmpty())
 	{
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		if (IsValid(gameInstance))
@@ -55,8 +56,8 @@ void AItemPickup::BeginPlay()
 
 			FItemData itemData = gameInstance->GetItemDataFromTable(names[randIndex].ToString());
 
-			ItemName = itemData.Name;
-			Quantity = 1;
+			ItemDataSlot.ItemName = itemData.Name;
+			ItemDataSlot.Quantity = 1;
 
 			Mesh->SetStaticMesh(itemData.ItemMesh);
 		}
@@ -72,13 +73,15 @@ void AItemPickup::Tick(float DeltaTime)
 }
 
 void AItemPickup::Interact_Implementation(APawn* InteractCauser)
-{
-
+{	
+	//todo : Get
+	AInventoryManager* inventoryManager = nullptr;
 	ABasicCharacter* player = Cast<ABasicCharacter>(InteractCauser);
 
-	if (player)
+	if (IsValid(inventoryManager) && IsValid(player))
 	{
-		bool bSucceeded = player->Inventory->AddItemToInventory(ItemName, Quantity);
+		//Add to player's Inventory.
+		bool bSucceeded = inventoryManager->AddItemToInventory(ItemDataSlot);
 		//Add Succeeded, Update UI & Delete Item Actor.
 		if (bSucceeded)
 		{

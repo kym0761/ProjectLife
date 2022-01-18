@@ -30,10 +30,10 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* ExitButton;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Button")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
 		AShoppingActor* ShoppingActorRef;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Button")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingSlot> ShoppingSlotClass;
 
 	virtual void NativeConstruct() override;

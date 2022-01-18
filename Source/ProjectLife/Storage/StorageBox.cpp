@@ -14,8 +14,8 @@ AStorageBox::AStorageBox()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
-	Inventory->InventoryCapacity = 20;
+	//Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+	//Inventory->InventoryCapacity = 20;
 
 	bOpen = false;
 

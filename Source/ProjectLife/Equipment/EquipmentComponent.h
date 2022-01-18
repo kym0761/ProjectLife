@@ -51,7 +51,7 @@ public:
 	bool SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentItemData InData);
 
 	FEquipmentItemData GetEquipmentData(EEquipmentSlot Equipmentslot);
-	bool SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* Inventory, int32 InventoryIndex);
+	bool SwapWithInventory(EEquipmentSlot Equipmentslot, int32 InventoryNumber, int32 SlotNumber);
 
 	void ApplyEquipment();
 };

@@ -18,7 +18,12 @@ class PROJECTLIFE_API ABasicGameMode : public AGameMode
 public:
 
 	ABasicGameMode();
-	
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
 	//increase Game's Day.
 	UFUNCTION(BlueprintCallable)
 		void IncreaseDay(int32 IncDay = 1);

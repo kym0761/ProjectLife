@@ -24,17 +24,6 @@ void UQuestViewWidget::InitializeWidget()
 
 		if (IsValid(GameInstanceRef))
 		{
-			GameInstanceRef->Quests;
-
-			for (TSubclassOf<UQuest> q : GameInstanceRef->Quests)
-			{
-
-
-
-
-			}
-
-
 
 		}
 

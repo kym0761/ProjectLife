@@ -23,10 +23,10 @@ public :
 	UPROPERTY(Meta = (BindWidget))
 		UUniformGridPanel* CalendarGridPanel;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Calendar")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
 		TSubclassOf<UCalendarDateSlot> CalendarDateSlotClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Calendar")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
 		TSubclassOf< UCalendarDummySlot> CalendarDummySlotClass;
 
 	virtual void NativeConstruct() override;

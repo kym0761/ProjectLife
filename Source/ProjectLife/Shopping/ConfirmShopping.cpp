@@ -52,26 +52,26 @@ void UConfirmShopping::NativeConstruct()
 
 void UConfirmShopping::Clicked_OK()
 {
-	//Transaction
+	////Transaction
 
-	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
-	if (IsValid(inventory))
-	{
-		//TODO : Transaction move to ShoppingActor
-		bool bSucceed = ShopOwnerRef->Transaction(inventory, Quantity, ItemIndex);
-		if (bSucceed)
-		{
-			ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-			if (IsValid(playerController))
-			{
-				playerController->UpdateInventory();
-			}
-		}
-	}
-	else 
-	{
-		//what?
-	}
+	//UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
+	//if (IsValid(inventory))
+	//{
+	//	//TODO : Transaction move to ShoppingActor
+	//	bool bSucceed = ShopOwnerRef->Transaction(inventory, Quantity, ItemIndex);
+	//	if (bSucceed)
+	//	{
+	//		ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+	//		if (IsValid(playerController))
+	//		{
+	//			playerController->UpdateInventory();
+	//		}
+	//	}
+	//}
+	//else 
+	//{
+	//	//what?
+	//}
 
 	RemoveFromParent();
 }
@@ -83,45 +83,45 @@ void UConfirmShopping::Clicked_Cancel()
 
 void UConfirmShopping::Clicked_Plus()
 {
-	int32 tempQuantity = Quantity + 1;
-	bool bAffordable = false;
+	//int32 tempQuantity = Quantity + 1;
+	//bool bAffordable = false;
 
-	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
-	if (IsValid(inventory))
-	{
-		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
-		bAffordable = inventory->CheckEnoughMoney(tempPrice);
-	}
+	//UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
+	//if (IsValid(inventory))
+	//{
+	//	int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
+	//	bAffordable = inventory->CheckEnoughMoney(tempPrice);
+	//}
 
-	if (bAffordable)
-	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
-	}
-	else
-	{
-		UE_LOG(LogTemp,Warning, TEXT("You Can't Buy. You Don't Have Enough Money"));
-	}
+	//if (bAffordable)
+	//{
+	//	Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp,Warning, TEXT("You Can't Buy. You Don't Have Enough Money"));
+	//}
 }
 
 void UConfirmShopping::Clicked_10Plus()
 {
-	int32 tempQuantity = Quantity + 10;
-	bool bAffordable = false;
-	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
-	if (IsValid(inventory))
-	{
-		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
-		bAffordable = inventory->CheckEnoughMoney(tempPrice);
-	}
+	//int32 tempQuantity = Quantity + 10;
+	//bool bAffordable = false;
+	//UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
+	//if (IsValid(inventory))
+	//{
+	//	int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
+	//	bAffordable = inventory->CheckEnoughMoney(tempPrice);
+	//}
 
-	if (bAffordable)
-	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("You Can't Buy. You Don't Have Enough Money"));
-	}
+	//if (bAffordable)
+	//{
+	//	Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("You Can't Buy. You Don't Have Enough Money"));
+	//}
 }
 
 void UConfirmShopping::Clicked_Minus()

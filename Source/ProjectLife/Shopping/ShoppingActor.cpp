@@ -92,20 +92,20 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 
 bool AShoppingActor::Transaction(UInventoryComponent* InventoryForPlayer, int32 Quantity, int32 Index)
 {
-	if (IsValid(InventoryForPlayer) && Items.IsValidIndex(Index))
-	{
-		int totalPrice = Items[Index].ItemPrice * Quantity;
+	//if (IsValid(InventoryForPlayer) && Items.IsValidIndex(Index))
+	//{
+	//	int totalPrice = Items[Index].ItemPrice * Quantity;
 
-		if (InventoryForPlayer->Money >= totalPrice)
-		{
-			bool bAddSucceed = InventoryForPlayer->AddItemToInventory(Items[Index].Name,Quantity);
-			if (bAddSucceed)
-			{
-				InventoryForPlayer->SpendMoney(totalPrice);
-				return true;
-			}
-		}
-	}
+	//	if (InventoryForPlayer->Money >= totalPrice)
+	//	{
+	//		bool bAddSucceed = InventoryForPlayer->AddItemToInventory(Items[Index].Name,Quantity);
+	//		if (bAddSucceed)
+	//		{
+	//			InventoryForPlayer->SpendMoney(totalPrice);
+	//			return true;
+	//		}
+	//	}
+	//}
 
 	return false;
 }
