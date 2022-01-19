@@ -9,7 +9,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
-class UInventoryComponent;
+//class UInventoryComponent;
 class UStatComponent;
 class UEquipmentComponent;
 class ABasicWeapon;
@@ -49,9 +49,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 		UCameraComponent* Camera;
 
-	//Inventory Component;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UInventoryComponent* Inventory;
+	////Inventory Component;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+	//	UInventoryComponent* Inventory;
 
 	//StatComponent.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")

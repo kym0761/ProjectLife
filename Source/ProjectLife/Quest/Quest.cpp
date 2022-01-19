@@ -3,7 +3,6 @@
 
 #include "Quest.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
 #include "../Base/StatComponent.h"
 #include "../Item/Item.h"
 #include "../ProjectLIfeGameInstance.h"

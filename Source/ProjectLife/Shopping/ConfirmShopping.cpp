@@ -4,7 +4,6 @@
 #include "ConfirmShopping.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
-#include "../Inventory/InventoryComponent.h"
 #include "../Base/BasicPlayerController.h"
 #include "ShoppingActor.h"
 

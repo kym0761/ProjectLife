@@ -4,7 +4,6 @@
 #include "StorageWidget.h"
 #include "Components/UniformGridPanel.h"
 #include "../Inventory/ItemSlot.h"
-#include "../Inventory/InventoryComponent.h"
 
 void UStorageWidget::NativeConstruct()
 {
@@ -44,7 +43,7 @@ void UStorageWidget::UpdateStorage()
 
 	for (int32 i = 0; i < ItemSlotArray.Num(); i++)
 	{
-		ItemSlotArray[i]->UpdateSlot();
+		ItemSlotArray[i]->UpdateItemSlot();
 	}
 	
 }

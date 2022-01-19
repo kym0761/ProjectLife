@@ -5,7 +5,6 @@
 #include "BasicCharacter.h"
 #include "../Storage/StorageWidget.h"
 #include "../Ability/ConditionWidget.h"
-#include "../Inventory/InventoryComponent.h"
 #include "../UI/MainHUD.h"
 
 ABasicPlayerController::ABasicPlayerController()

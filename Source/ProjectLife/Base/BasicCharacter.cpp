@@ -8,7 +8,7 @@
 #include "Kismet/KismetSystemLibrary.h" //UKismetSystemLibrary
 #include "Kismet/GameplayStatics.h" //UGamePlayStatics
 #include "Components/SkeletalMeshComponent.h"
-#include "../Inventory/InventoryComponent.h"
+//#include "../Inventory/InventoryComponent.h"
 #include  "StatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BasicWeapon.h"
@@ -52,7 +52,7 @@ ABasicCharacter::ABasicCharacter()
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, 270.0f, 0.0f));
 
-	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+	//Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 	StatComponent = CreateDefaultSubobject<UStatComponent>(TEXT("StatComponent"));
 	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>(TEXT("EquipmentComponent"));
 	AbilityComponent = CreateDefaultSubobject<UAbilityComponent>(TEXT("AbilityComponent"));

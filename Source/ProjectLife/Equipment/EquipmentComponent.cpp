@@ -2,7 +2,6 @@
 
 
 #include "EquipmentComponent.h"
-#include "../Inventory/InventoryComponent.h"
 #include "../Base/StatComponent.h"
 #include "../Base/BasicWeapon.h"
 #include "../Base/BasicCharacter.h"

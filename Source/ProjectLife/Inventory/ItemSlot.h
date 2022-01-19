@@ -9,8 +9,8 @@
 
 class UImage;
 class UTextBlock;
-class UInventoryComponent;
-
+//class UInventoryComponent;
+class AInventoryManager;
 /**
  * 
  */
@@ -28,11 +28,13 @@ public:
 		UTextBlock* SlotItemNum;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		int32 InventoryIndex;
+		int32 InventoryNumber;
 
-	//UI's Owner's Inventory.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		UInventoryComponent* InventoryRef;
+		int32 InventorySlotNumber;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
+		AInventoryManager* InventoryManagerRef;
 
 	//Using for Drag Drop
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
@@ -53,5 +55,6 @@ public:
 
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-	void UpdateSlot();
+	void InitItemSlot();
+	void UpdateItemSlot();
 };

@@ -14,13 +14,13 @@ class UInventory : public UObject
 
 public:
 
+	UInventory();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemDataSlot> Items;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 MaxCapacity;
-
-	UInventory();
 
 };
 
@@ -57,14 +57,12 @@ public:
 	bool SpendMoney(int32 OutMoney);
 	void GainMoney(int32 InMoney);
 	bool CheckEnoughMoney(int32 ToCompare);
-
 	void TryMakeInventorySpace(int32 Num);
-
 	bool SwapItemBetweenInventory(int32 From,int32 FromSlot, int32 To, int32 ToSlot);
-
 	FItemDataSlot GetInventoryItem(int32 InventoryNumber, int32 SlotNumber);
-
 	bool SetInventoryItem(int32 InventoryNumber, int32 SlotNumber, FItemDataSlot InData);
-
 	bool AddItemToInventory(FItemDataSlot InData);
+
+	
+
 };

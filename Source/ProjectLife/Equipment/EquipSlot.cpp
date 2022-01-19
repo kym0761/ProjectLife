@@ -5,13 +5,14 @@
 #include "Blueprint/DragDropOperation.h"
 #include "Components/Image.h"
 #include "../Inventory/ItemSlot.h"
-#include "../Inventory/InventoryComponent.h"
+//#include "../Inventory/InventoryComponent.h"
 #include "EquipmentComponent.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../Base/BasicPlayerController.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "../Inventory/InventoryManager.h"
 
 void UEquipSlot::NativeConstruct()
 {
@@ -97,122 +98,83 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
-	//if (InOperation)
-	//{
-	//	//if a dropped slot is a Item Slot
-	//	//Get ItemData And Equip it if it is EquipmentData.
-	//	{
-	//		UItemSlot* dropped = Cast<UItemSlot>(InOperation->Payload);
-	//		if (IsValid(dropped))
-	//		{
-	//			//Get Drop's Inventory & Index
-	//			UInventoryComponent* inventoryRef = dropped->InventoryRef;
-	//			int32 index = dropped->InventoryIndex;
+	if (InOperation)
+	{
+		//if a dropped slot is a Item Slot
+		//Get ItemData And Equip it if it is EquipmentData.
+		{
+			UItemSlot* droppedItemSlot = Cast<UItemSlot>(InOperation->Payload);
+			if (IsValid(droppedItemSlot))
+			{
+				//drop의 인벤토리 정보를 받아옴.
+				int32 drop_InventoryNumber = droppedItemSlot->InventoryNumber;
+				int32 drop_InventorySlotNumber = droppedItemSlot->InventorySlotNumber;
+				AInventoryManager* drop_InventoryManager = droppedItemSlot->InventoryManagerRef;
 
-	//			if (IsValid(inventoryRef) && IsValid(EquipmentCompRef))
-	//			{
-	//				//Inventory Data of Valid Index.
-	//				FItemDataSlot itemDataSlot = inventoryRef->InventoryArray[index];
-	//				FItemData itemData = itemDataSlot.ItemData;
+				if (IsValid(drop_InventoryManager))
+				{
+					FItemDataSlot itemDataSlot = drop_InventoryManager->GetInventoryItem(drop_InventoryNumber, drop_InventorySlotNumber);
+					UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
+					
+					if (IsValid(gameInstance))
+					{
+						//인벤토리 데이터를 아이템 데이터로 변환.
+						FItemData itemData = gameInstance->GetItemDataFromTable(itemDataSlot.ItemName);
 
-	//				if (itemData.ItemType == EItemType::Equipment)
-	//				{
-	//					FEquipmentItemData equipmentItemData; // TODO
+						if (itemData.ItemType == EItemType::Equipment)
+						{
+							FEquipmentItemData equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
 
-	//					UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	//					if (IsValid(gameInstance))
-	//					{
-	//						equipmentItemData = gameInstance->GetEquipmentItemDataFromTable(itemData.Name);
+							if (equipmentItemData.EquipmentType == EquipmentType)
+							{
+								FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+								bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
+								if (bSucceed)
+								{
+									FItemDataSlot temp;
+									temp.ItemName = currentEquipment.Name;
+									temp.Quantity = temp.ItemName != FString("") ? 1 : 0;
 
-	//						//UE_LOG(LogTemp, Warning, TEXT("Get Equip Slot Data"));
-	//					}
-	//					else
-	//					{
-	//						return false;
-	//					}
+									drop_InventoryManager->SetInventoryItem(drop_InventoryNumber, drop_InventorySlotNumber, temp);
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-	//					if (equipmentItemData.EquipmentType == EquipmentType)
-	//					{
-	//						FEquipmentItemData currentEquipment = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+		//if drop is Equip slot. Maybe Accessory? ex) accessory1 <->accessory2 swap.
+		//other Equipment Slot Will not Valid.. because there is no other Weapon Slot or Armor slot, etc... in game...
+		{
+			UEquipSlot* droppedEquipSlot = Cast<UEquipSlot>(InOperation->Payload);
+			if (IsValid(droppedEquipSlot))
+			{
+				if (IsValid(droppedEquipSlot->EquipmentCompRef) && IsValid(EquipmentCompRef) && (EquipmentType == droppedEquipSlot->EquipmentType) && (EquipmentSlot != droppedEquipSlot->EquipmentSlot))
+				{
+					FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
+					FEquipmentItemData droppedEquipmentData = droppedEquipSlot->EquipmentCompRef->GetEquipmentData(droppedEquipSlot->EquipmentSlot);
 
-	//						bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
-	//						if (bSucceed)
-	//						{
-	//							FItemDataSlot temp;
-	//							if (IsValid(gameInstance) && currentEquipment != FEquipmentItemData())
-	//							{
-	//								temp.ItemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
-	//							}
+					droppedEquipSlot->EquipmentCompRef->SetEquipment(droppedEquipSlot->EquipmentSlot, CurrentEquipmentData);
+					EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
 
-	//							if (temp.ItemData == FItemData())
-	//							{
-	//								temp.Quantity = 0;
-	//								//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 0"));
-	//							}
-	//							else
-	//							{
-	//								temp.Quantity = 1;
-	//								//UE_LOG(LogTemp, Warning, TEXT("temp.Quantity = 1"));
-	//							}
-
-	//							inventoryRef->InventoryArray[index] = temp;
-	//						}
-	//						//else
-	//						//{
-	//						//	UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : Set Equipment() is failed"));
-	//						//}
-
-	//						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-	//						if (playerController)
-	//						{
-	//							playerController->UpdateInventory();
-	//							playerController->UpdateEquipment();
-	//							return true;
-	//						}
-	//					}
-	//				}
-	//			}
-	//			else if (!IsValid(inventoryRef))
-	//			{
-	//				UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(inventoryRef) is not valid"));
-	//			}
-	//			else if (!IsValid(EquipmentCompRef))
-	//			{
-	//				UE_LOG(LogTemp, Warning, TEXT("NativeOnDrop failed : IsValid(EquipmentCompRef) is not valid"));
-	//			}
-	//		}
-	//	}
-
-	//	//if drop is Equip slot. Maybe Accessory? ex) accessory1 <->accessory2 swap.
-	//	//other Equipment Slot Will not Valid.. because there is no other Weapon Slot or Armor slot, etc... in game...
-	//	{
-	//		UEquipSlot* dropped = Cast<UEquipSlot>(InOperation->Payload);
-	//		if (IsValid(dropped))
-	//		{
-	//			if (IsValid(dropped->EquipmentCompRef) && IsValid(EquipmentCompRef) && (EquipmentType == dropped->EquipmentType) && (EquipmentSlot != dropped->EquipmentSlot))
-	//			{
-	//				FEquipmentItemData CurrentEquipmentData = EquipmentCompRef->GetEquipmentData(EquipmentSlot);
-	//				FEquipmentItemData droppedEquipmentData = dropped->EquipmentCompRef->GetEquipmentData(dropped->EquipmentSlot);
-
-	//				dropped->EquipmentCompRef->SetEquipment(dropped->EquipmentSlot, CurrentEquipmentData);
-	//				EquipmentCompRef->SetEquipment(EquipmentSlot, droppedEquipmentData);
-
-	//				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-	//				if (playerController)
-	//				{
-	//					playerController->UpdateInventory();
-	//					playerController->UpdateEquipment();
-	//					return true;
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+					ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+					if (playerController)
+					{
+						playerController->UpdateInventory();
+						playerController->UpdateEquipment();
+						return true;
+					}
+				}
+			}
+		}
+	}
 
 	return false;
 }
 
-void UEquipSlot::UpdateSlot()
+void UEquipSlot::UpdateEquipSlot()
 {
 	//Update Slot with Current Data.
 

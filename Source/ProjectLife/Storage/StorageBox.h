@@ -7,7 +7,7 @@
 #include "../Base/BasicInteractiveActor.h"
 #include "StorageBox.generated.h"
 
-class UInventoryComponent;
+
 class UStorageWidget;
 /**
  * 
@@ -22,9 +22,6 @@ public:
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
 	//	TArray<FItemDataSlot> StorageArray;
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
-	//	UInventoryComponent* Inventory;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
 		bool bOpen;

@@ -51,27 +51,27 @@ void UEquipmentWidget::UpdateEquipmentWidget()
 {
 	if (IsValid(WeaponSlot))
 	{
-		WeaponSlot->UpdateSlot();
+		WeaponSlot->UpdateEquipSlot();
 	}
 
 	if (IsValid(ArmorSlot))
 	{
-		ArmorSlot->UpdateSlot();
+		ArmorSlot->UpdateEquipSlot();
 	}
 
 	if (IsValid(ShieldSlot))
 	{
-		ShieldSlot->UpdateSlot();
+		ShieldSlot->UpdateEquipSlot();
 	}
 
 	if (IsValid(Accessory1Slot))
 	{
-		Accessory1Slot->UpdateSlot();
+		Accessory1Slot->UpdateEquipSlot();
 	}
 
 	if (IsValid(Accessory2Slot))
 	{
-		Accessory2Slot->UpdateSlot();
+		Accessory2Slot->UpdateEquipSlot();
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("UpdateEquipmentWidget()"));

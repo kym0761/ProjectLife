@@ -50,5 +50,5 @@ public:
 		const FDragDropEvent& InDragDropEvent,
 		UDragDropOperation* InOperation) override;
 
-	void UpdateSlot();
+	void UpdateEquipSlot();
 };

@@ -36,12 +36,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FItemDataSlot ItemDataSlot;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	//	FString ItemName;
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	//	int32 Quantity;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

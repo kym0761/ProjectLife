@@ -6,7 +6,6 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "../Base/BasicCharacter.h"
-#include "../Inventory/InventoryComponent.h"
 #include "../Base/BasicPlayerController.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -73,8 +72,9 @@ void AItemPickup::Tick(float DeltaTime)
 
 void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 {	
-	//todo : Get
-	AInventoryManager* inventoryManager = nullptr;
+	AInventoryManager* inventoryManager
+	= Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
+
 	ABasicCharacter* player = Cast<ABasicCharacter>(InteractCauser);
 
 	if (IsValid(inventoryManager) && IsValid(player))
@@ -92,6 +92,10 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 
 			Destroy();
 		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("XXXXXXXXXXXXXX"));
 	}
 
 }

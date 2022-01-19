@@ -3,7 +3,7 @@
 
 #include "QuickSlotWidget.h"
 #include "Components/HorizontalBox.h"
-#include "../Inventory/InventoryComponent.h"
+//#include "../Inventory/InventoryComponent.h"
 #include "../Base/BasicCharacter.h"
 #include "../Inventory/ItemSlot.h"
 
@@ -26,30 +26,31 @@ void UQuickSlotWidget::NativeConstruct()
 void UQuickSlotWidget::InitQuickSlot()
 {
 
-	if (IsValid(GetOwningPlayer()))
-	{
-		UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
+	//if (IsValid(GetOwningPlayer()))
+	//{
+	//	UInventoryComponent* inventory = GetOwningPlayer()->GetPawn()->FindComponentByClass<UInventoryComponent>();
 
-		if (IsValid(inventory))
-		{
-			for (int32 i = 0; i < ItemSlotArray.Num(); i++)
-			{
-				ItemSlotArray[i]->InventoryRef = inventory;
-				ItemSlotArray[i]->InventoryIndex = i;
-				ItemSlotArray[i]->UpdateSlot();
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("failed?"));
-		}
-	}
+	//	if (IsValid(inventory))
+	//	{
+	//		for (int32 i = 0; i < ItemSlotArray.Num(); i++)
+	//		{
+	//			ItemSlotArray[i]->InventoryRef = inventory;
+	//			ItemSlotArray[i]->InventoryIndex = i;
+	//			ItemSlotArray[i]->UpdateSlot();
+	//		}
+	//	}
+	//	else
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("failed?"));
+	//	}
+	//}
 }
 
 void UQuickSlotWidget::UpdateQuickSlot()
 {
 	for (int32 i = 0; i < ItemSlotArray.Num(); i++)
 	{
-		ItemSlotArray[i]->UpdateSlot();
+		ItemSlotArray[i]->InventorySlotNumber = i;
+		ItemSlotArray[i]->UpdateItemSlot();
 	}
 }

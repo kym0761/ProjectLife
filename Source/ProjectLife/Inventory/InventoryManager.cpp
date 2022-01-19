@@ -23,6 +23,8 @@ void AInventoryManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//temp.. Player Inventory
+	TryMakeInventorySpace(0);
 }
 
 // Called every frame
@@ -127,8 +129,11 @@ void AInventoryManager::TryMakeInventorySpace(int32 Num)
 	}
 	else // Add New Inventory.
 	{
-		UInventory * inventory = NewObject<UInventory>();
-		Inventories.Add(Num, inventory);
+		Inventories.Add(Num, NewObject<UInventory>());
+		for (int i = 0; i < 30; i++)
+		{
+			Inventories[0]->Items.Add(FItemDataSlot());
+		}
 	}
 }
 
@@ -136,6 +141,7 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 {
 	if (!(CheckValidInventory(From) && CheckValidInventory(To)))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Not Valid Inventory"));
 		return false;
 	}
 
@@ -153,6 +159,7 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 		}
 		else //join
 		{
+			UE_LOG(LogTemp, Warning, TEXT("JOIN"));
 			UProjectLIfeGameInstance* gameinstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 
 			if (IsValid(gameinstance))
@@ -186,6 +193,10 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 				}
 			}
 		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed"));
 	}
 
 	return false;
@@ -228,11 +239,14 @@ bool AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 		}
 		else
 		{
-			if (Inventories[PLAYER_INVENTORY]->Items.Num() < Inventories[PLAYER_INVENTORY]->MaxCapacity)
+			// 공간 있으면 정보를 넣는다.
+			for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
 			{
-				// 공간 있으면 정보를 넣는다.
-				Inventories[PLAYER_INVENTORY]->Items.Add(InData);
-				return true;
+				if (Inventories[PLAYER_INVENTORY]->Items[i].IsEmpty())
+				{
+					SetInventoryItem(0, i, InData);
+					return true;
+				}
 			}
 		}
 	}

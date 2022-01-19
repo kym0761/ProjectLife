@@ -6,11 +6,8 @@
 #include "Components/BoxComponent.h"
 #include "ShoppingWidget.h"
 #include "../Base/BasicPlayerController.h"
-#include "../Inventory/InventoryComponent.h"
-
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
 
 // Sets default values
 AShoppingActor::AShoppingActor()

@@ -6,7 +6,6 @@
 #include "Components/ScrollBox.h"
 #include "Components/Button.h"
 #include "../Base/BasicCharacter.h"
-#include "../Inventory/InventoryComponent.h"
 #include "ShoppingActor.h"
 #include "ShoppingSlot.h"
 
