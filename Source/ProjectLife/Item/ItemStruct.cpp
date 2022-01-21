@@ -18,6 +18,11 @@ FItemData::FItemData()
 	ItemMesh = nullptr;
 }
 
+bool FItemData::IsEmpty()
+{
+	return Name == FString("");
+}
+
 FItemDataSlot::FItemDataSlot()
 {
 	ItemName = FString("");
@@ -31,7 +36,7 @@ bool FItemDataSlot::IsSameItem(const FItemDataSlot Other)
 
 bool FItemDataSlot::IsEmpty()
 {
-	return ItemName == FString("") || Quantity == 0;
+	return ItemName == FString("");
 }
 
 FEquipmentItemData::FEquipmentItemData()

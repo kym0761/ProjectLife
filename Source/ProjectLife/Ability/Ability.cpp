@@ -34,8 +34,8 @@ void AAbility::SetAbilityOwner(AActor* Value)
 
 void AAbility::StartAbility()
 {
-	//it Called First Time When Start Ability
-	//first, register Ability To Owner's AbilityComponent.
+	//Ability가 처음 시작할 떄
+	//Owner의 AbilityComponent에 ability를 등록함.
 	if (IsValid(AbilityOwner))
 	{
 		UAbilityComponent* abilityComponent = AbilityOwner->FindComponentByClass<UAbilityComponent>();
@@ -46,13 +46,13 @@ void AAbility::StartAbility()
 		}
 	}
 
-	//then Begin Ability.
+	//그 후에 액티브 효과 발동
 	ActivateActiveEffect();
 
-	//then PassiveAbility will be turned On.
+	//패시브 효과도 발동
 	ActivatePassiveEffect();
 	
-	//timer setting when it has a Duration.
+	//지속시간이 존재한다면, 타이머도 동작함.
 	switch (AbilityData.AbilityDurabilityType)
 	{
 	case EAbilityDurabilityType::Once:
@@ -106,6 +106,9 @@ void AAbility::ActivateEndEffect_Implementation()
 
 void AAbility::DestroyAbilityWithNoEndEffect()
 {
+	//강제로 종료 당했을 때 발동되어야함.
+	//예시) 보호막이 부셔졌을 때 후폭풍 효과가 없어야함.
+	
 	if (GetWorldTimerManager().IsTimerActive(AbilityCountdownTimer))
 	{
 		AbilityCountdownTimer.Invalidate();
@@ -116,6 +119,9 @@ void AAbility::DestroyAbilityWithNoEndEffect()
 
 void AAbility::DestroyAbilityWithEndEffect()
 {
+	//지속시간이 다 되었을 때 발동되어야함.
+	//예시) 보호막이 지속시간까지 유지되었을 때 후폭풍 효과가 있어야함.
+
 	if (GetWorldTimerManager().IsTimerActive(AbilityCountdownTimer))
 	{
 		AbilityCountdownTimer.Invalidate();

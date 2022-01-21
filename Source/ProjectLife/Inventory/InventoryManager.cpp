@@ -3,6 +3,7 @@
 
 #include "InventoryManager.h"
 #include "../ProjectLIfeGameInstance.h"
+#include "../Item/ItemPickup.h"
 
 UInventory::UInventory()
 {
@@ -160,13 +161,13 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 		else //join
 		{
 			UE_LOG(LogTemp, Warning, TEXT("JOIN"));
-			UProjectLIfeGameInstance* gameinstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
+			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 
-			if (IsValid(gameinstance))
+			if (IsValid(gameInstance))
 			{
-				FItemData itemData = gameinstance->GetItemDataFromTable(i1.ItemName); // Get Item Data
+				FItemData itemData = gameInstance->GetItemDataFromTable(i1.ItemName); // Get Item Data
 
-				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //enough.. All Item Will In ToSlot
+				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //enough.. All Item Will In ToSlot. And FromSlot will be empty.
 				{
 					i1.Quantity += i2.Quantity;
 					i2 = FItemDataSlot();
@@ -229,27 +230,110 @@ bool AInventoryManager::SetInventoryItem(int32 InventoryNumber, int32 SlotNumber
 	return false;
 }
 
-bool AInventoryManager::AddItemToInventory(FItemDataSlot InData)
+FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 {
+	//빈 FItemDataSlot을 뱉으면 실패.
+	//이름 값이 있으며 Quantity의 값이 0이나 혹은 그 이상일때 성공.
+	//값이 음수여도 일단 성공.
+
 	if (Inventories.Contains(PLAYER_INVENTORY))
 	{
 		if (InData.IsEmpty()) // 빈 정보를 왜 넣음?
 		{
-			return false;
+			//UE_LOG(LogTemp, Warning, TEXT("?"));
+			return FItemDataSlot();
 		}
 		else
 		{
-			// 공간 있으면 정보를 넣는다.
-			for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+			UProjectLIfeGameInstance* gameinstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
+
+			if (IsValid(gameinstance))
 			{
-				if (Inventories[PLAYER_INVENTORY]->Items[i].IsEmpty())
+				FItemData itemData = gameinstance->GetItemDataFromTable(InData.ItemName);
+				if (itemData.IsEmpty())
 				{
-					SetInventoryItem(0, i, InData);
-					return true;
+					//잘못된 정보는 넣지 않음.
+					return FItemDataSlot();
 				}
+
+				//!! : 만약 1번이라도 얻게 됐다면, 인벤토리에 반영이 되므로, FItemDataSlot의 빈 값을 내면 안됨.
+
+				FItemDataSlot leftover = InData;
+				for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+				{
+					if (Inventories[PLAYER_INVENTORY]->Items[i].ItemName == leftover.ItemName && Inventories[PLAYER_INVENTORY]->Items[i].Quantity < itemData.MaxQuantity)
+					{
+						int32 extra = itemData.MaxQuantity - Inventories[PLAYER_INVENTORY]->Items[i].Quantity;
+						int32 tempOffset = FMath::Clamp(leftover.Quantity, 0, extra);
+
+						Inventories[PLAYER_INVENTORY]->Items[i].Quantity += tempOffset;
+
+						leftover.Quantity -= tempOffset;
+
+						if (leftover.Quantity == 0)
+						{
+							//남은게 없으면 성공.
+							return leftover;
+						}
+						else if (leftover.Quantity < 0)
+						{
+							//음수면 문제가 있긴함.
+							return leftover;
+						}
+					}
+				}
+
+				//여기까지 왔다면, leftover의 양이 남아있거나, 혹은 같은 슬롯을 찾지 못함.
+				//빈 공간 있으면 정보를 넣는다.
+				for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+				{
+					if (Inventories[PLAYER_INVENTORY]->Items[i].IsEmpty())
+					{
+						SetInventoryItem(0, i, leftover);
+						
+						leftover.Quantity = 0;
+						return leftover;
+					}
+				}
+
+				//Warning 1 : leftover의 아이템을 약간 얻었는데, 바닥에 떨어진 아이템 처리가 제대로 되지 않음.
+				//Warning 2 : 보상을 얻으려 했는데, 보상이 초과되서 남음 or 인벤토리 공간이 없어서 보상을 아예 얻지 못함.
+				return leftover;
 			}
 		}
 	}
+
+	return FItemDataSlot();
+}
+
+bool AInventoryManager::AddPickupToInventory(AItemPickup* Pickup)
+{
+	//pickup의 데이터를 인벤토리에 반영하고, 그 후에 제거하기 위해서 필요한 기능.
+	//true면 ItemPickup 내부에서 Destroy할 것.
+
+	FItemDataSlot temp = AddItemToInventory(Pickup->ItemDataSlot);
+
+	if (temp.IsEmpty())
+	{
+		//잘못된 데이터를 전달함.
+		//UE_LOG(LogTemp, Warning, TEXT("Invalid Data"));
+		return false;
+	}
+	else
+	{
+		if (temp.Quantity == 0)
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("OK, pickup is 0"));
+			return true;
+		}
+		else
+		{
+			Pickup->ItemDataSlot = temp;
+			//UE_LOG(LogTemp, Warning, TEXT("pickup leftover"));
+			return false;
+		}
+	}
+
 
 	return false;
 }

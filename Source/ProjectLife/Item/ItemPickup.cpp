@@ -80,16 +80,17 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 	if (IsValid(inventoryManager) && IsValid(player))
 	{
 		//Add to player's Inventory.
-		bool bSucceeded = inventoryManager->AddItemToInventory(ItemDataSlot);
-		//Add Succeeded, Update UI & Delete Item Actor.
+		bool bSucceeded = inventoryManager->AddPickupToInventory(this);
+		//Succeeded, Update UI & Delete Item Actor.
+		
+		ABasicPlayerController* playerController = player->GetController<ABasicPlayerController>();
+		if (playerController)
+		{
+			playerController->UpdateInventory();
+		}
+
 		if (bSucceeded)
 		{
-			ABasicPlayerController* playerController = player->GetController<ABasicPlayerController>();
-			if (playerController)
-			{
-				playerController->UpdateInventory();
-			}
-
 			Destroy();
 		}
 	}

@@ -89,6 +89,9 @@ public:
 	{
 		return !(Name == Other.Name);
 	}
+
+	bool IsEmpty();
+
 };
 
 USTRUCT(BlueprintType)

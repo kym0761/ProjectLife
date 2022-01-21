@@ -7,6 +7,8 @@
 #include "../Item/ItemStruct.h"
 #include "InventoryManager.generated.h"
 
+class AItemPickup;
+
 UCLASS()
 class UInventory : public UObject
 {
@@ -61,8 +63,9 @@ public:
 	bool SwapItemBetweenInventory(int32 From,int32 FromSlot, int32 To, int32 ToSlot);
 	FItemDataSlot GetInventoryItem(int32 InventoryNumber, int32 SlotNumber);
 	bool SetInventoryItem(int32 InventoryNumber, int32 SlotNumber, FItemDataSlot InData);
-	bool AddItemToInventory(FItemDataSlot InData);
+	FItemDataSlot AddItemToInventory(FItemDataSlot InData);
 
+	bool AddPickupToInventory(AItemPickup* Pickup);
 	
 
 };
