@@ -52,7 +52,6 @@ ABasicCharacter::ABasicCharacter()
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, 270.0f, 0.0f));
 
-	//Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 	StatComponent = CreateDefaultSubobject<UStatComponent>(TEXT("StatComponent"));
 	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>(TEXT("EquipmentComponent"));
 	AbilityComponent = CreateDefaultSubobject<UAbilityComponent>(TEXT("AbilityComponent"));
@@ -319,7 +318,6 @@ void ABasicCharacter::InteractCheck()
 
 void ABasicCharacter::InteractTrigger()
 {
-
 	//if Hold Something, Unhold And End Interaction Trigger.
 	if (bHoldSomething)
 	{
