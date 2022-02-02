@@ -6,6 +6,7 @@
 #include "../Animal/Cow.h"
 #include "../Animal/LivestockProduceComponent.h"
 #include "../Item/Item.h"
+
 AMilker::AMilker()
 {
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));

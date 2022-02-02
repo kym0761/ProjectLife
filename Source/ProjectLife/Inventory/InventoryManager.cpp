@@ -25,7 +25,11 @@ void AInventoryManager::BeginPlay()
 	Super::BeginPlay();
 	
 	//temp.. Player Inventory
-	TryMakeInventorySpace(0);
+	//1,2,3.... Storage Inventory
+	for (int32 i = 0; i < 10; i++)
+	{
+		TryMakeInventorySpace(i);
+	}
 }
 
 // Called every frame
@@ -127,14 +131,16 @@ void AInventoryManager::TryMakeInventorySpace(int32 Num)
 	if (temp)
 	{
 		//Do Nothing..?
+		return;
 	}
 	else // Add New Inventory.
 	{
 		Inventories.Add(Num, NewObject<UInventory>());
 		for (int i = 0; i < 30; i++)
 		{
-			Inventories[0]->Items.Add(FItemDataSlot());
+			Inventories[Num]->Items.Add(FItemDataSlot());
 		}
+		UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
 	}
 }
 

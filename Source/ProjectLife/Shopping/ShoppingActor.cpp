@@ -67,6 +67,7 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 	//	GEngine->AddOnScreenDebugMessage((int32)FMath::Rand(), 5.0f, FColor::Turquoise, TEXT("Shopping Start"));
 	//}
 
+	//InteractorCauser Will be "Player".
 	//Make UI For Shopping.
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
 	if (IsValid(ShoppingWidgetClass) && IsValid(playerController))

@@ -32,7 +32,7 @@ void UMainHUD::UpdateInventory()
 
 	if (IsValid(Widget_Storage))
 	{
-		Widget_Storage->UpdateStorage();
+		Widget_Storage->UpdateStorageWidget();
 	}
 
 }
@@ -75,7 +75,7 @@ void UMainHUD::ToggleStorageWidget(AActor* StorageActorRef)
 		else
 		{
 			bStorageUsing = true;
-			Widget_Storage->InitStorage(StorageActorRef);
+			Widget_Storage->InitStorageWidget(StorageActorRef);
 			PlayAnimationForward(StorageAnimation);
 		}
 	}

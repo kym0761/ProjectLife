@@ -253,7 +253,7 @@ void UItemSlot::UpdateItemSlot()
 	}
 
 	//인벤토리 데이터를 가져옴
-	FItemDataSlot itemSlotData = InventoryManagerRef->Inventories[0]->Items[InventorySlotNumber];
+	FItemDataSlot itemSlotData = InventoryManagerRef->Inventories[InventoryNumber]->Items[InventorySlotNumber];
 	
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 	if (IsValid(gameInstance))
