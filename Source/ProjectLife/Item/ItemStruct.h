@@ -186,7 +186,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		bool bLimited;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		int32 Quantity;
+		int32 Stock;
 
 	FShopItemData();
 

@@ -25,9 +25,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* ShoppingCollision;
 
+	//상점 아이템 정보?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TArray<FShopItemData> ShopItems;
 
+	//구매 목록 Cache
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TArray<FItemData> Items;
 
@@ -52,5 +54,5 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool Transaction(int32 Quantity, int32 Index);
+	bool Transaction(int32 ShopItemIndex, int32 Quantity);
 };

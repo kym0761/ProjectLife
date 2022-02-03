@@ -72,5 +72,5 @@ FShopItemData::FShopItemData()
 {
 	ItemName = FString();
 	bLimited = false;
-	Quantity = 1;
+	Stock = 1;
 }

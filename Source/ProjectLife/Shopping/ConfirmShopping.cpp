@@ -59,7 +59,7 @@ void UConfirmShopping::Clicked_OK()
 
 	if (IsValid(inventoryManager))
 	{
-		bool bSucceed  = ShopOwnerRef->Transaction(Quantity, ItemIndex);
+		bool bSucceed = ShopOwnerRef->Transaction(ShopItemIndex, Quantity);
 		if (bSucceed)
 		{
 			ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
@@ -88,14 +88,14 @@ void UConfirmShopping::Clicked_Plus()
 
 	if (IsValid(inventoryManager))
 	{
-		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
+		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ShopItemIndex].ItemPrice;
 		bAffordable = inventoryManager->CheckEnoughMoney(tempPrice);
 	}
 
 
 	if (bAffordable)
 	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
+		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ShopItemIndex].MaxQuantity);
 	}
 	else
 	{
@@ -111,13 +111,13 @@ void UConfirmShopping::Clicked_10Plus()
 	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
 	if (IsValid(inventoryManager))
 	{
-		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ItemIndex].ItemPrice;
+		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ShopItemIndex].ItemPrice;
 		bAffordable = inventoryManager->CheckEnoughMoney(tempPrice);
 	}
 
 	if (bAffordable)
 	{
-		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
+		Quantity = FMath::Clamp(tempQuantity, 0, ShopOwnerRef->Items[ShopItemIndex].MaxQuantity);
 	}
 	else
 	{
@@ -127,12 +127,12 @@ void UConfirmShopping::Clicked_10Plus()
 
 void UConfirmShopping::Clicked_Minus()
 {
-	Quantity = FMath::Clamp(Quantity - 1, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
+	Quantity = FMath::Clamp(Quantity - 1, 0, ShopOwnerRef->Items[ShopItemIndex].MaxQuantity);
 }
 
 void UConfirmShopping::Clicked_10Minus()
 {
-	Quantity = FMath::Clamp(Quantity - 10, 0, ShopOwnerRef->Items[ItemIndex].MaxQuantity);
+	Quantity = FMath::Clamp(Quantity - 10, 0, ShopOwnerRef->Items[ShopItemIndex].MaxQuantity);
 }
 
 FText UConfirmShopping::SetQuantityText()
@@ -145,7 +145,7 @@ void UConfirmShopping::InitConfirmShopping(AShoppingActor* ShopOwner, int32 Inde
 	if (IsValid(ShopOwner) && ShopOwner->Items.IsValidIndex(Index))
 	{
 		ShopOwnerRef = ShopOwner;
-		ItemIndex = Index;
+		ShopItemIndex = Index;
 	}
 	else // if not valid, Delete.
 	{

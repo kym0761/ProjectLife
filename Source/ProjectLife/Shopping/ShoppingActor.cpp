@@ -43,7 +43,7 @@ void AShoppingActor::InitShop()
 
 		TArray<FName> names = ShoppingDataTable->GetRowNames();
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (gameInstance)
+		if (IsValid(gameInstance))
 		{
 			for (FName name : names)
 			{
@@ -88,8 +88,13 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 
 }
 
-bool AShoppingActor::Transaction(int32 Quantity, int32 Index)
+bool AShoppingActor::Transaction(int32 ShopItemIndex, int32 Quantity)
 {
+	if (Quantity == 0)
+	{
+		return false;
+	}
+
 	//거래를 inventoryManager와 해야함. 만약 거래를 못한다면 월드에 inventoryManager가 없을 수도 있음.
 	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
 
@@ -101,13 +106,13 @@ bool AShoppingActor::Transaction(int32 Quantity, int32 Index)
 			return false;
 		}
 
-		int totalPrice = Items[Index].ItemPrice * Quantity;
+		int totalPrice = Items[ShopItemIndex].ItemPrice * Quantity;
 		
 		//플레이어가 적절한 돈을 가지고 있다면 거래.
 		if (inventoryManager->Money >= totalPrice)
 		{
 			FItemDataSlot inData;
-			inData.ItemName = Items[Index].Name;
+			inData.ItemName = Items[ShopItemIndex].Name;
 			inData.Quantity = Quantity;
 
 			//TODO : Check that player can buy.
