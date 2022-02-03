@@ -343,3 +343,19 @@ bool AInventoryManager::AddPickupToInventory(AItemPickup* Pickup)
 
 	return false;
 }
+
+bool AInventoryManager::CheckPlayerInventoryHasSpace()
+{
+	if (Inventories.Contains(PLAYER_INVENTORY))
+	{
+		for (int32 i = 0; i < Inventories[PLAYER_INVENTORY]->Items.Num(); i++)
+		{
+			FItemDataSlot item = Inventories[PLAYER_INVENTORY]->Items[i];
+			if (item.IsEmpty())
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}

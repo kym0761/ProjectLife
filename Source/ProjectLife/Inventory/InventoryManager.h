@@ -66,6 +66,6 @@ public:
 	FItemDataSlot AddItemToInventory(FItemDataSlot InData);
 
 	bool AddPickupToInventory(AItemPickup* Pickup);
-	
+	bool CheckPlayerInventoryHasSpace();
 
 };
