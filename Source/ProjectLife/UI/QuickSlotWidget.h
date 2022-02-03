@@ -23,7 +23,7 @@ public:
 		UHorizontalBox* QuickSlotBox;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "QuickSlot")
-		TArray<UItemSlot*> ItemSlotArray;
+		TArray<UItemSlot*> QuickSlotArray;
 
 	virtual void NativeConstruct() override;
 

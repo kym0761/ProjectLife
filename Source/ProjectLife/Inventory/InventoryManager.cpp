@@ -135,12 +135,13 @@ void AInventoryManager::TryMakeInventorySpace(int32 Num)
 	}
 	else // Add New Inventory.
 	{
-		Inventories.Add(Num, NewObject<UInventory>());
+		UInventory* inventory = NewObject<UInventory>();
+		Inventories.Add(Num, inventory);
 		for (int i = 0; i < 30; i++)
 		{
-			Inventories[Num]->Items.Add(FItemDataSlot());
+			inventory->Items.Add(FItemDataSlot());
 		}
-		UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
+		//UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
 	}
 }
 
@@ -157,23 +158,22 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 		FItemDataSlot i1 = Inventories[From]->Items[FromSlot];
 		FItemDataSlot i2 = Inventories[To]->Items[ToSlot];
 
-		if (!Inventories[From]->Items[FromSlot].IsSameItem(Inventories[To]->Items[ToSlot])) //swap
+		if (!Inventories[From]->Items[FromSlot].IsSameItem(Inventories[To]->Items[ToSlot])) //다른 아이템이 들어있는 슬롯이라면, Swap함.
 		{
 			Inventories[From]->Items[FromSlot] = i2;
 			Inventories[To]->Items[ToSlot] = i1;
 
 			return true;
 		}
-		else //join
+		else //같은 아이템이 존재한다면 join
 		{
-			UE_LOG(LogTemp, Warning, TEXT("JOIN"));
 			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 
 			if (IsValid(gameInstance))
 			{
 				FItemData itemData = gameInstance->GetItemDataFromTable(i1.ItemName); // Get Item Data
 
-				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //enough.. All Item Will In ToSlot. And FromSlot will be empty.
+				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //ToSlot갯수랑 FromSlot 갯수의 합이 한 슬롯에 들어갈 정도로 충분하면.. "ToSlot"에 아이템이 전부 들어감. "FromSlot"은 빈 슬롯이 됨.
 				{
 					i1.Quantity += i2.Quantity;
 					i2 = FItemDataSlot();
@@ -181,10 +181,10 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 					Inventories[From]->Items[FromSlot] = i2;
 					Inventories[To]->Items[ToSlot] = i1;
 
-					UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
+					//UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
 					return true;
 				}
-				else //Exceed Max Quantity. Max Quantity will be In "ToSlot", And Leftover will be in "FromSlot".
+				else //둘이 합쳐서 최대 수량을 초과하면.. "ToSlot"에는 Max Quantity 만큼 들어감 , "FromSlot"에는 나머지가 들어감.
 				{
 					int32 temp = i1.Quantity + i2.Quantity;
 					i1.Quantity = itemData.MaxQuantity;
@@ -195,7 +195,7 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 					Inventories[From]->Items[FromSlot] = i2;
 					Inventories[To]->Items[ToSlot] = i1;
 
-					UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
+					//UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
 					return true;
 				}
 			}
