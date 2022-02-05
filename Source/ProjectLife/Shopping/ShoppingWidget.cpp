@@ -25,9 +25,6 @@ void UShoppingWidget::NativeConstruct()
 	{
 		ExitButton->OnClicked.AddDynamic(this, &UShoppingWidget::ExitButtonClicked);
 	}
-
-	//test.. still not Complete..
-	bIsFocusable = true;
 }
 
 FText UShoppingWidget::SetMoneyText()
@@ -42,13 +39,12 @@ FText UShoppingWidget::SetMoneyText()
 		}
 	}
 
-
 	return FText::GetEmpty();
 }
 
 void UShoppingWidget::ExitButtonClicked()
 {
-	GetOwningPlayer()->bShowMouseCursor = false;
+	GetOwningPlayer()->bShowMouseCursor = true;
 	GetOwningPlayer()->SetInputMode(FInputModeGameAndUI());
 	RemoveFromViewport();
 }
@@ -65,6 +61,4 @@ void UShoppingWidget::InitShoppingWidget(AShoppingActor* ShopOwner)
 		}
 	}
 
-	//For Not Move while Shopping? Test.
-	SetFocus();
 }

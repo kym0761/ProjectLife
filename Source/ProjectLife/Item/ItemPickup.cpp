@@ -96,7 +96,7 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("XXXXXXXXXXXXXX"));
+		UE_LOG(LogTemp, Warning, TEXT("AItemPickup::Interact_Implementation() X"));
 	}
 
 }

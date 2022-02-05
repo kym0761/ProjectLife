@@ -83,12 +83,15 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 			ShoppingWidgetRef->ShoppingActorRef = this;
 			playerController->bShowMouseCursor = true;
 			playerController->SetInputMode(FInputModeUIOnly());
+
+			//flush input : UI가 생성된 뒤 UI Only 모드로 넘어가면 아직 존재하는 input에 반응해 움직이는 것을 방지.
+			playerController->FlushPressedKeys();
 		}
 	}
 
 }
 
-bool AShoppingActor::Transaction(int32 ShopItemIndex, int32 Quantity)
+bool AShoppingActor::Transaction(int32 Index, int32 Quantity)
 {
 	if (Quantity == 0)
 	{
@@ -101,18 +104,19 @@ bool AShoppingActor::Transaction(int32 ShopItemIndex, int32 Quantity)
 	if (IsValid(inventoryManager))
 	{
 		//공간없으면 거래 중지
+		//Warning. 인벤토리의 슬롯에 아이템이 꽉 찼을 수는 있지만, 여분을 stack할 아이템 슬롯이 있을 수는 있음.
 		if (!inventoryManager->CheckPlayerInventoryHasSpace())
 		{
 			return false;
 		}
 
-		int totalPrice = Items[ShopItemIndex].ItemPrice * Quantity;
+		int totalPrice = Items[Index].ItemPrice * Quantity;
 		
 		//플레이어가 적절한 돈을 가지고 있다면 거래.
 		if (inventoryManager->Money >= totalPrice)
 		{
 			FItemDataSlot inData;
-			inData.ItemName = Items[ShopItemIndex].Name;
+			inData.ItemName = Items[Index].Name;
 			inData.Quantity = Quantity;
 
 			//TODO : Check that player can buy.

@@ -9,20 +9,20 @@
 
 class AItemPickup;
 
-UCLASS()
-class UInventory : public UObject
+USTRUCT(BlueprintType)
+struct FInventory
 {
 	GENERATED_BODY()
 
 public:
 
-	UInventory();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<FItemDataSlot> Items;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FItemDataSlot> Items;
+		int32 MaxCapacity;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MaxCapacity;
+	FInventory();
 
 };
 
@@ -39,7 +39,7 @@ public:
 		int32 Money;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-		TMap<int32, UInventory*> Inventories;
+		TMap<int32, FInventory> Inventories;
 
 	const int32 PLAYER_INVENTORY = 0;
 
@@ -67,5 +67,11 @@ public:
 
 	bool AddPickupToInventory(AItemPickup* Pickup);
 	bool CheckPlayerInventoryHasSpace();
+
+	UFUNCTION(BlueprintCallable)
+		void Save();
+	UFUNCTION(BlueprintCallable)
+		void Load();
+
 
 };

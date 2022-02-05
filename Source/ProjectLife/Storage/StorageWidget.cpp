@@ -41,16 +41,14 @@ void UStorageWidget::InitStorageWidget(AActor* StorageActorRef)
 		bool temp = inventoryManager->Inventories.Contains(storageBox->StorageNumber);
 		if (temp == true)
 		{
-			UInventory* storage = inventoryManager->Inventories[storageBox->StorageNumber];
-			if (IsValid(storage))
+			FInventory storage = inventoryManager->Inventories[storageBox->StorageNumber];
+
+			for (int32 i = 0; i < ItemSlotArray.Num(); i++)
 			{
-				for (int32 i = 0; i < ItemSlotArray.Num(); i++)
-				{
-					ItemSlotArray[i]->InventoryNumber = storageBox->StorageNumber;
-					ItemSlotArray[i]->InventorySlotNumber = i;
-				}
-				UpdateStorageWidget();
+				ItemSlotArray[i]->InventoryNumber = storageBox->StorageNumber;
+				ItemSlotArray[i]->InventorySlotNumber = i;
 			}
+			UpdateStorageWidget();
 		}
 	}
 

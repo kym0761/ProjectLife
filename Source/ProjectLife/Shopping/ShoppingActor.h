@@ -54,5 +54,5 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool Transaction(int32 ShopItemIndex, int32 Quantity);
+	bool Transaction(int32 Index, int32 Quantity);
 };

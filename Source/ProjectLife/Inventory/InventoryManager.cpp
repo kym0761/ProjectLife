@@ -5,7 +5,13 @@
 #include "../ProjectLIfeGameInstance.h"
 #include "../Item/ItemPickup.h"
 
-UInventory::UInventory()
+//save Testing
+#include "../GamePlay/ProjectLifeSaveGame.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "../Base/BasicPlayerController.h"
+
+FInventory::FInventory()
 {
 	MaxCapacity = 30;
 }
@@ -14,7 +20,7 @@ UInventory::UInventory()
 AInventoryManager::AInventoryManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	Money = 10000;
 }
@@ -36,7 +42,8 @@ void AInventoryManager::BeginPlay()
 void AInventoryManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
+	//Disabled
 }
 
 bool AInventoryManager::CheckValidInventory(int32 InventoryNumber)
@@ -60,19 +67,18 @@ bool AInventoryManager::CheckInventoryHasSpace(int32 InventoryNumber)
 		return false;
 	}
 
-	UInventory* inventory = Inventories[InventoryNumber];
+	FInventory inventory = Inventories[InventoryNumber];
 
-	if (IsValid(inventory))
+	
+	for (int32 i = 0; i < inventory.Items.Num(); i++)
 	{
-		for (int32 i = 0; i < inventory->Items.Num(); i++)
+		if (inventory.Items[i].Quantity == 0)
 		{
-			if (inventory->Items[i].Quantity == 0)
-			{
-				bHasSpace = true;
-				break;
-			}
+			bHasSpace = true;
+			break;
 		}
 	}
+	
 
 	return bHasSpace;
 }
@@ -126,23 +132,16 @@ bool AInventoryManager::CheckEnoughMoney(int32 ToCompare)
 
 void AInventoryManager::TryMakeInventorySpace(int32 Num)
 {
-	bool temp = CheckValidInventory(Num);
+	FInventory inventory;
+	
+	for (int i = 0; i < 30; i++)
+	{
+		inventory.Items.Add(FItemDataSlot());
+	}
 
-	if (temp)
-	{
-		//Do Nothing..?
-		return;
-	}
-	else // Add New Inventory.
-	{
-		UInventory* inventory = NewObject<UInventory>();
-		Inventories.Add(Num, inventory);
-		for (int i = 0; i < 30; i++)
-		{
-			inventory->Items.Add(FItemDataSlot());
-		}
-		//UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
-	}
+	Inventories.Add(Num, inventory);
+	//UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
+	
 }
 
 bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int32 To, int32 ToSlot)
@@ -153,15 +152,15 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 		return false;
 	}
 
-	if (Inventories[From]->Items.IsValidIndex(FromSlot) && Inventories[To]->Items.IsValidIndex(ToSlot))
+	if (Inventories[From].Items.IsValidIndex(FromSlot) && Inventories[To].Items.IsValidIndex(ToSlot))
 	{
-		FItemDataSlot i1 = Inventories[From]->Items[FromSlot];
-		FItemDataSlot i2 = Inventories[To]->Items[ToSlot];
+		FItemDataSlot i1 = Inventories[From].Items[FromSlot];
+		FItemDataSlot i2 = Inventories[To].Items[ToSlot];
 
-		if (!Inventories[From]->Items[FromSlot].IsSameItem(Inventories[To]->Items[ToSlot])) //다른 아이템이 들어있는 슬롯이라면, Swap함.
+		if (!Inventories[From].Items[FromSlot].IsSameItem(Inventories[To].Items[ToSlot])) //다른 아이템이 들어있는 슬롯이라면, Swap함.
 		{
-			Inventories[From]->Items[FromSlot] = i2;
-			Inventories[To]->Items[ToSlot] = i1;
+			Inventories[From].Items[FromSlot] = i2;
+			Inventories[To].Items[ToSlot] = i1;
 
 			return true;
 		}
@@ -178,8 +177,8 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 					i1.Quantity += i2.Quantity;
 					i2 = FItemDataSlot();
 
-					Inventories[From]->Items[FromSlot] = i2;
-					Inventories[To]->Items[ToSlot] = i1;
+					Inventories[From].Items[FromSlot] = i2;
+					Inventories[To].Items[ToSlot] = i1;
 
 					//UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
 					return true;
@@ -192,8 +191,8 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 					temp -= i1.Quantity;
 					i2.Quantity = temp;
 
-					Inventories[From]->Items[FromSlot] = i2;
-					Inventories[To]->Items[ToSlot] = i1;
+					Inventories[From].Items[FromSlot] = i2;
+					Inventories[To].Items[ToSlot] = i1;
 
 					//UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
 					return true;
@@ -211,12 +210,11 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 
 FItemDataSlot AInventoryManager::GetInventoryItem(int32 InventoryNumber, int32 SlotNumber)
 {
-	if (Inventories.Contains(InventoryNumber))
+	//UE_LOG(LogTemp, Warning, TEXT("Get Inventory item() -- InventoryNumber : %d, SlotNumber :%d"), InventoryNumber, SlotNumber);
+
+	if (Inventories.Contains(InventoryNumber) && Inventories[InventoryNumber].Items.IsValidIndex(SlotNumber))
 	{
-		if (Inventories[InventoryNumber]->Items.IsValidIndex(SlotNumber))
-		{
-			return Inventories[InventoryNumber]->Items[SlotNumber];
-		}
+		return Inventories[InventoryNumber].Items[SlotNumber];
 	}
 
 	return FItemDataSlot();
@@ -226,9 +224,9 @@ bool AInventoryManager::SetInventoryItem(int32 InventoryNumber, int32 SlotNumber
 {
 	if (Inventories.Contains(InventoryNumber))
 	{
-		if (Inventories[InventoryNumber]->Items.IsValidIndex(SlotNumber))
+		if (Inventories[InventoryNumber].Items.IsValidIndex(SlotNumber))
 		{
-			Inventories[InventoryNumber]->Items[SlotNumber] = InData;
+			Inventories[InventoryNumber].Items[SlotNumber] = InData;
 			return true;
 		}
 
@@ -265,14 +263,14 @@ FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 				//!! : 만약 1번이라도 얻게 됐다면, 인벤토리에 반영이 되므로, FItemDataSlot의 빈 값을 내면 안됨.
 
 				FItemDataSlot leftover = InData;
-				for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
 				{
-					if (Inventories[PLAYER_INVENTORY]->Items[i].ItemName == leftover.ItemName && Inventories[PLAYER_INVENTORY]->Items[i].Quantity < itemData.MaxQuantity)
+					if (Inventories[PLAYER_INVENTORY].Items[i].ItemName == leftover.ItemName && Inventories[PLAYER_INVENTORY].Items[i].Quantity < itemData.MaxQuantity)
 					{
-						int32 extra = itemData.MaxQuantity - Inventories[PLAYER_INVENTORY]->Items[i].Quantity;
+						int32 extra = itemData.MaxQuantity - Inventories[PLAYER_INVENTORY].Items[i].Quantity;
 						int32 tempOffset = FMath::Clamp(leftover.Quantity, 0, extra);
 
-						Inventories[PLAYER_INVENTORY]->Items[i].Quantity += tempOffset;
+						Inventories[PLAYER_INVENTORY].Items[i].Quantity += tempOffset;
 
 						leftover.Quantity -= tempOffset;
 
@@ -291,9 +289,9 @@ FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 
 				//여기까지 왔다면, leftover의 양이 남아있거나, 혹은 같은 슬롯을 찾지 못함.
 				//빈 공간 있으면 정보를 넣는다.
-				for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
 				{
-					if (Inventories[PLAYER_INVENTORY]->Items[i].IsEmpty())
+					if (Inventories[PLAYER_INVENTORY].Items[i].IsEmpty())
 					{
 						SetInventoryItem(0, i, leftover);
 						
@@ -348,9 +346,9 @@ bool AInventoryManager::CheckPlayerInventoryHasSpace()
 {
 	if (Inventories.Contains(PLAYER_INVENTORY))
 	{
-		for (int32 i = 0; i < Inventories[PLAYER_INVENTORY]->Items.Num(); i++)
+		for (int32 i = 0; i < Inventories[PLAYER_INVENTORY].Items.Num(); i++)
 		{
-			FItemDataSlot item = Inventories[PLAYER_INVENTORY]->Items[i];
+			FItemDataSlot item = Inventories[PLAYER_INVENTORY].Items[i];
 			if (item.IsEmpty())
 			{
 				return true;
@@ -358,4 +356,51 @@ bool AInventoryManager::CheckPlayerInventoryHasSpace()
 		}
 	}
 	return false;
+}
+
+//save Test
+void AInventoryManager::Save()
+{
+	UProjectLifeSaveGame* saveGame = 
+		Cast<UProjectLifeSaveGame>(UGameplayStatics::CreateSaveGameObject(UProjectLifeSaveGame::StaticClass()));
+
+	for (auto& i : Inventories)
+	{
+		saveGame->Inventories.Add(i.Key, i.Value);
+	}
+
+	saveGame->SaveSlotName = FString("temp");
+	saveGame->UserIndex = 1;
+
+	UGameplayStatics::SaveGameToSlot(saveGame, saveGame->SaveSlotName, saveGame->UserIndex);
+
+	UE_LOG(LogTemp, Warning, TEXT("Save"));
+}
+
+//Load Test
+void AInventoryManager::Load()
+{
+	FString	saveSlotName = FString("temp");
+	int32 userIndex = 1;
+
+	UProjectLifeSaveGame* saveGame 
+		= Cast<UProjectLifeSaveGame>(UGameplayStatics::LoadGameFromSlot(saveSlotName, userIndex));
+
+	if (IsValid(saveGame))
+	{
+		for(auto& i :saveGame->Inventories)
+		{
+			Inventories[i.Key].Items = i.Value.Items;
+		}
+	}
+
+	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (playerController)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
+		playerController->UpdateInventory();
+		playerController->UpdateEquipment();
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Load"));
 }

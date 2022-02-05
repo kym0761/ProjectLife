@@ -53,13 +53,14 @@ void UConfirmShopping::NativeConstruct()
 
 void UConfirmShopping::Clicked_OK()
 {
-	////Transaction
-
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
-
-	if (IsValid(inventoryManager))
+	//Transaction
+	//ShoppingActor가 아이템을 전달, 돈을 지불.
+	//ShoppingActor에 inventory Manager 접근 로직이 존재하므로 InventoryManager 존재 여부는 따지지 않음.
+	
+	if (IsValid(ShopOwnerRef))
 	{
 		bool bSucceed = ShopOwnerRef->Transaction(ShopItemIndex, Quantity);
+		//거래 성공시, inventory 내용 업데이트.
 		if (bSucceed)
 		{
 			ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
