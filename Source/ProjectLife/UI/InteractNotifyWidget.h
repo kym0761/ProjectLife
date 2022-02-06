@@ -21,6 +21,7 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* NameTextBlock;
 
+	//Interact 오브젝트는 여러가지가 존재하므로, UObject를 통해 확인.
 	UPROPERTY()
 		UObject* ObjectRef;
 

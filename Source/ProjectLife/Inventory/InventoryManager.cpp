@@ -13,7 +13,14 @@
 
 FInventory::FInventory()
 {
+	//현재 인벤토리 당 슬롯 갯수는 30개.
+
 	MaxCapacity = 30;
+
+	for (int i = 0; i < 30; i++)
+	{
+		Items.Add(FItemDataSlot());
+	}
 }
 
 // Sets default values
@@ -22,6 +29,7 @@ AInventoryManager::AInventoryManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	//테스트 차원에서 돈을 1만 설정.
 	Money = 10000;
 }
 
@@ -30,9 +38,9 @@ void AInventoryManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//temp.. Player Inventory
-	//1,2,3.... Storage Inventory
-	for (int32 i = 0; i < 10; i++)
+	//0 = Player Inventory
+	//1,2,3.... = Storage Inventory
+	for (int32 i = 0; i < 100; i++)
 	{
 		TryMakeInventorySpace(i);
 	}
@@ -133,11 +141,6 @@ bool AInventoryManager::CheckEnoughMoney(int32 ToCompare)
 void AInventoryManager::TryMakeInventorySpace(int32 Num)
 {
 	FInventory inventory;
-	
-	for (int i = 0; i < 30; i++)
-	{
-		inventory.Items.Add(FItemDataSlot());
-	}
 
 	Inventories.Add(Num, inventory);
 	//UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
@@ -172,7 +175,7 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 			{
 				FItemData itemData = gameInstance->GetItemDataFromTable(i1.ItemName); // Get Item Data
 
-				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //ToSlot갯수랑 FromSlot 갯수의 합이 한 슬롯에 들어갈 정도로 충분하면.. "ToSlot"에 아이템이 전부 들어감. "FromSlot"은 빈 슬롯이 됨.
+				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //ToSlot 갯수랑 FromSlot 갯수의 합이 한 슬롯에 들어갈 정도로 충분하면.. "ToSlot"에 아이템이 전부 들어감. "FromSlot"은 빈 슬롯이 됨.
 				{
 					i1.Quantity += i2.Quantity;
 					i2 = FItemDataSlot();
@@ -229,23 +232,20 @@ bool AInventoryManager::SetInventoryItem(int32 InventoryNumber, int32 SlotNumber
 			Inventories[InventoryNumber].Items[SlotNumber] = InData;
 			return true;
 		}
-
 	}
+
 	return false;
 }
 
-FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
+int32 AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 {
-	//빈 FItemDataSlot을 뱉으면 실패.
-	//이름 값이 있으며 Quantity의 값이 0이나 혹은 그 이상일때 성공.
-	//값이 음수여도 일단 성공.
-
+	// -1 이하 실패, 0 --> 성공적으로 다 들어감, 1 이상--> 남음.
 	if (Inventories.Contains(PLAYER_INVENTORY))
 	{
-		if (InData.IsEmpty()) // 빈 정보를 왜 넣음?
+		if (InData.IsEmpty())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("?"));
-			return FItemDataSlot();
+			// 빈 정보를 왜 넣지 않음.
+			return -1;
 		}
 		else
 		{
@@ -256,15 +256,16 @@ FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 				FItemData itemData = gameinstance->GetItemDataFromTable(InData.ItemName);
 				if (itemData.IsEmpty())
 				{
-					//잘못된 정보는 넣지 않음.
-					return FItemDataSlot();
+					//잘못된 정보. 넣지 않음.
+					return -1;
 				}
 
-				//!! : 만약 1번이라도 얻게 됐다면, 인벤토리에 반영이 되므로, FItemDataSlot의 빈 값을 내면 안됨.
+				//!! : 만약 한 번이라도 얻게 됐다면, 인벤토리에 반영이 되므로 FItemDataSlot의 빈 값을 내면 안됨.
 
 				FItemDataSlot leftover = InData;
 				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
 				{
+					//인벤토리에서 넣고 싶은 아이템과 같은 아이템을 슬롯을 찾고, 아직 꽉 찬 슬롯이 아니라면 내용물을 채운다.
 					if (Inventories[PLAYER_INVENTORY].Items[i].ItemName == leftover.ItemName && Inventories[PLAYER_INVENTORY].Items[i].Quantity < itemData.MaxQuantity)
 					{
 						int32 extra = itemData.MaxQuantity - Inventories[PLAYER_INVENTORY].Items[i].Quantity;
@@ -277,12 +278,12 @@ FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 						if (leftover.Quantity == 0)
 						{
 							//남은게 없으면 성공.
-							return leftover;
+							return 0;
 						}
 						else if (leftover.Quantity < 0)
 						{
-							//음수면 문제가 있긴함.
-							return leftover;
+							//음수면 문제가 있긴함. 다만, 인벤토리에 반영이 됐으므로 일단 0으로 취급
+							return 0;
 						}
 					}
 				}
@@ -294,52 +295,18 @@ FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 					if (Inventories[PLAYER_INVENTORY].Items[i].IsEmpty())
 					{
 						SetInventoryItem(0, i, leftover);
-						
-						leftover.Quantity = 0;
-						return leftover;
+						return 0;
 					}
 				}
 
 				//Warning 1 : leftover의 아이템을 약간 얻었는데, 바닥에 떨어진 아이템 처리가 제대로 되지 않음.
 				//Warning 2 : 보상을 얻으려 했는데, 보상이 초과되서 남음 or 인벤토리 공간이 없어서 보상을 아예 얻지 못함.
-				return leftover;
+				return leftover.Quantity;
 			}
 		}
 	}
 
-	return FItemDataSlot();
-}
-
-bool AInventoryManager::AddPickupToInventory(AItemPickup* Pickup)
-{
-	//pickup의 데이터를 인벤토리에 반영하고, 그 후에 제거하기 위해서 필요한 기능.
-	//true면 ItemPickup 내부에서 Destroy할 것.
-
-	FItemDataSlot temp = AddItemToInventory(Pickup->ItemDataSlot);
-
-	if (temp.IsEmpty())
-	{
-		//잘못된 데이터를 전달함.
-		//UE_LOG(LogTemp, Warning, TEXT("Invalid Data"));
-		return false;
-	}
-	else
-	{
-		if (temp.Quantity == 0)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("OK, pickup is 0"));
-			return true;
-		}
-		else
-		{
-			Pickup->ItemDataSlot = temp;
-			//UE_LOG(LogTemp, Warning, TEXT("pickup leftover"));
-			return false;
-		}
-	}
-
-
-	return false;
+	return -1;
 }
 
 bool AInventoryManager::CheckPlayerInventoryHasSpace()
@@ -364,9 +331,15 @@ void AInventoryManager::Save()
 	UProjectLifeSaveGame* saveGame = 
 		Cast<UProjectLifeSaveGame>(UGameplayStatics::CreateSaveGameObject(UProjectLifeSaveGame::StaticClass()));
 
+	if (!IsValid(saveGame))
+	{
+		//Save fail
+		return;
+	}
+
 	for (auto& i : Inventories)
 	{
-		saveGame->Inventories.Add(i.Key, i.Value);
+		saveGame->Inventories[i.Key].Items = i.Value.Items;
 	}
 
 	saveGame->SaveSlotName = FString("temp");
@@ -388,10 +361,13 @@ void AInventoryManager::Load()
 
 	if (IsValid(saveGame))
 	{
-		for(auto& i :saveGame->Inventories)
-		{
-			Inventories[i.Key].Items = i.Value.Items;
-		}
+		//Load Fail.
+		return;
+	}
+
+	for (auto& i : saveGame->Inventories)
+	{
+		Inventories[i.Key].Items = i.Value.Items;
 	}
 
 	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));

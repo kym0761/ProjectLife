@@ -8,7 +8,7 @@
 #include "ProjectLifeSaveGame.generated.h"
 
 /**
- * 
+ * Ver 1.0
  */
 UCLASS()
 class PROJECTLIFE_API UProjectLifeSaveGame : public USaveGame
@@ -17,18 +17,23 @@ class PROJECTLIFE_API UProjectLifeSaveGame : public USaveGame
 	
 public:
 
+    UProjectLifeSaveGame();
+
+    //?
     UPROPERTY(VisibleAnywhere, Category = Basic)
         FString PlayerName;
 
+    //Default SaveSlotName
     UPROPERTY(VisibleAnywhere, Category = Basic)
         FString SaveSlotName;
 
+
+    //Default UserIndex
     UPROPERTY(VisibleAnywhere, Category = Basic)
         uint32 UserIndex;
 
+    //Inventory Save
     UPROPERTY(VisibleAnywhere, Category = Basic)
         TMap<int32, FInventory> Inventories;
-
-    UProjectLifeSaveGame();
 
 };

@@ -38,7 +38,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		int32 Money;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//(0 = Player inventory) -- (1, 2, 3, ... , 99 = Storage Inventory)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		TMap<int32, FInventory> Inventories;
 
 	const int32 PLAYER_INVENTORY = 0;
@@ -63,9 +64,8 @@ public:
 	bool SwapItemBetweenInventory(int32 From,int32 FromSlot, int32 To, int32 ToSlot);
 	FItemDataSlot GetInventoryItem(int32 InventoryNumber, int32 SlotNumber);
 	bool SetInventoryItem(int32 InventoryNumber, int32 SlotNumber, FItemDataSlot InData);
-	FItemDataSlot AddItemToInventory(FItemDataSlot InData);
+	int32 AddItemToInventory(FItemDataSlot InData);
 
-	bool AddPickupToInventory(AItemPickup* Pickup);
 	bool CheckPlayerInventoryHasSpace();
 
 	UFUNCTION(BlueprintCallable)
