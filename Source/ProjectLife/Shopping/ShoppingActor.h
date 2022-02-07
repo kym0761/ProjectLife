@@ -12,7 +12,6 @@ class Aitem;
 class UBoxComponent;
 class UShoppingWidget;
 class UDataTable;
-class UInventoryComponent;
 
 UCLASS()
 class PROJECTLIFE_API AShoppingActor : public AActor, public IInteractive
@@ -26,11 +25,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* ShoppingCollision;
 
+	//상점 아이템 정보?
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TArray<FShopItemData> ShopItems;
 
+	//구매 목록 Cache
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
-	TArray<FItemData> Items;
+		TArray<FItemData> Items;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingWidget> ShoppingWidgetClass;
@@ -53,5 +54,5 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool Transaction(UInventoryComponent* InventoryForPlayer, int32 Quantity, int32 Index);
+	bool Transaction(int32 Index, int32 Quantity);
 };

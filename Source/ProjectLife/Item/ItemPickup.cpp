@@ -5,7 +5,6 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "../Base/BasicCharacter.h"
 #include "../Base/BasicPlayerController.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -42,24 +41,7 @@ void AItemPickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//item 정보가 없을 시에는 랜덤 정보를 가져와서 템을 생성함.
-	if (ItemDataSlot.IsEmpty())
-	{
-		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (IsValid(gameInstance))
-		{
-			TArray<FName> names = gameInstance->ItemDataTable->GetRowNames();
-			
-			int randIndex = FMath::RandRange(0, names.Num() - 1);
-
-			FItemData itemData = gameInstance->GetItemDataFromTable(names[randIndex].ToString());
-
-			ItemDataSlot.ItemName = itemData.Name;
-			ItemDataSlot.Quantity = 1;
-
-			Mesh->SetStaticMesh(itemData.ItemMesh);
-		}
-	}
+	RandomItem();
 
 }
 
@@ -71,34 +53,67 @@ void AItemPickup::Tick(float DeltaTime)
 }
 
 void AItemPickup::Interact_Implementation(APawn* InteractCauser)
-{	
+{
+	//플레이어의 인벤토리에 넣는다.
+	//만약, leftover가 1이상이라면 Pickup은 남아있어야한다. 단 pickup의 갯수가 leftover만큼 변경됨.
+	//0이면 인벤토리에 완전히 들어감. -1 이하면 잘못된 데이터임. 둘다 pickup을 삭제함.
+
 	AInventoryManager* inventoryManager
 	= Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
 
-	ABasicCharacter* player = Cast<ABasicCharacter>(InteractCauser);
-
-	if (IsValid(inventoryManager) && IsValid(player))
+	if (!IsValid(inventoryManager))
 	{
-		//Add to player's Inventory.
-		bool bSucceeded = inventoryManager->AddPickupToInventory(this);
-		//Succeeded, Update UI & Delete Item Actor.
-		
-		ABasicPlayerController* playerController = player->GetController<ABasicPlayerController>();
-		if (playerController)
-		{
-			playerController->UpdateInventory();
-		}
+		//UE_LOG(LogTemp, Warning, TEXT("AItemPickup::Interact_Implementation() X"));
+		//InventoryManager is not exist.
+		return;
+	}
 
-		if (bSucceeded)
-		{
-			Destroy();
-		}
+	if (!IsValid(InteractCauser))
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("AItemPickup::Interact_Implementation() XX"));
+		//interact causer (Player) is not valid
+		return;
+	}
+
+	int32 leftover = inventoryManager->AddItemToInventory(ItemDataSlot);
+
+	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
+	if (playerController)
+	{
+		playerController->UpdateInventory();
+	}
+
+	if (leftover <= 0)
+	{
+		Destroy();
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("XXXXXXXXXXXXXX"));
+		ItemDataSlot.Quantity = leftover;
 	}
 
+}
+
+void AItemPickup::RandomItem()
+{
+	//item 정보가 없을 시에는 랜덤 정보를 가져와서 템을 생성함.
+	if (ItemDataSlot.IsEmpty())
+	{
+		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (IsValid(gameInstance))
+		{
+			TArray<FName> names = gameInstance->ItemDataTable->GetRowNames();
+
+			int randIndex = FMath::RandRange(0, names.Num() - 1);
+
+			FItemData itemData = gameInstance->GetItemDataFromTable(names[randIndex].ToString());
+
+			ItemDataSlot.ItemName = itemData.Name;
+			ItemDataSlot.Quantity = 1;
+
+			Mesh->SetStaticMesh(itemData.ItemMesh);
+		}
+	}
 }
 
 //bool AItemPickup::UseItem_Implementation()

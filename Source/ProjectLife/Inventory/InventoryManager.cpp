@@ -5,17 +5,31 @@
 #include "../ProjectLIfeGameInstance.h"
 #include "../Item/ItemPickup.h"
 
-UInventory::UInventory()
+//save Testing
+#include "../GamePlay/ProjectLifeSaveGame.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "../Base/BasicPlayerController.h"
+
+FInventory::FInventory()
 {
+	//현재 인벤토리 당 슬롯 갯수는 30개.
+
 	MaxCapacity = 30;
+
+	for (int i = 0; i < 30; i++)
+	{
+		Items.Add(FItemDataSlot());
+	}
 }
 
 // Sets default values
 AInventoryManager::AInventoryManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	//테스트 차원에서 돈을 1만 설정.
 	Money = 10000;
 }
 
@@ -24,15 +38,20 @@ void AInventoryManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//temp.. Player Inventory
-	TryMakeInventorySpace(0);
+	//0 = Player Inventory
+	//1,2,3.... = Storage Inventory
+	for (int32 i = 0; i < 100; i++)
+	{
+		TryMakeInventorySpace(i);
+	}
 }
 
 // Called every frame
 void AInventoryManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
+	//Disabled
 }
 
 bool AInventoryManager::CheckValidInventory(int32 InventoryNumber)
@@ -56,19 +75,18 @@ bool AInventoryManager::CheckInventoryHasSpace(int32 InventoryNumber)
 		return false;
 	}
 
-	UInventory* inventory = Inventories[InventoryNumber];
+	FInventory inventory = Inventories[InventoryNumber];
 
-	if (IsValid(inventory))
+	
+	for (int32 i = 0; i < inventory.Items.Num(); i++)
 	{
-		for (int32 i = 0; i < inventory->Items.Num(); i++)
+		if (inventory.Items[i].Quantity == 0)
 		{
-			if (inventory->Items[i].Quantity == 0)
-			{
-				bHasSpace = true;
-				break;
-			}
+			bHasSpace = true;
+			break;
 		}
 	}
+	
 
 	return bHasSpace;
 }
@@ -122,20 +140,11 @@ bool AInventoryManager::CheckEnoughMoney(int32 ToCompare)
 
 void AInventoryManager::TryMakeInventorySpace(int32 Num)
 {
-	bool temp = CheckValidInventory(Num);
+	FInventory inventory;
 
-	if (temp)
-	{
-		//Do Nothing..?
-	}
-	else // Add New Inventory.
-	{
-		Inventories.Add(Num, NewObject<UInventory>());
-		for (int i = 0; i < 30; i++)
-		{
-			Inventories[0]->Items.Add(FItemDataSlot());
-		}
-	}
+	Inventories.Add(Num, inventory);
+	//UE_LOG(LogTemp, Warning, TEXT("inventory Made."));
+	
 }
 
 bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int32 To, int32 ToSlot)
@@ -146,39 +155,38 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 		return false;
 	}
 
-	if (Inventories[From]->Items.IsValidIndex(FromSlot) && Inventories[To]->Items.IsValidIndex(ToSlot))
+	if (Inventories[From].Items.IsValidIndex(FromSlot) && Inventories[To].Items.IsValidIndex(ToSlot))
 	{
-		FItemDataSlot i1 = Inventories[From]->Items[FromSlot];
-		FItemDataSlot i2 = Inventories[To]->Items[ToSlot];
+		FItemDataSlot i1 = Inventories[From].Items[FromSlot];
+		FItemDataSlot i2 = Inventories[To].Items[ToSlot];
 
-		if (!Inventories[From]->Items[FromSlot].IsSameItem(Inventories[To]->Items[ToSlot])) //swap
+		if (!Inventories[From].Items[FromSlot].IsSameItem(Inventories[To].Items[ToSlot])) //다른 아이템이 들어있는 슬롯이라면, Swap함.
 		{
-			Inventories[From]->Items[FromSlot] = i2;
-			Inventories[To]->Items[ToSlot] = i1;
+			Inventories[From].Items[FromSlot] = i2;
+			Inventories[To].Items[ToSlot] = i1;
 
 			return true;
 		}
-		else //join
+		else //같은 아이템이 존재한다면 join
 		{
-			UE_LOG(LogTemp, Warning, TEXT("JOIN"));
 			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 
 			if (IsValid(gameInstance))
 			{
 				FItemData itemData = gameInstance->GetItemDataFromTable(i1.ItemName); // Get Item Data
 
-				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //enough.. All Item Will In ToSlot. And FromSlot will be empty.
+				if (itemData.MaxQuantity >= i1.Quantity + i2.Quantity) //ToSlot 갯수랑 FromSlot 갯수의 합이 한 슬롯에 들어갈 정도로 충분하면.. "ToSlot"에 아이템이 전부 들어감. "FromSlot"은 빈 슬롯이 됨.
 				{
 					i1.Quantity += i2.Quantity;
 					i2 = FItemDataSlot();
 
-					Inventories[From]->Items[FromSlot] = i2;
-					Inventories[To]->Items[ToSlot] = i1;
+					Inventories[From].Items[FromSlot] = i2;
+					Inventories[To].Items[ToSlot] = i1;
 
-					UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
+					//UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
 					return true;
 				}
-				else //Exceed Max Quantity. Max Quantity will be In "ToSlot", And Leftover will be in "FromSlot".
+				else //둘이 합쳐서 최대 수량을 초과하면.. "ToSlot"에는 Max Quantity 만큼 들어감 , "FromSlot"에는 나머지가 들어감.
 				{
 					int32 temp = i1.Quantity + i2.Quantity;
 					i1.Quantity = itemData.MaxQuantity;
@@ -186,10 +194,10 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 					temp -= i1.Quantity;
 					i2.Quantity = temp;
 
-					Inventories[From]->Items[FromSlot] = i2;
-					Inventories[To]->Items[ToSlot] = i1;
+					Inventories[From].Items[FromSlot] = i2;
+					Inventories[To].Items[ToSlot] = i1;
 
-					UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
+					//UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
 					return true;
 				}
 			}
@@ -205,12 +213,11 @@ bool AInventoryManager::SwapItemBetweenInventory(int32 From, int32 FromSlot, int
 
 FItemDataSlot AInventoryManager::GetInventoryItem(int32 InventoryNumber, int32 SlotNumber)
 {
-	if (Inventories.Contains(InventoryNumber))
+	//UE_LOG(LogTemp, Warning, TEXT("Get Inventory item() -- InventoryNumber : %d, SlotNumber :%d"), InventoryNumber, SlotNumber);
+
+	if (Inventories.Contains(InventoryNumber) && Inventories[InventoryNumber].Items.IsValidIndex(SlotNumber))
 	{
-		if (Inventories[InventoryNumber]->Items.IsValidIndex(SlotNumber))
-		{
-			return Inventories[InventoryNumber]->Items[SlotNumber];
-		}
+		return Inventories[InventoryNumber].Items[SlotNumber];
 	}
 
 	return FItemDataSlot();
@@ -220,28 +227,25 @@ bool AInventoryManager::SetInventoryItem(int32 InventoryNumber, int32 SlotNumber
 {
 	if (Inventories.Contains(InventoryNumber))
 	{
-		if (Inventories[InventoryNumber]->Items.IsValidIndex(SlotNumber))
+		if (Inventories[InventoryNumber].Items.IsValidIndex(SlotNumber))
 		{
-			Inventories[InventoryNumber]->Items[SlotNumber] = InData;
+			Inventories[InventoryNumber].Items[SlotNumber] = InData;
 			return true;
 		}
-
 	}
+
 	return false;
 }
 
-FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
+int32 AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 {
-	//빈 FItemDataSlot을 뱉으면 실패.
-	//이름 값이 있으며 Quantity의 값이 0이나 혹은 그 이상일때 성공.
-	//값이 음수여도 일단 성공.
-
+	// -1 이하 실패, 0 --> 성공적으로 다 들어감, 1 이상--> 남음.
 	if (Inventories.Contains(PLAYER_INVENTORY))
 	{
-		if (InData.IsEmpty()) // 빈 정보를 왜 넣음?
+		if (InData.IsEmpty())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("?"));
-			return FItemDataSlot();
+			// 빈 정보를 왜 넣지 않음.
+			return -1;
 		}
 		else
 		{
@@ -252,88 +256,124 @@ FItemDataSlot AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 				FItemData itemData = gameinstance->GetItemDataFromTable(InData.ItemName);
 				if (itemData.IsEmpty())
 				{
-					//잘못된 정보는 넣지 않음.
-					return FItemDataSlot();
+					//잘못된 정보. 넣지 않음.
+					return -1;
 				}
 
-				//!! : 만약 1번이라도 얻게 됐다면, 인벤토리에 반영이 되므로, FItemDataSlot의 빈 값을 내면 안됨.
-
+				//!! : 만약 한 번이라도 얻게 됐다면, 인벤토리에 반영이 되므로 FItemDataSlot의 빈 값을 내면 안됨.
 				FItemDataSlot leftover = InData;
-				for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
 				{
-					if (Inventories[PLAYER_INVENTORY]->Items[i].ItemName == leftover.ItemName && Inventories[PLAYER_INVENTORY]->Items[i].Quantity < itemData.MaxQuantity)
+					//인벤토리에서 넣고 싶은 아이템과 같은 아이템을 슬롯을 찾고, 아직 꽉 찬 슬롯이 아니라면 내용물을 채운다.
+					if (Inventories[PLAYER_INVENTORY].Items[i].ItemName == leftover.ItemName && Inventories[PLAYER_INVENTORY].Items[i].Quantity < itemData.MaxQuantity)
 					{
-						int32 extra = itemData.MaxQuantity - Inventories[PLAYER_INVENTORY]->Items[i].Quantity;
+						int32 extra = itemData.MaxQuantity - Inventories[PLAYER_INVENTORY].Items[i].Quantity;
 						int32 tempOffset = FMath::Clamp(leftover.Quantity, 0, extra);
 
-						Inventories[PLAYER_INVENTORY]->Items[i].Quantity += tempOffset;
+						Inventories[PLAYER_INVENTORY].Items[i].Quantity += tempOffset;
 
 						leftover.Quantity -= tempOffset;
 
 						if (leftover.Quantity == 0)
 						{
 							//남은게 없으면 성공.
-							return leftover;
+							return 0;
 						}
 						else if (leftover.Quantity < 0)
 						{
-							//음수면 문제가 있긴함.
-							return leftover;
+							//음수면 문제가 있긴함. 다만, 인벤토리에 반영이 됐으므로 일단 0으로 취급
+							return 0;
 						}
 					}
 				}
-
 				//여기까지 왔다면, leftover의 양이 남아있거나, 혹은 같은 슬롯을 찾지 못함.
 				//빈 공간 있으면 정보를 넣는다.
-				for (int i = 0; i < Inventories[PLAYER_INVENTORY]->MaxCapacity; i++)
+				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
 				{
-					if (Inventories[PLAYER_INVENTORY]->Items[i].IsEmpty())
+					if (Inventories[PLAYER_INVENTORY].Items[i].IsEmpty())
 					{
 						SetInventoryItem(0, i, leftover);
-						
-						leftover.Quantity = 0;
-						return leftover;
+						return 0;
 					}
 				}
-
 				//Warning 1 : leftover의 아이템을 약간 얻었는데, 바닥에 떨어진 아이템 처리가 제대로 되지 않음.
 				//Warning 2 : 보상을 얻으려 했는데, 보상이 초과되서 남음 or 인벤토리 공간이 없어서 보상을 아예 얻지 못함.
-				return leftover;
+				return leftover.Quantity;
 			}
 		}
 	}
 
-	return FItemDataSlot();
+	return -1;
 }
 
-bool AInventoryManager::AddPickupToInventory(AItemPickup* Pickup)
+bool AInventoryManager::CheckPlayerInventoryHasSpace()
 {
-	//pickup의 데이터를 인벤토리에 반영하고, 그 후에 제거하기 위해서 필요한 기능.
-	//true면 ItemPickup 내부에서 Destroy할 것.
-
-	FItemDataSlot temp = AddItemToInventory(Pickup->ItemDataSlot);
-
-	if (temp.IsEmpty())
+	if (Inventories.Contains(PLAYER_INVENTORY))
 	{
-		//잘못된 데이터를 전달함.
-		//UE_LOG(LogTemp, Warning, TEXT("Invalid Data"));
-		return false;
-	}
-	else
-	{
-		if (temp.Quantity == 0)
+		for (int32 i = 0; i < Inventories[PLAYER_INVENTORY].Items.Num(); i++)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("OK, pickup is 0"));
-			return true;
-		}
-		else
-		{
-			Pickup->ItemDataSlot = temp;
-			//UE_LOG(LogTemp, Warning, TEXT("pickup leftover"));
-			return false;
+			FItemDataSlot item = Inventories[PLAYER_INVENTORY].Items[i];
+			if (item.IsEmpty())
+			{
+				return true;
+			}
 		}
 	}
-
-
 	return false;
+}
+
+//save Test
+void AInventoryManager::Save()
+{
+	UProjectLifeSaveGame* saveGame = 
+		Cast<UProjectLifeSaveGame>(UGameplayStatics::CreateSaveGameObject(UProjectLifeSaveGame::StaticClass()));
+
+	if (!IsValid(saveGame))
+	{
+		//Save fail
+		return;
+	}
+
+	for (auto& i : Inventories)
+	{
+		saveGame->Inventories[i.Key].Items = i.Value.Items;
+	}
+
+	saveGame->SaveSlotName = FString("temp");
+	saveGame->UserIndex = 1;
+
+	UGameplayStatics::SaveGameToSlot(saveGame, saveGame->SaveSlotName, saveGame->UserIndex);
+
+	UE_LOG(LogTemp, Warning, TEXT("Save"));
+}
+
+//Load Test
+void AInventoryManager::Load()
+{
+	FString	saveSlotName = FString("temp");
+	int32 userIndex = 1;
+
+	UProjectLifeSaveGame* saveGame 
+		= Cast<UProjectLifeSaveGame>(UGameplayStatics::LoadGameFromSlot(saveSlotName, userIndex));
+
+	if (IsValid(saveGame))
+	{
+		//Load Fail.
+		return;
+	}
+
+	for (auto& i : saveGame->Inventories)
+	{
+		Inventories[i.Key].Items = i.Value.Items;
+	}
+
+	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (playerController)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
+		playerController->UpdateInventory();
+		playerController->UpdateEquipment();
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Load"));
 }

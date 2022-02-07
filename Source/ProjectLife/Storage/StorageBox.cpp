@@ -2,10 +2,10 @@
 
 
 #include "StorageBox.h"
+#include "Components/SphereComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "StorageWidget.h"
-#include "../Base/BasicCharacter.h"
-#include "Components/SphereComponent.h"
 #include "../Base/BasicPlayerController.h"
 
 AStorageBox::AStorageBox()
@@ -13,8 +13,13 @@ AStorageBox::AStorageBox()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
-	//Inventory->InventoryCapacity = 20;
+	StorageMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	SetRootComponent(StorageMesh);
+
+	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
+	Sphere->SetupAttachment(StorageMesh);
+	Sphere->SetCollisionProfileName(FName("OverlapAll"));
+	Sphere->SetSphereRadius(128.0f);
 
 	bOpen = false;
 
@@ -25,6 +30,17 @@ void AStorageBox::BeginPlay()
 	Super::BeginPlay();
 
 	Sphere->OnComponentEndOverlap.AddDynamic(this, &AStorageBox::EndOverlap);
+
+	if (StorageNumber == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Warning : Storage Number is equal with Playerinventory. It's wrong."));
+	}
+}
+
+void AStorageBox::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
 }
 
 void AStorageBox::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -33,7 +49,7 @@ void AStorageBox::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 
 	if (bOpen)
 	{
-		ABasicCharacter* player = Cast<ABasicCharacter>(OtherActor);
+		APawn* player = Cast<APawn>(OtherActor);
 		if (player)
 		{
 			ABasicPlayerController* playerController = player->GetController<ABasicPlayerController>();

@@ -13,7 +13,7 @@ UGrowthComponent::UGrowthComponent()
 
 	// ...
 
-	bAlreadyGrewUp = false;
+	bFruited = false;
 	MaxGrowthLevel = 3;
 	GrowthLevel = 0;
 	GrowthLevelThreshold = 3;
@@ -61,8 +61,17 @@ void UGrowthComponent::Grow()
 
 void UGrowthComponent::Fruit()
 {
+	if (bFruited) // 이미 다 자랐으면 Fruit가 발동하지 말아야함.
+	{
+		return;
+	}
+
 	if (GrowthLevel >= MaxGrowthLevel)
 	{
+		bFruited = true;
+		
+		//ToDo : 작물이 다 자라면 열매(?)를 맺어야함.
+		//수확후 다시 자라는 기능 필요.
 		UE_LOG(LogTemp, Warning, TEXT("Fruit"));
 	}
 

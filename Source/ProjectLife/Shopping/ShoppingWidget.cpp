@@ -5,9 +5,11 @@
 #include "Components/TextBlock.h"
 #include "Components/ScrollBox.h"
 #include "Components/Button.h"
-#include "../Base/BasicCharacter.h"
+#include "../Inventory/InventoryManager.h"
 #include "ShoppingActor.h"
 #include "ShoppingSlot.h"
+#include "Kismet/GameplayStatics.h"
+
 
 void UShoppingWidget::NativeConstruct()
 {
@@ -23,34 +25,26 @@ void UShoppingWidget::NativeConstruct()
 	{
 		ExitButton->OnClicked.AddDynamic(this, &UShoppingWidget::ExitButtonClicked);
 	}
-
-	//test.. still not Complete..
-	bIsFocusable = true;
 }
 
 FText UShoppingWidget::SetMoneyText()
 {
-	/*if (IsValid(MoneyTextBlock))
+	if (IsValid(MoneyTextBlock))
 	{
-		ABasicCharacter* playerCharacter = GetOwningPlayerPawn<ABasicCharacter>();
-		if (IsValid(playerCharacter))
+		AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
+		if (IsValid(inventoryManager))
 		{
-			UInventoryComponent* inventory = playerCharacter->Inventory;
-			if (IsValid(inventory))
-			{
-				FString inText = FString("Your Money : ") + FString::FromInt(inventory->Money);
-
-				return FText::FromString(inText);
-			}
+			FString inText = FString("Your Money : ") + FString::FromInt(inventoryManager->Money);
+			return FText::FromString(inText);
 		}
-	}*/
+	}
 
 	return FText::GetEmpty();
 }
 
 void UShoppingWidget::ExitButtonClicked()
 {
-	GetOwningPlayer()->bShowMouseCursor = false;
+	GetOwningPlayer()->bShowMouseCursor = true;
 	GetOwningPlayer()->SetInputMode(FInputModeGameAndUI());
 	RemoveFromViewport();
 }
@@ -67,6 +61,4 @@ void UShoppingWidget::InitShoppingWidget(AShoppingActor* ShopOwner)
 		}
 	}
 
-	//For Not Move while Shopping? Test.
-	SetFocus();
 }

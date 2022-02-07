@@ -18,7 +18,7 @@ public:
 	UGrowthComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
-		bool bAlreadyGrewUp;
+		bool bFruited;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
 		int32 MaxGrowthLevel;

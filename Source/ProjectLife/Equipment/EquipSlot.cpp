@@ -5,7 +5,6 @@
 #include "Blueprint/DragDropOperation.h"
 #include "Components/Image.h"
 #include "../Inventory/ItemSlot.h"
-//#include "../Inventory/InventoryComponent.h"
 #include "EquipmentComponent.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"

@@ -47,8 +47,10 @@ public:
 	//Pickup Item.
 	void Interact_Implementation(APawn* InteractCauser);
 
+	//temporal Function for Random Generator
+	void RandomItem();
+
 	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Item")
 	//	bool UseItem();
 	//bool UseItem_Implementation();
-
 };

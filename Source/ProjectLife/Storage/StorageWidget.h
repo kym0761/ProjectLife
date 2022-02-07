@@ -26,8 +26,8 @@ public:
 
 	virtual void NativeConstruct() override;
 
-	void InitStorage(AActor* StorageActorRef);
+	void InitStorageWidget(AActor* StorageActorRef);
 
 	UFUNCTION(BlueprintCallable, Category = "Storage")
-	void UpdateStorage();
+	void UpdateStorageWidget();
 };

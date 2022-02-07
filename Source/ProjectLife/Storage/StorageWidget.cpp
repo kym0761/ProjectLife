@@ -4,6 +4,9 @@
 #include "StorageWidget.h"
 #include "Components/UniformGridPanel.h"
 #include "../Inventory/ItemSlot.h"
+#include "StorageBox.h"
+#include "../Inventory/InventoryManager.h"
+#include "Kismet/GameplayStatics.h"
 
 void UStorageWidget::NativeConstruct()
 {
@@ -20,30 +23,41 @@ void UStorageWidget::NativeConstruct()
 
 }
 
-void UStorageWidget::InitStorage(AActor* StorageActorRef)
+void UStorageWidget::InitStorageWidget(AActor* StorageActorRef)
 {
-	//UInventoryComponent* inventoryComp = StorageActorRef->FindComponentByClass<UInventoryComponent>();
 
-	//if (inventoryComp)
-	//{
-	//	if (inventoryComp->InventoryArray.IsValidIndex(ItemSlotArray.Num() - 1))
-	//	{
-	//		for (int32 i = 0; i < ItemSlotArray.Num(); i++)
-	//		{
-	//			ItemSlotArray[i]->InventoryRef = inventoryComp;
-	//			ItemSlotArray[i]->InventoryIndex = i;
-	//			ItemSlotArray[i]->UpdateSlot();
-	//		}
-	//	}
-	//}
+	UE_LOG(LogTemp, Warning, TEXT("INIT Storage Widget"));
+
+	//보관함과 inventoryManager에 접근하고 ItemSlot에 해당 정보를 대입함.
+	AStorageBox* storageBox = Cast<AStorageBox>(StorageActorRef);
+	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
+	
+	if (IsValid(storageBox) && IsValid(inventoryManager))
+	{
+		//FString test = FString::FromInt( storageBox->StorageNumber);
+		//UE_LOG(LogTemp, Warning, TEXT("Storage Number : %s"), *test);
+
+
+		bool temp = inventoryManager->Inventories.Contains(storageBox->StorageNumber);
+		if (temp == true)
+		{
+			FInventory storage = inventoryManager->Inventories[storageBox->StorageNumber];
+
+			for (int32 i = 0; i < ItemSlotArray.Num(); i++)
+			{
+				ItemSlotArray[i]->InventoryNumber = storageBox->StorageNumber;
+				ItemSlotArray[i]->InventorySlotNumber = i;
+			}
+			UpdateStorageWidget();
+		}
+	}
+
 }
 
-void UStorageWidget::UpdateStorage()
+void UStorageWidget::UpdateStorageWidget()
 {
-
 	for (int32 i = 0; i < ItemSlotArray.Num(); i++)
 	{
 		ItemSlotArray[i]->UpdateItemSlot();
-	}
-	
+	}	
 }

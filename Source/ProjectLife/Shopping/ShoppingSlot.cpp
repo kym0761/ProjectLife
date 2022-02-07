@@ -9,7 +9,6 @@
 #include "Blueprint/SlateBlueprintLibrary.h"
 
 
-
 void UShoppingSlot::NativeConstruct()
 {
 	Super::NativeConstruct();

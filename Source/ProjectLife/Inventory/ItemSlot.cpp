@@ -26,6 +26,7 @@ void UItemSlot::NativeConstruct()
 	Super::NativeConstruct();
 	
 	SetVisibility(ESlateVisibility::Visible);
+
 	InitItemSlot();
 }
 
@@ -51,11 +52,13 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 
 	if (!InventoryManagerRef->Inventories.Contains(InventoryNumber))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid Inventory Number"));
 		return;
 	}
 
-	if (!InventoryManagerRef->Inventories[0]->Items.IsValidIndex(InventorySlotNumber))
+	if (!InventoryManagerRef->Inventories[InventoryNumber].Items.IsValidIndex(InventorySlotNumber))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Valid Inventory, but Invalid Inventory Slot Number"));
 		return;
 	}
 
@@ -76,19 +79,18 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 		{
 			//Create DragDisplayUI
 			UItemSlot* dragDisplay = CreateWidget<UItemSlot>(GetOwningPlayer(), ItemSlotClass);
-
+			
 			if (IsValid(dragDisplay))
 			{
 				dragDisplay->InventoryManagerRef = InventoryManagerRef;
 				dragDisplay->InventoryNumber = InventoryNumber;
 				dragDisplay->InventorySlotNumber = InventorySlotNumber;
 
-				//Set Default Image and Number.
-				if (IsValid(itemData.Thumbnail))
-				{
-					dragDisplay->SlotImage->SetBrushFromTexture(itemData.Thumbnail);
-				}
-				dragDisplay->SlotItemNum->SetText(FText::GetEmpty());
+				UE_LOG(LogTemp, Warning, TEXT("Inventory Number : %d , InventorySlotNumber %d"), dragDisplay->InventoryNumber, dragDisplay->InventorySlotNumber);
+				UE_LOG(LogTemp, Warning, TEXT("Inventory item Name : %s"), *itemData.Name);
+
+				dragDisplay->UpdateItemSlot();
+
 
 				//Make DragDropEvent And Assign it.
 				UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
@@ -222,12 +224,10 @@ void UItemSlot::InitItemSlot()
 	if (IsValid(inventoryManager))
 	{
 		InventoryManagerRef = inventoryManager;
-		//Player Inventory Number.
-		InventoryNumber = 0;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Sequence is not right."));
+		UE_LOG(LogTemp, Warning, TEXT("inventoryManager is not Exist."));
 	}
 
 	UpdateItemSlot();
@@ -247,13 +247,13 @@ void UItemSlot::UpdateItemSlot()
 		return;
 	}
 
-	if (!InventoryManagerRef->Inventories[InventoryNumber]->Items.IsValidIndex(InventorySlotNumber))
+	if (!InventoryManagerRef->Inventories[InventoryNumber].Items.IsValidIndex(InventorySlotNumber))
 	{
 		return;
 	}
 
 	//인벤토리 데이터를 가져옴
-	FItemDataSlot itemSlotData = InventoryManagerRef->Inventories[0]->Items[InventorySlotNumber];
+	FItemDataSlot itemSlotData = InventoryManagerRef->Inventories[InventoryNumber].Items[InventorySlotNumber];
 	
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 	if (IsValid(gameInstance))

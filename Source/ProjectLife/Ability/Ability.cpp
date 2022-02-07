@@ -137,6 +137,8 @@ void AAbility::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	if (IsValid(AbilityOwner))
 	{
+		//어빌리티 컴포넌트에 해당 어빌리티가 종료되어 삭제됨을 알려야함.
+		//아직 구현 안했으니까 지금 건드릴 필요 없음.
 		UAbilityComponent* abilityComponent = AbilityOwner->FindComponentByClass<UAbilityComponent>();
 		if (IsValid(abilityComponent))
 		{
@@ -148,6 +150,7 @@ void AAbility::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AAbility::AbilityEndTimerFunction()
 {
+	//1초 단위로 지속시간이 1씩 까입니다.
 	if (CurrentDurationTime <= 0.0f)
 	{
 		CurrentDurationTime = 0.0f;
