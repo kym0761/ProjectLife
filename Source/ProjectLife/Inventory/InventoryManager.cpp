@@ -261,7 +261,6 @@ int32 AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 				}
 
 				//!! : 만약 한 번이라도 얻게 됐다면, 인벤토리에 반영이 되므로 FItemDataSlot의 빈 값을 내면 안됨.
-
 				FItemDataSlot leftover = InData;
 				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
 				{
@@ -287,7 +286,6 @@ int32 AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 						}
 					}
 				}
-
 				//여기까지 왔다면, leftover의 양이 남아있거나, 혹은 같은 슬롯을 찾지 못함.
 				//빈 공간 있으면 정보를 넣는다.
 				for (int i = 0; i < Inventories[PLAYER_INVENTORY].MaxCapacity; i++)
@@ -298,7 +296,6 @@ int32 AInventoryManager::AddItemToInventory(FItemDataSlot InData)
 						return 0;
 					}
 				}
-
 				//Warning 1 : leftover의 아이템을 약간 얻었는데, 바닥에 떨어진 아이템 처리가 제대로 되지 않음.
 				//Warning 2 : 보상을 얻으려 했는데, 보상이 초과되서 남음 or 인벤토리 공간이 없어서 보상을 아예 얻지 못함.
 				return leftover.Quantity;
