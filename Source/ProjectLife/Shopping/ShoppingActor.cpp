@@ -8,7 +8,7 @@
 #include "../Base/BasicPlayerController.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryManager.h"
+#include "../Inventory/InventoryComponent.h"
 
 // Sets default values
 AShoppingActor::AShoppingActor()
@@ -80,7 +80,6 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 			ShoppingWidgetRef->SetPositionInViewport(FVector2D(100, 100));
 			ShoppingWidgetRef->InitShoppingWidget(this);
 
-			ShoppingWidgetRef->ShoppingActorRef = this;
 			playerController->bShowMouseCursor = true;
 			playerController->SetInputMode(FInputModeUIOnly());
 
@@ -91,39 +90,34 @@ void AShoppingActor::Interact_Implementation(APawn* InteractCauser)
 
 }
 
-bool AShoppingActor::Transaction(int32 Index, int32 Quantity)
+bool AShoppingActor::Transaction(UInventoryComponent* InventoryComponent, int32 Index, int32 Quantity)
 {
 	if (Quantity == 0)
 	{
 		return false;
 	}
 
-	//거래를 inventoryManager와 해야함. 만약 거래를 못한다면 월드에 inventoryManager가 없을 수도 있음.
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
-
-	if (IsValid(inventoryManager))
+	if (!IsValid(InventoryComponent))
 	{
-		//공간없으면 거래 중지
-		//Warning. 인벤토리의 슬롯에 아이템이 꽉 찼을 수는 있지만, 여분을 stack할 아이템 슬롯이 있을 수는 있음.
-		if (!inventoryManager->CheckPlayerInventoryHasSpace())
-		{
-			return false;
-		}
+		return false;
+	}
 
-		int totalPrice = Items[Index].ItemPrice * Quantity;
-		
-		//플레이어가 적절한 돈을 가지고 있다면 거래.
-		if (inventoryManager->Money >= totalPrice)
-		{
-			FItemDataSlot inData;
-			inData.ItemName = Items[Index].Name;
-			inData.Quantity = Quantity;
+	if (!InventoryComponent->CheckInventoryHasSpace())
+	{
+		return false;
+	}
 
-			//TODO : Check that player can buy.
-			inventoryManager->AddItemToInventory(inData);
-			inventoryManager->SpendMoney(totalPrice);
-			return true;			
-		}
+	int totalPrice = Items[Index].ItemPrice * Quantity;
+	if (InventoryComponent->CheckEnoughMoney(totalPrice))
+	{
+		FItemDataSlot inData;
+		inData.ItemName = Items[Index].Name;
+		inData.Quantity = Quantity;
+
+		//TODO : Check that player can buy.
+		InventoryComponent->AddItemToInventory(inData);
+		InventoryComponent->SpendMoney(totalPrice);
+		return true;
 	}
 
 	return false;

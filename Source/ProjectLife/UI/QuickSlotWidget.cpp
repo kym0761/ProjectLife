@@ -6,7 +6,7 @@
 #include "../Base/BasicCharacter.h"
 #include "../Inventory/ItemSlot.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryManager.h"
+
 
 void UQuickSlotWidget::NativeConstruct()
 {
@@ -25,18 +25,13 @@ void UQuickSlotWidget::NativeConstruct()
 
 void UQuickSlotWidget::InitQuickSlot()
 {
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
-
-	if (IsValid(inventoryManager))
+	for (int32 i = 0; i < QuickSlotArray.Num(); i++)
 	{
-		for (int32 i = 0; i < QuickSlotArray.Num(); i++)
-		{
-			//플레이어의 인벤토리 넘버는 0이므로 0 대입.
-			QuickSlotArray[i]->InventoryNumber = 0;
-			QuickSlotArray[i]->InventorySlotNumber = i;
-		}
-		UpdateQuickSlot();
+		//플레이어 컨트롤러가 인벤토리를 보유할 예정.
+		QuickSlotArray[i]->InitItemSlot(GetOwningPlayer());
+		QuickSlotArray[i]->InventorySlotNumber = i;
 	}
+	UpdateQuickSlot();
 }
 
 void UQuickSlotWidget::UpdateQuickSlot()

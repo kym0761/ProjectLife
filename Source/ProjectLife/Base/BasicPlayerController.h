@@ -9,6 +9,7 @@
 class ABasicCharacter;
 class AAbility;
 class UMainHUD;
+class UInventoryComponent;
 /**
  * 
  */
@@ -27,6 +28,8 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "UI")
 		UMainHUD* MainHUDRef;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+		class UInventoryComponent* InventoryComponent;
 
 	virtual void OnPossess(APawn* InPawn) override;
 

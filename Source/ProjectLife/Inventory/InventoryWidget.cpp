@@ -24,9 +24,11 @@ void UInventoryWidget::InitInventoryWidget()
 {
 	for (int32 i = 0; i < ItemSlotArray.Num(); i++)
 	{
+		ItemSlotArray[i]->InitItemSlot(GetOwningPlayer());
 		ItemSlotArray[i]->InventorySlotNumber = i;
-		ItemSlotArray[i]->UpdateItemSlot();
 	}
+
+	UpdateInventoryWidget();
 }
 
 void UInventoryWidget::UpdateInventoryWidget()

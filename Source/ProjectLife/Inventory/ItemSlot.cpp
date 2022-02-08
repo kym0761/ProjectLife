@@ -14,7 +14,7 @@
 #include "../Equipment/EquipmentComponent.h"
 
 #include "../ProjectLIfeGameInstance.h"
-#include "InventoryManager.h"
+#include "InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 //#include "Kismet/KismetInputLibrary.h"
 //#include "Blueprint/SlateBlueprintLibrary.h"
@@ -26,8 +26,6 @@ void UItemSlot::NativeConstruct()
 	Super::NativeConstruct();
 	
 	SetVisibility(ESlateVisibility::Visible);
-
-	InitItemSlot();
 }
 
 FReply UItemSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -44,73 +42,64 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 {
 	Super::NativeOnDragDetected(InGeometry,InMouseEvent,OutOperation);
 
-	if (!IsValid(InventoryManagerRef))
+	if (!IsValid(InventoryComponentRef))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InventoryRef is not Exist..."));
+		UE_LOG(LogTemp, Warning, TEXT("InventoryRef is Invalid..."));
 		return;
 	}
 
-	if (!InventoryManagerRef->Inventories.Contains(InventoryNumber))
+	if (!InventoryComponentRef->Inventory.IsValidIndex(InventorySlotNumber))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Invalid Inventory Number"));
+		UE_LOG(LogTemp, Warning, TEXT("Invalid Inventory Slot Number"));
 		return;
 	}
 
-	if (!InventoryManagerRef->Inventories[InventoryNumber].Items.IsValidIndex(InventorySlotNumber))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Valid Inventory, but Invalid Inventory Slot Number"));
-		return;
-	}
-
-	FItemDataSlot itemSlotData = InventoryManagerRef->GetInventoryItem(InventoryNumber, InventorySlotNumber);
+	FItemDataSlot itemSlotData = InventoryComponentRef->GetInventoryItem(InventorySlotNumber);
 
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
-	if (IsValid(gameInstance))
+	if (!IsValid(gameInstance))
 	{
-		FItemData itemData = gameInstance->GetItemDataFromTable(itemSlotData.ItemName);
-
-		//Todo : change to is empty?
-		if (itemData == FItemData())
-		{
-			return;
-		}
-
-		if (IsValid(ItemSlotClass))
-		{
-			//Create DragDisplayUI
-			UItemSlot* dragDisplay = CreateWidget<UItemSlot>(GetOwningPlayer(), ItemSlotClass);
-			
-			if (IsValid(dragDisplay))
-			{
-				dragDisplay->InventoryManagerRef = InventoryManagerRef;
-				dragDisplay->InventoryNumber = InventoryNumber;
-				dragDisplay->InventorySlotNumber = InventorySlotNumber;
-
-				UE_LOG(LogTemp, Warning, TEXT("Inventory Number : %d , InventorySlotNumber %d"), dragDisplay->InventoryNumber, dragDisplay->InventorySlotNumber);
-				UE_LOG(LogTemp, Warning, TEXT("Inventory item Name : %s"), *itemData.Name);
-
-				dragDisplay->UpdateItemSlot();
-
-
-				//Make DragDropEvent And Assign it.
-				UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
-				dragDropOper->Payload = this;
-				dragDropOper->DefaultDragVisual = dragDisplay;
-				dragDropOper->Pivot = EDragPivot::CenterCenter;
-
-				OutOperation = dragDropOper;
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("dragDisplay Create Failed."));
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("ItemSlotClass is not Exist. Add Slot Class Please."));
-		}
+		UE_LOG(LogTemp, Warning, TEXT("Access to GameInstance Failed"));
+		return;
 	}
-	
+
+	FItemData itemData = gameInstance->GetItemDataFromTable(itemSlotData.ItemName);
+
+	//Todo : change to is empty?
+	if (itemData == FItemData())
+	{
+		return;
+	}
+
+	if (!IsValid(ItemSlotClass))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ItemSlotClass is not Exist. Add Slot Class."));
+		return;
+	}
+
+
+	//Create DragDisplayUI
+	UItemSlot* dragDisplay = CreateWidget<UItemSlot>(GetOwningPlayer(), ItemSlotClass);
+
+	if (!IsValid(dragDisplay))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("dragDisplay Create Failed."));
+		return;
+
+	}
+
+	dragDisplay->InventoryComponentRef = InventoryComponentRef;
+	dragDisplay->InventorySlotNumber = InventorySlotNumber;
+	dragDisplay->UpdateItemSlot();
+
+	//Make DragDropEvent And Assign it.
+	UDragDropOperation* dragDropOper = NewObject<UDragDropOperation>();
+	dragDropOper->Payload = this;
+	dragDropOper->DefaultDragVisual = dragDisplay;
+	dragDropOper->Pivot = EDragPivot::CenterCenter;
+
+	OutOperation = dragDropOper;
+
 }
 
 bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -118,76 +107,78 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
 	//check InOperation is Existed.
-	if (InOperation)
+	if (!IsValid( InOperation))
 	{
-		/*ItemSlot*/
+		UE_LOG(LogTemp, Warning, TEXT("InOperation in ItemSlot is NULL."));
+		return false;
+	}
+
+
+	/*ItemSlot*/
+	{
+		//Get Payload and Cast To ItemSlot.
+		UItemSlot* droppedItemSlot = Cast<UItemSlot>(InOperation->Payload);
+
+		if (IsValid(droppedItemSlot))
 		{
-			//Get Payload and Cast To ItemSlot.
-			UItemSlot* droppedItemSlot = Cast<UItemSlot>(InOperation->Payload);
+			//drop의 인벤토리 정보를 받아옴.
+			int32 drop_InventorySlotNumber = droppedItemSlot->InventorySlotNumber;
+			UInventoryComponent* drop_InventoryComponent = droppedItemSlot->InventoryComponentRef;
 
-			if (IsValid(droppedItemSlot)) //Get InventoryRef & Index.
+			if (IsValid(drop_InventoryComponent) && IsValid(InventoryComponentRef)) //drop과 현재 슬롯의 Inventory Component 확인.
 			{
-				//drop의 인벤토리 정보를 받아옴.
-				int32 drop_InventoryNumber = droppedItemSlot->InventoryNumber;
-				int32 drop_InventorySlotNumber = droppedItemSlot->InventorySlotNumber;
-				AInventoryManager* drop_InventoryManager = droppedItemSlot->InventoryManagerRef;
-
-				if (IsValid(drop_InventoryManager) && IsValid(InventoryManagerRef))
+				//drop과 정보 교체
+				bool bSucceed = InventoryComponentRef->SwapItemBetweenInventory(drop_InventoryComponent, drop_InventorySlotNumber, InventoryComponentRef, InventorySlotNumber);
+				if (bSucceed)
 				{
-					//drop과 정보 교체
-					bool bSucceed = InventoryManagerRef->SwapItemBetweenInventory(drop_InventoryNumber, drop_InventorySlotNumber, InventoryNumber, InventorySlotNumber);
-				
-					if (bSucceed)
+					//인벤토리 업데이트
+					ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+					if (playerController)
 					{
-						//인벤토리 업데이트
-						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-						if (playerController)
-						{
-							//UE_LOG(LogTemp,Warning,TEXT("Attempt Update Inventory"));
-							playerController->UpdateInventory();
-							return true;
-						}
-					}
-				}
-			}
-		}
-
-
-		/*EquipSlot, similar With [Item Slot] code*/
-		{
-			UEquipSlot* droppedEquipSlot = Cast<UEquipSlot>(InOperation->Payload);
-			if (IsValid(droppedEquipSlot))
-			{
-				UEquipmentComponent* equipmentComp = droppedEquipSlot->EquipmentCompRef;
-				EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
-
-				if (IsValid(equipmentComp))
-				{
-					bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentslot, InventoryNumber, InventorySlotNumber);
-					if (bSucceed)
-					{
-						UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip OK? "));
-
-						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-						if (playerController)
-						{
-							//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
-							playerController->UpdateInventory();
-							playerController->UpdateEquipment();
-							return true;
-						}
-					}
-					else
-					{
-						UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
+						//UE_LOG(LogTemp,Warning,TEXT("Attempt Update Inventory"));
+						playerController->UpdateInventory();
+						playerController->UpdateEquipment();
+						return true;
 					}
 				}
 			}
 		}
 	}
-	else
+
+
+	/*EquipSlot, similar With [Item Slot] code*/
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InOperation in ItemSlot is NULL."));
+		UEquipSlot* droppedEquipSlot = Cast<UEquipSlot>(InOperation->Payload);
+		if (!IsValid(droppedEquipSlot))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
+		}
+
+		UEquipmentComponent* equipmentComp = droppedEquipSlot->EquipmentCompRef;
+		EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
+
+		if (IsValid(equipmentComp))
+		{
+			bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentslot, InventoryComponentRef, InventorySlotNumber);
+			if (bSucceed)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip OK? "));
+
+				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+				if (playerController)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
+					playerController->UpdateInventory();
+					playerController->UpdateEquipment();
+					return true;
+				}
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
+			}
+		}
+
 	}
 
 
@@ -217,17 +208,17 @@ FReply UItemSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPoin
 	return FReply::Handled();
 }
 
-void UItemSlot::InitItemSlot()
+void UItemSlot::InitItemSlot(AActor* HasInventoryComponent)
 {
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
+	UInventoryComponent* inventoryComponent = HasInventoryComponent->FindComponentByClass<UInventoryComponent>();
 
-	if (IsValid(inventoryManager))
+	if (IsValid(inventoryComponent))
 	{
-		InventoryManagerRef = inventoryManager;
+		InventoryComponentRef = inventoryComponent;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("inventoryManager is not Exist."));
+		UE_LOG(LogTemp, Warning, TEXT("can't Find InventoryComponent"));
 	}
 
 	UpdateItemSlot();
@@ -237,23 +228,18 @@ void UItemSlot::UpdateItemSlot()
 {
 	// Update Slot with Current Inventory Infomation.
 
-	if (!IsValid(InventoryManagerRef))
+	if (!IsValid(InventoryComponentRef))
 	{
 		return;
 	}
 
-	if (!InventoryManagerRef->Inventories.Contains(InventoryNumber))
-	{
-		return;
-	}
-
-	if (!InventoryManagerRef->Inventories[InventoryNumber].Items.IsValidIndex(InventorySlotNumber))
+	if (!InventoryComponentRef->Inventory.IsValidIndex(InventorySlotNumber))
 	{
 		return;
 	}
 
 	//인벤토리 데이터를 가져옴
-	FItemDataSlot itemSlotData = InventoryManagerRef->Inventories[InventoryNumber].Items[InventorySlotNumber];
+	FItemDataSlot itemSlotData = InventoryComponentRef->Inventory[InventorySlotNumber];
 	
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 	if (IsValid(gameInstance))

@@ -8,7 +8,7 @@
 #include "../Base/BasicPlayerController.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryManager.h"
+#include "../Inventory/InventoryComponent.h"
 
 // Sets default values
 AItemPickup::AItemPickup()
@@ -58,24 +58,19 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 	//만약, leftover가 1이상이라면 Pickup은 남아있어야한다. 단 pickup의 갯수가 leftover만큼 변경됨.
 	//0이면 인벤토리에 완전히 들어감. -1 이하면 잘못된 데이터임. 둘다 pickup을 삭제함.
 
-	AInventoryManager* inventoryManager
-	= Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
-
-	if (!IsValid(inventoryManager))
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("AItemPickup::Interact_Implementation() X"));
-		//InventoryManager is not exist.
-		return;
-	}
-
 	if (!IsValid(InteractCauser))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("AItemPickup::Interact_Implementation() XX"));
-		//interact causer (Player) is not valid
 		return;
 	}
 
-	int32 leftover = inventoryManager->AddItemToInventory(ItemDataSlot);
+	UInventoryComponent* inventoryComponent = InteractCauser->GetController()->FindComponentByClass<UInventoryComponent>();
+
+	if (!IsValid(inventoryComponent))
+	{
+		return;
+	}
+
+	int32 leftover = inventoryComponent->AddItemToInventory(ItemDataSlot);
 
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
 	if (playerController)

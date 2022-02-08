@@ -11,6 +11,7 @@
 class USphereComponent;
 class USkeletalMeshComponent;
 class UStorageWidget;
+class UInventoryComponent;
 
 /**
  * 
@@ -36,6 +37,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
 		bool bOpen;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
+		UInventoryComponent* InventoryComponent;
 
 protected:
 	virtual void BeginPlay() override;

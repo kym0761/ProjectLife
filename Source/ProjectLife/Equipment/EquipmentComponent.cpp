@@ -7,7 +7,7 @@
 #include "../Base/BasicCharacter.h"
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryManager.h"
+#include "../Inventory/InventoryComponent.h"
 
 // Sets default values for this component's properties
 UEquipmentComponent::UEquipmentComponent()
@@ -248,62 +248,72 @@ FEquipmentItemData UEquipmentComponent::GetEquipmentData(EEquipmentSlot Equipmen
 	}
 }
 
-bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, int32 InventoryNumber, int32 SlotNumber)
+bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInventoryComponent* InventoryComponent, int32 SlotNumber)
 {
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
 
-	if (IsValid(inventoryManager))
+	if (!IsValid(InventoryComponent))
 	{
-		FEquipmentItemData currentEquipment = GetEquipmentData(Equipmentslot);
-		
-		FItemDataSlot fromEquipmentToInventory;
+		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent is Null."));
+		return false;
+	}
 
-		//장비 데이터를 FItemDataSlot으로 변환.
-		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (IsValid(gameInstance))
+	FEquipmentItemData currentEquipment = GetEquipmentData(Equipmentslot);
+	FItemDataSlot fromEquipmentToInventory;
+
+	//장비 데이터를 FItemDataSlot으로 변환.
+	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!IsValid(gameInstance))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("gameInstance is Null."));
+		return false;
+	}
+
+	FItemData itemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
+	if (fromEquipmentToInventory.ItemName == itemData.Name && fromEquipmentToInventory.ItemName == FString(""))
+	{
+		//Invalid
+		fromEquipmentToInventory.Quantity = 0;
+	}
+	else
+	{
+		//Valid
+		fromEquipmentToInventory.Quantity = 1;
+		fromEquipmentToInventory.ItemName = itemData.Name;
+	}
+
+
+	//장비와 바꿀 인벤토리 아이템의 데이터.
+	FItemDataSlot inInventory = InventoryComponent->GetInventoryItem(SlotNumber);
+	FItemData itemData_InInventory = gameInstance->GetItemDataFromTable(inInventory.ItemName);
+	
+	//인벤토리 데이터가 장비라면 장비를 교체함.
+	if (itemData_InInventory.ItemType == EItemType::Equipment || (itemData_InInventory == FItemData()))
+	{
+		bool bSucceed = SetEquipment(Equipmentslot, inInventory);
+		if (bSucceed)
 		{
-			FItemData itemData = gameInstance->GetItemDataFromTable(currentEquipment.Name);
-			if (fromEquipmentToInventory.ItemName == itemData.Name && fromEquipmentToInventory.ItemName == FString(""))
-			{
-				//Invalid
-				fromEquipmentToInventory.Quantity = 0;
-			}
-			else
-			{
-				//Valid
-				fromEquipmentToInventory.Quantity = 1;
-				fromEquipmentToInventory.ItemName = itemData.Name;
-			}
+			InventoryComponent->SetInventoryItem(SlotNumber, fromEquipmentToInventory);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("?"));
+		}
 
-			//장비와 바꿀 인벤토리 아이템의 데이터.
-			FItemDataSlot inInventory = inventoryManager->GetInventoryItem(InventoryNumber, SlotNumber);
-			FItemData itemData_InInventory = gameInstance->GetItemDataFromTable(inInventory.ItemName);
+		return true;
+	}
+	else
+	{
+		if (inInventory.IsEmpty()) // 빈 인벤토리 슬롯인지 확인
+		{
+			InventoryComponent->SetInventoryItem(SlotNumber, fromEquipmentToInventory);
+			SetEquipment(Equipmentslot, FItemDataSlot());
 
-			//인벤토리 데이터가 장비라면 장비를 교체함.
-			if (itemData_InInventory.ItemType == EItemType::Equipment || (itemData_InInventory == FItemData()))
-			{
-				bool bSucceed = SetEquipment(Equipmentslot, inInventory);
-				if (bSucceed)
-				{
-					inventoryManager->SetInventoryItem(InventoryNumber,SlotNumber, fromEquipmentToInventory);
-				}
-
-				return true;
-			}
-			else
-			{
-				if (inInventory.IsEmpty()) // 빈 인벤토리 슬롯인지 확인
-				{
-					inventoryManager->SetInventoryItem(InventoryNumber, SlotNumber, fromEquipmentToInventory);
-					SetEquipment(Equipmentslot, FItemDataSlot());
-
-					return true;
-				}
-				else
-				{
-					//비어있지 않았다면 스왑하지 않기.
-				}
-			}
+			return true;
+		}
+		else
+		{
+			//비어있지 않았다면 스왑하지 않기.
+			UE_LOG(LogTemp, Warning, TEXT("NO Swap"));
 		}
 	}
 
@@ -343,17 +353,11 @@ void UEquipmentComponent::ApplyEquipment()
 			CurrentWeapon = GetWorld()->SpawnActor<ABasicWeapon>(WeaponData.WeaponClass,FTransform::Identity, params);
 			CurrentWeapon->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 			
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, TEXT("Weapon Equip OK"));
-			}
+			UE_LOG(LogTemp, Warning, TEXT("Weapon Equip OK"));
 		}
 		else
 		{
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Red, TEXT("Weapon Equip failed because WeaponClass is Null."));
-			}
+			UE_LOG(LogTemp, Warning, TEXT("Weapon Equip failed because WeaponClass is Null."));
 		}
 	}
 }

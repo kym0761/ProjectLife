@@ -6,7 +6,7 @@
 #include "../Farming/Crop.h"
 #include "../Farming/GrowthComponent.h"
 #include "../ProjectLIfeGameInstance.h"
-#include "../Inventory/InventoryManager.h"
+
 
 ABasicGameMode::ABasicGameMode()
 {
@@ -52,7 +52,7 @@ void ABasicGameMode::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	GetWorld()->SpawnActor<AInventoryManager>(AInventoryManager::StaticClass(),FTransform::FTransform());
+	//GetWorld()->SpawnActor<AInventoryManager>(AInventoryManager::StaticClass(),FTransform::FTransform());
 }
 
 void ABasicGameMode::IncreaseGrowth(int32 IncGrowth)

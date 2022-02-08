@@ -9,8 +9,8 @@
 
 class UImage;
 class UTextBlock;
-//class UInventoryComponent;
-class AInventoryManager;
+class UInventoryComponent;
+
 /**
  * 
  */
@@ -27,14 +27,14 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* SlotItemNum;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		int32 InventoryNumber;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//	int32 InventoryNumber;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		int32 InventorySlotNumber;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		AInventoryManager* InventoryManagerRef;
+		UInventoryComponent* InventoryComponentRef;
 
 	//Using for Drag Drop
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
@@ -55,6 +55,6 @@ public:
 
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-	void InitItemSlot();
+	void InitItemSlot(AActor* HasInventoryComponent);
 	void UpdateItemSlot();
 };

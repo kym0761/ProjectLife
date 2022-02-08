@@ -32,8 +32,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Basic)
         uint32 UserIndex;
 
-    //Inventory Save
-    UPROPERTY(VisibleAnywhere, Category = Basic)
-        TMap<int32, FInventory> Inventories;
+    ////Inventory Save
+    //UPROPERTY(VisibleAnywhere, Category = Basic)
+    //    TMap<int32, FInventory> Inventories;
 
 };

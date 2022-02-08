@@ -12,6 +12,7 @@ class Aitem;
 class UBoxComponent;
 class UShoppingWidget;
 class UDataTable;
+class UInventoryComponent;
 
 UCLASS()
 class PROJECTLIFE_API AShoppingActor : public AActor, public IInteractive
@@ -54,5 +55,5 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool Transaction(int32 Index, int32 Quantity);
+	bool Transaction(UInventoryComponent* InventoryComponent, int32 Index, int32 Quantity);
 };

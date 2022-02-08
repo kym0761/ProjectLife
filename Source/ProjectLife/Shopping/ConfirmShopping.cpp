@@ -6,7 +6,7 @@
 #include "Components/TextBlock.h"
 #include "../Base/BasicPlayerController.h"
 #include "ShoppingActor.h"
-#include "../Inventory/InventoryManager.h"
+#include "../Inventory/InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 void UConfirmShopping::NativeConstruct()
@@ -49,6 +49,7 @@ void UConfirmShopping::NativeConstruct()
 		TextBlock_Quantity->SynchronizeProperties();
 	}
 
+	InventoryComponentRef = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
 }
 
 void UConfirmShopping::Clicked_OK()
@@ -59,7 +60,7 @@ void UConfirmShopping::Clicked_OK()
 	
 	if (IsValid(ShopOwnerRef))
 	{
-		bool bSucceed = ShopOwnerRef->Transaction(ShopItemIndex, Quantity);
+		bool bSucceed = ShopOwnerRef->Transaction(InventoryComponentRef, ShopItemIndex, Quantity);
 		//거래 성공시, inventory 내용 업데이트.
 		if (bSucceed)
 		{
@@ -85,12 +86,11 @@ void UConfirmShopping::Clicked_Plus()
 	int32 tempQuantity = Quantity + 1;
 	bool bAffordable = false;
 
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
 
-	if (IsValid(inventoryManager))
+	if (IsValid(InventoryComponentRef))
 	{
 		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ShopItemIndex].ItemPrice;
-		bAffordable = inventoryManager->CheckEnoughMoney(tempPrice);
+		bAffordable = InventoryComponentRef->CheckEnoughMoney(tempPrice);
 	}
 
 
@@ -109,11 +109,10 @@ void UConfirmShopping::Clicked_10Plus()
 	int32 tempQuantity = Quantity + 10;
 	bool bAffordable = false;
 
-	AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
-	if (IsValid(inventoryManager))
+	if (IsValid(InventoryComponentRef))
 	{
 		int32 tempPrice = tempQuantity * ShopOwnerRef->Items[ShopItemIndex].ItemPrice;
-		bAffordable = inventoryManager->CheckEnoughMoney(tempPrice);
+		bAffordable = InventoryComponentRef->CheckEnoughMoney(tempPrice);
 	}
 
 	if (bAffordable)

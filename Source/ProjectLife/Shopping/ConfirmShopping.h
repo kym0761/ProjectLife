@@ -10,6 +10,7 @@
 class UButton;
 class UTextBlock;
 class AShoppingActor;
+class UInventoryComponent;
 
 /**
  * 
@@ -44,6 +45,10 @@ public:
 
 	UPROPERTY()
 		AShoppingActor* ShopOwnerRef;
+
+	UPROPERTY()
+		UInventoryComponent* InventoryComponentRef;
+
 
 	//가리키고 있는 상점의 아이템 Array Number
 	UPROPERTY()

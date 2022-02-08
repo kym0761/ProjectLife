@@ -7,6 +7,7 @@
 #include "Blueprint/UserWidget.h"
 #include "StorageWidget.h"
 #include "../Base/BasicPlayerController.h"
+#include "../Inventory/InventoryComponent.h"
 
 AStorageBox::AStorageBox()
 {
@@ -23,6 +24,8 @@ AStorageBox::AStorageBox()
 
 	bOpen = false;
 
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+
 }
 
 void AStorageBox::BeginPlay()
@@ -31,10 +34,10 @@ void AStorageBox::BeginPlay()
 
 	Sphere->OnComponentEndOverlap.AddDynamic(this, &AStorageBox::EndOverlap);
 
-	if (StorageNumber == 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Warning : Storage Number is equal with Playerinventory. It's wrong."));
-	}
+	//if (StorageNumber == 0)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Warning : Storage Number is equal with Playerinventory. It's wrong."));
+	//}
 }
 
 void AStorageBox::Tick(float DeltaTime)

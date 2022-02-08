@@ -6,11 +6,13 @@
 #include "../Storage/StorageWidget.h"
 #include "../Ability/ConditionWidget.h"
 #include "../UI/MainHUD.h"
+#include "../Inventory/InventoryComponent.h"
 
 ABasicPlayerController::ABasicPlayerController()
 {
 	bShowMouseCursor = true;
 	
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
