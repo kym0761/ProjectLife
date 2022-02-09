@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
-#include "../Inventory/InventoryManager.h"
+#include "../ProjectLIfeGameInstance.h"
 #include "ProjectLifeSaveGame.generated.h"
 
 /**
@@ -27,13 +27,17 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Basic)
         FString SaveSlotName;
 
-
     //Default UserIndex
     UPROPERTY(VisibleAnywhere, Category = Basic)
         uint32 UserIndex;
 
-    ////Inventory Save
-    //UPROPERTY(VisibleAnywhere, Category = Basic)
-    //    TMap<int32, FInventory> Inventories;
+    //Inventory_Player
+    UPROPERTY(VisibleAnywhere, Category = Basic)
+        TMap<int32, FInventory> PlayerInventory;
+
+    //Inventory_Storage
+    UPROPERTY(VisibleAnywhere, Category = Basic)
+        TMap<int32, FInventory> StorageInventory;
+
 
 };

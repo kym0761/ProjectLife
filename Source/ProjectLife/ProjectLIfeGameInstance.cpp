@@ -3,6 +3,65 @@
 
 #include "ProjectLIfeGameInstance.h"
 #include "Item/ItemStruct.h"
+#include "Kismet/GameplayStatics.h"
+#include "Inventory/InventoryComponent.h"
+#include "Storage/StorageBox.h"
+#include "GamePlay/ProjectLifeSaveGame.h"
+#include "Base/BasicPlayerController.h"
+
+FInventory::FInventory()
+{
+	//현재 인벤토리 당 슬롯 갯수는 30개.
+
+	MaxCapacity = 30;
+
+	for (int i = 0; i < 30; i++)
+	{
+		Items.Add(FItemDataSlot());
+	}
+}
+
+FItemData UProjectLIfeGameInstance::GetItemDataFromTable(FString Name)
+{
+	if (!(Name.Len() > 0))
+	{
+		return FItemData();
+	}
+
+	if (IsValid(ItemDataTable))
+	{
+		FItemData* itemData = ItemDataTable->FindRow<FItemData>(FName(*Name), "");
+
+		if (itemData != nullptr)
+		{
+			return *itemData; // Some Issue Potentially?
+		}
+	}
+
+	return FItemData();
+}
+
+FEquipmentItemData UProjectLIfeGameInstance::GetEquipmentItemDataFromTable(FString Name)
+{
+
+	if (!(Name.Len() > 0))
+	{
+		return FEquipmentItemData();
+	}
+
+
+	if (IsValid(EquipmentDataTable))
+	{
+		FEquipmentItemData* EquipmentData = EquipmentDataTable->FindRow<FEquipmentItemData>(FName(*Name), "");
+
+		if (EquipmentData != nullptr)
+		{
+			return *EquipmentData; // Some Issue Potentially?
+		}
+	}
+
+	return FEquipmentItemData();
+}
 
 void UProjectLIfeGameInstance::AddQuest(FString QuestName)
 {
@@ -88,44 +147,134 @@ void UProjectLIfeGameInstance::ClearQuest(FString QuestName)
 //	}
 //}
 
-FItemData UProjectLIfeGameInstance::GetItemDataFromTable(FString Name)
+void UProjectLIfeGameInstance::GetAllInventories()
 {
-	if (!(Name.Len() > 0))
-	{
-		return FItemData();
-	}
+	TArray<AActor*> playerControllerArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerController::StaticClass(), playerControllerArray);
 
-	if (IsValid(ItemDataTable))
+	for (int32 i = 0; i < playerControllerArray.Num(); i++)
 	{
-		FItemData* itemData = ItemDataTable->FindRow<FItemData>(FName(*Name), "");
-
-		if (itemData != nullptr)
+		UInventoryComponent* inventoryComponent = playerControllerArray[i]->FindComponentByClass<UInventoryComponent>();
+		
+		if (!IsValid(inventoryComponent))
 		{
-			return *itemData; // Some Issue Potentially?
+			continue;
 		}
+
+		//TODO? : 플레이어 ID에 따라 정확하게 저장하기?
+
+		PlayerInventory.Add(i, FInventory());
+		PlayerInventory[i].Items = inventoryComponent->Items;
+		PlayerInventory[i].Money = inventoryComponent->Money;
 	}
 
-	return FItemData();
+	TArray<AActor*> storageArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStorageBox::StaticClass(), storageArray);
+
+	for (int32 i = 0; i < storageArray.Num(); i++)
+	{
+		UInventoryComponent* inventoryComponent = storageArray[i]->FindComponentByClass<UInventoryComponent>();
+
+		if (!IsValid(inventoryComponent))
+		{
+			continue;
+		}
+
+		//TODO? : StorageBox ID에 따라 정확하게 저장하기?
+
+		StorageInventory.Add(i, FInventory());
+		StorageInventory[i].Items = inventoryComponent->Items;
+		StorageInventory[i].Money = inventoryComponent->Money;
+	}
+
+
 }
 
-FEquipmentItemData UProjectLIfeGameInstance::GetEquipmentItemDataFromTable(FString Name)
+void UProjectLIfeGameInstance::SetAllInventories()
 {
+	TArray<AActor*> playerControllerArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerController::StaticClass(), playerControllerArray);
 
-	if (!(Name.Len() > 0))
+	for (int32 i = 0; i < playerControllerArray.Num(); i++)
 	{
-		return FEquipmentItemData();
-	}
-	
+		UInventoryComponent* inventoryComponent = playerControllerArray[i]->FindComponentByClass<UInventoryComponent>();
 
-	if (IsValid(EquipmentDataTable))
-	{
-		FEquipmentItemData* EquipmentData = EquipmentDataTable->FindRow<FEquipmentItemData>(FName(*Name), "");
-
-		if (EquipmentData != nullptr)
+		if (!IsValid(inventoryComponent))
 		{
-			return *EquipmentData; // Some Issue Potentially?
+			continue;
 		}
+
+		inventoryComponent->Items = PlayerInventory[i].Items;
+		inventoryComponent->Money = PlayerInventory[i].Money;
 	}
 
-	return FEquipmentItemData();
+
+	TArray<AActor*> storageArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStorageBox::StaticClass(), storageArray);
+
+	for (int32 i = 0; i < storageArray.Num(); i++)
+	{
+		UInventoryComponent* inventoryComponent = storageArray[i]->FindComponentByClass<UInventoryComponent>();
+
+		if (!IsValid(inventoryComponent))
+		{
+			continue;
+		}
+
+		//TODO? : StorageBox ID에 따라 정확하게 저장하기?
+		inventoryComponent->Items = StorageInventory[i].Items;
+		inventoryComponent->Money = StorageInventory[i].Money;
+	}
+
+	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (playerController)
+	{
+		playerController->UpdateInventory();
+		playerController->UpdateEquipment();
+	}
+}
+
+void UProjectLIfeGameInstance::Save()
+{
+	GetAllInventories();
+
+	UProjectLifeSaveGame* saveGame =
+		Cast<UProjectLifeSaveGame>(UGameplayStatics::CreateSaveGameObject(UProjectLifeSaveGame::StaticClass()));
+
+	if (!IsValid(saveGame))
+	{
+		//save Failed
+		return;
+	}
+
+	saveGame->PlayerInventory = PlayerInventory;
+	saveGame->StorageInventory = StorageInventory;
+	saveGame->SaveSlotName = FString("temp");
+	saveGame->UserIndex = 1;
+
+	UGameplayStatics::SaveGameToSlot(saveGame, saveGame->SaveSlotName, saveGame->UserIndex);
+
+	UE_LOG(LogTemp, Warning, TEXT("Save OK"));
+}
+
+void UProjectLIfeGameInstance::Load()
+{
+	FString	saveSlotName = FString("temp");
+	int32 userIndex = 1;
+
+	UProjectLifeSaveGame* saveGame 
+		= Cast<UProjectLifeSaveGame>(UGameplayStatics::LoadGameFromSlot(saveSlotName, userIndex));
+
+	if (!IsValid(saveGame))
+	{
+		//Load Fail.
+		return;
+	}
+
+	PlayerInventory = saveGame->PlayerInventory;
+	StorageInventory = saveGame->StorageInventory;
+
+	UE_LOG(LogTemp, Warning, TEXT("Load"));
+
+	SetAllInventories();
 }

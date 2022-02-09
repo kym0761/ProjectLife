@@ -48,7 +48,7 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 		return;
 	}
 
-	if (!InventoryComponentRef->Inventory.IsValidIndex(InventorySlotNumber))
+	if (!InventoryComponentRef->Items.IsValidIndex(InventorySlotNumber))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Invalid Inventory Slot Number"));
 		return;
@@ -233,13 +233,13 @@ void UItemSlot::UpdateItemSlot()
 		return;
 	}
 
-	if (!InventoryComponentRef->Inventory.IsValidIndex(InventorySlotNumber))
+	if (!InventoryComponentRef->Items.IsValidIndex(InventorySlotNumber))
 	{
 		return;
 	}
 
 	//인벤토리 데이터를 가져옴
-	FItemDataSlot itemSlotData = InventoryComponentRef->Inventory[InventorySlotNumber];
+	FItemDataSlot itemSlotData = InventoryComponentRef->Items[InventorySlotNumber];
 	
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 	if (IsValid(gameInstance))

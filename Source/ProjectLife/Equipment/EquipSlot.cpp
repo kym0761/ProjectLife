@@ -61,7 +61,6 @@ void UEquipSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointe
 		return;
 	}
 
-	//it can have some Issue Potentially
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	FItemData itemData;
 	if (IsValid(gameInstance))

@@ -21,7 +21,7 @@ public:
 		int32 Money;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		TArray<FItemDataSlot> Inventory;
+		TArray<FItemDataSlot> Items;
 
 protected:
 	// Called when the game starts

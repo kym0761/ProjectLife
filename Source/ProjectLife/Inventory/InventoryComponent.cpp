@@ -14,7 +14,7 @@ UInventoryComponent::UInventoryComponent()
 
 	for (int32 i = 0; i < 30; i++)
 	{
-		Inventory.Add(FItemDataSlot());
+		Items.Add(FItemDataSlot());
 	}
 
 	//temp
@@ -44,9 +44,9 @@ bool UInventoryComponent::CheckInventoryHasSpace()
 {
 	bool bHasSpace = false;
 
-	for (int32 i = 0; i < Inventory.Num(); i++)
+	for (int32 i = 0; i < Items.Num(); i++)
 	{
-		if (Inventory[i].Quantity == 0)
+		if (Items[i].Quantity == 0)
 		{
 			bHasSpace = true;
 			break;
@@ -103,7 +103,7 @@ void UInventoryComponent::TryMakeInventorySpace(int32 Num)
 	FItemDataSlot slot;
 	for (int32 i = 0; i < Num; i++)
 	{
-		Inventory.Add(slot);
+		Items.Add(slot);
 	}
 }
 
@@ -115,15 +115,15 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 		return false;
 	}
 
-	if (From->Inventory.IsValidIndex(FromSlot) && To->Inventory.IsValidIndex(ToSlot))
+	if (From->Items.IsValidIndex(FromSlot) && To->Items.IsValidIndex(ToSlot))
 	{
-		FItemDataSlot i1 = From->Inventory[FromSlot];
-		FItemDataSlot i2 = To->Inventory[ToSlot];
+		FItemDataSlot i1 = From->Items[FromSlot];
+		FItemDataSlot i2 = To->Items[ToSlot];
 
-		if (!From->Inventory[FromSlot].IsSameItem(To->Inventory[ToSlot])) //다른 아이템이 들어있는 슬롯이라면, Swap함.
+		if (!From->Items[FromSlot].IsSameItem(To->Items[ToSlot])) //다른 아이템이 들어있는 슬롯이라면, Swap함.
 		{
-			From->Inventory[FromSlot] = i2;
-			To->Inventory[ToSlot] = i1;
+			From->Items[FromSlot] = i2;
+			To->Items[ToSlot] = i1;
 
 			return true;
 		}
@@ -145,8 +145,8 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 				i1.Quantity += i2.Quantity;
 				i2 = FItemDataSlot();
 
-				From->Inventory[FromSlot] = i2;
-				To->Inventory[ToSlot] = i1;
+				From->Items[FromSlot] = i2;
+				To->Items[ToSlot] = i1;
 
 				//UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
 				return true;
@@ -159,8 +159,8 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 				temp -= i1.Quantity;
 				i2.Quantity = temp;
 
-				From->Inventory[FromSlot] = i2;
-				To->Inventory[ToSlot] = i1;
+				From->Items[FromSlot] = i2;
+				To->Items[ToSlot] = i1;
 
 				//UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
 				return true;
@@ -173,10 +173,10 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 
 FItemDataSlot UInventoryComponent::GetInventoryItem(int32 SlotNumber)
 {
-	if (Inventory.IsValidIndex(SlotNumber))
+	if (Items.IsValidIndex(SlotNumber))
 	{
 		//성공시 어떤 값?
-		return Inventory[SlotNumber];
+		return Items[SlotNumber];
 	}
 
 	//실패시 빈값.
@@ -185,9 +185,9 @@ FItemDataSlot UInventoryComponent::GetInventoryItem(int32 SlotNumber)
 
 bool UInventoryComponent::SetInventoryItem(int32 SlotNumber, FItemDataSlot InData)
 {
-	if (Inventory.IsValidIndex(SlotNumber))
+	if (Items.IsValidIndex(SlotNumber))
 	{
-		Inventory[SlotNumber] = InData;
+		Items[SlotNumber] = InData;
 		return true;
 	}
 
@@ -221,15 +221,15 @@ int32 UInventoryComponent::AddItemToInventory(FItemDataSlot InData)
 
 	//!! : 만약 한 번이라도 얻게 됐다면, 인벤토리에 반영이 되므로 FItemDataSlot의 빈 값을 내면 안됨.
 	FItemDataSlot leftover = InData;
-	for (int i = 0; i < Inventory.Num(); i++)
+	for (int i = 0; i < Items.Num(); i++)
 	{
 		//인벤토리에서 넣고 싶은 아이템과 같은 아이템을 슬롯을 찾고, 아직 꽉 찬 슬롯이 아니라면 내용물을 채운다.
-		if (Inventory[i].ItemName == leftover.ItemName && Inventory[i].Quantity < itemData.MaxQuantity)
+		if (Items[i].ItemName == leftover.ItemName && Items[i].Quantity < itemData.MaxQuantity)
 		{
-			int32 extra = itemData.MaxQuantity - Inventory[i].Quantity;
+			int32 extra = itemData.MaxQuantity - Items[i].Quantity;
 			int32 tempOffset = FMath::Clamp(leftover.Quantity, 0, extra);
 
-			Inventory[i].Quantity += tempOffset;
+			Items[i].Quantity += tempOffset;
 
 			leftover.Quantity -= tempOffset;
 
@@ -247,9 +247,9 @@ int32 UInventoryComponent::AddItemToInventory(FItemDataSlot InData)
 	}
 	//여기까지 왔다면, leftover의 양이 남아있거나, 혹은 같은 슬롯을 찾지 못함.
 	//빈 공간 있으면 정보를 넣는다.
-	for (int i = 0; i < Inventory.Num(); i++)
+	for (int i = 0; i < Items.Num(); i++)
 	{
-		if (Inventory[i].IsEmpty())
+		if (Items[i].IsEmpty())
 		{
 			SetInventoryItem(i, leftover);
 			return 0;
@@ -264,9 +264,9 @@ int32 UInventoryComponent::AddItemToInventory(FItemDataSlot InData)
 
 bool UInventoryComponent::CheckPlayerInventoryHasSpace()
 {
-	for (int32 i = 0; i < Inventory.Num(); i++)
+	for (int32 i = 0; i < Items.Num(); i++)
 	{
-		FItemDataSlot item = Inventory[i];
+		FItemDataSlot item = Items[i];
 		if (item.IsEmpty())
 		{
 			return true;
