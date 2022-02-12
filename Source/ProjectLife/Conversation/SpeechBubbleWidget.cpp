@@ -4,8 +4,6 @@
 #include "SpeechBubbleWidget.h"
 #include "Components/TextBlock.h"
 #include "Kismet/KismetStringLibrary.h"
-#include "TimerManager.h"
-#include "../Base/BasicCharacter.h"
 #include "Components/WidgetComponent.h"
 void USpeechBubbleWidget::NativeConstruct()
 {

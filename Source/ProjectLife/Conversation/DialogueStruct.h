@@ -9,9 +9,19 @@
 /**
  *  DialogueInfo struct
  */
+UENUM(BlueprintType)
+enum class EEmotionType : uint8
+{
+	Normal UMETA(DisplayName = "Normal"),
+	Happy UMETA(DisplayName = "Happy"),
+	Sad UMETA(DisplayName = "Sad"),
+	Angry UMETA(DisplayName = "Angry"),
+	Embarrassed UMETA(DisplayName = "Embarrassed"),
+	Impressed UMETA(DisplayName = "Impressed")
+};
 
 USTRUCT(BlueprintType)
-struct FDialogueInfo : public FTableRowBase
+struct FDialogueData : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -26,6 +36,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString Dialogue;
 
-	FDialogueInfo();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EEmotionType Emotion;
+
+	FDialogueData();
 
 };

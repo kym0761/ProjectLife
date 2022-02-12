@@ -53,12 +53,10 @@ public:
 	FEquipmentItemData GetEquipmentItemDataFromTable(FString Name);
 
 #pragma endregion
-
 #pragma region time
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
 		FGameTime GameTime = FGameTime();
 #pragma endregion
-
 #pragma region quest
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FQuest> QuestList;

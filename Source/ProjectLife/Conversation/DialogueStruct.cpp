@@ -3,7 +3,7 @@
 
 #include "DialogueStruct.h"
 
-FDialogueInfo::FDialogueInfo()
+FDialogueData::FDialogueData()
 {
-
+	Emotion = EEmotionType::Normal;
 }

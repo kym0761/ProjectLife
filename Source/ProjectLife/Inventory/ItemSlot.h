@@ -27,9 +27,6 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* SlotItemNum;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-	//	int32 InventoryNumber;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		int32 InventorySlotNumber;
 
