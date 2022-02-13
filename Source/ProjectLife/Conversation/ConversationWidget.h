@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DialogueStruct.h"
-#include "DialogueWidget.generated.h"
+#include "ConversationStruct.h"
+#include "ConversationWidget.generated.h"
 
 class UTextBlock;
 class UButton;
@@ -13,16 +13,16 @@ class UButton;
  * 
  */
 UCLASS()
-class PROJECTLIFE_API UDialogueWidget : public UUserWidget
+class PROJECTLIFE_API UConversationWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Name;
+		UTextBlock* TextBlock_NameText;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Dialogue;
+		UTextBlock* TextBlock_ConversationText;
 
 	UPROPERTY( BlueprintReadWrite, Meta = (BindWidget))
 		UButton* Button_Next;
@@ -32,35 +32,35 @@ public:
 
 	//TextOffset
 	UPROPERTY()
-		int32 CurrentDialoguePos;
+		int32 CurrentConversationPos;
 
-	FTimerHandle DialogueTimer;
+	//FTimerHandle DialogueTimer;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Dialogue", meta = (MinClamp = 0.01, MaxClamp = 1.0))
-		float DialogueSpeed;
+		float ConversationSpeed;
 
 	UPROPERTY()
-	TArray<FDialogueData> Dialogues;
+	TArray<FConversationData> Conversations;
 
 	UPROPERTY()
-		int32 CurrentDialogueNum;
+		int32 CurrentConversationNum;
 
 	UPROPERTY()
-	float DialogueTick;
+	float ConversationTick;
 
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-		void InitDialogueWidget(TArray<FDialogueData> InDialogues);
+		void InitConversationWidget(TArray<FConversationData> InConversations);
 
 	UFUNCTION(BlueprintCallable)
-		void StartDialogue();
+		void StartConversation();
 
 	void SetNameText();
-	void SetDialogueText();
+	void SetConversationText();
 
 	UFUNCTION()
-		void DialogueFunction();
+		void ConversationFunction();
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };

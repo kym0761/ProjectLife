@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "DialogueStruct.Generated.h"
+#include "ConversationStruct.Generated.h"
 
 /**
- *  DialogueInfo struct
+ *  ConversationData struct
  */
 UENUM(BlueprintType)
 enum class EEmotionType : uint8
@@ -21,24 +21,24 @@ enum class EEmotionType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FDialogueData : public FTableRowBase
+struct FConversationData : public FTableRowBase
 {
 	GENERATED_BODY()
 
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 DialogueID;
+		int32 ConversationID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString Dialogue;
+		FString ConversationText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EEmotionType Emotion;
 
-	FDialogueData();
+	FConversationData();
 
 };
