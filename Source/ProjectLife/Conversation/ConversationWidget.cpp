@@ -5,21 +5,53 @@
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "Components/VerticalBox.h"
+#include "ChoiceSlot.h"
 
 void UConversationWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	ConversationSpeed = 0.1f;
+
+	CurrentConversationPos = 0;
+	CurrentConversationNum = 0;
+	CurrentConversationDataTableNum = 0;
+	CurrentChoiceDataTableNum = 0;
+
 }
 
-void UConversationWidget::InitConversationWidget(TArray<FConversationData> InConversations)
+void UConversationWidget::InitConversationWidget(TArray<UDataTable*> InConversations)
 {
-	Conversations = InConversations;
-	CurrentConversationNum = -1;
-	//DialogueSeqNum = 0;
+	ConversationDataTable = InConversations;
+
+	InitConversation();
 
 	StartConversation();
+}
+
+void UConversationWidget::InitConversationWidget_Choice(TArray<UDataTable*> InChoices)
+{
+	ChoiceDataTable = InChoices;
+}
+
+void UConversationWidget::InitConversation()
+{
+	//Init All
+	Conversations.Empty();
+	Button_Next->SetVisibility(ESlateVisibility::Visible);
+	CurrentConversationNum = -1;
+	CurrentConversationPos = 0;
+	VerticalBox_Choices->ClearChildren();
+
+	//Set First Conversation
+	TArray<FConversationData*> data;
+	ConversationDataTable[CurrentConversationDataTableNum]->GetAllRows<FConversationData>("", data);
+	for (int i = 0; i < data.Num(); i++)
+	{
+		Conversations.Add(*data[i]);
+	}
+
 }
 
 void UConversationWidget::StartConversation()
@@ -33,16 +65,35 @@ void UConversationWidget::StartConversation()
 	CurrentConversationNum++;
 
 	//마지막 대화라면, 다음 대화 버튼을 삭제함.
-	if (CurrentConversationNum >= Conversations.Num() - 1)
+	if (CurrentConversationNum>= Conversations.Num() - 1)
 	{
 		Button_Next->SetVisibility(ESlateVisibility::Hidden);
+
+		//선택지가 있다면 보여준다.
+		if (ChoiceDataTable.IsValidIndex(CurrentChoiceDataTableNum))
+		{
+			TArray<FConversationChoiceData*> data;
+			ChoiceDataTable[CurrentChoiceDataTableNum]->GetAllRows<FConversationChoiceData>("", data);
+			//갯수만큼 생성함.
+			for (int i = 0; i < data.Num(); i++)
+			{
+				UChoiceSlot* slot = NewObject<UChoiceSlot>(GetOwningPlayer(),ChoiceSlot_BP);
+				if (IsValid(slot))
+				{
+					slot->AddToViewport();
+					slot->InitChoiceSlot(this,*data[i], i + 1);
+					VerticalBox_Choices->AddChild(slot);
+					UE_LOG(LogTemp, Warning, TEXT("Slot Add OK"));
+				}
+			}			
+		}
 	}
 
 	//이름 , 대화 내용 적용
 	SetNameText();
 	SetConversationText();
 	
-	//TODO : 캐릭터 이미지 적용?
+	//TODO : 캐릭터 이미지를 대화창에 적용이 필요함.
 
 }
 
@@ -98,4 +149,21 @@ void UConversationWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 		ConversationFunction();
 	}
 
+}
+
+void UConversationWidget::ReceiveChoice(int32 ChoiceNumber)
+{
+
+	if (ChoiceNumber <= 0)
+	{
+		//Error.
+		return;
+	}
+
+	//TODO : 전달받은 선택지 번호에 따라 다음 대화들을 함.
+	CurrentConversationDataTableNum += ChoiceNumber;
+	CurrentChoiceDataTableNum++;
+
+	InitConversation();
+	StartConversation();
 }

@@ -42,6 +42,7 @@ public:
 
 	FTimerHandle SpeechTimer;
 	FTimerHandle SpeechEndTimer;
+
 	UFUNCTION(BlueprintCallable, Category = "Speech")
 		void StartSpeech(FString InSpeech);
 	void Speech();
