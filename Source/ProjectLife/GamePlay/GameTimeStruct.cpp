@@ -3,7 +3,7 @@
 
 #include "GameTimeStruct.h"
 
-FGameTime::FGameTime(int32 InYear, int32 InMonth, int32 InDay, int32 InHour, int32 InMinute)
+FInGameTime::FInGameTime(int32 InYear, int32 InMonth, int32 InDay, int32 InHour, int32 InMinute)
 {
 	Year = FMath::Clamp(InYear, 0, MAXYEAR);
 	Month = FMath::Clamp(InMonth, 0, MAXMONTH);
@@ -12,7 +12,7 @@ FGameTime::FGameTime(int32 InYear, int32 InMonth, int32 InDay, int32 InHour, int
 	Minute = FMath::Clamp(InMinute, 0, MAXMINUTE - 1);
 }
 
-FGameTime FGameTime::operator+(const FGameTime& rValue)
+FInGameTime FInGameTime::operator+(const FInGameTime& rValue)
 {
 	int32 year = this->Year + rValue.Year;
 	int32 month = this->Month + rValue.Month;
@@ -55,17 +55,17 @@ FGameTime FGameTime::operator+(const FGameTime& rValue)
 		year = FMath::Clamp(year, 0, MAXYEAR);
 	}
 
-	return FGameTime(year, month, day, hour, minute);
+	return FInGameTime(year, month, day, hour, minute);
 }
 
-FGameTime& FGameTime::operator+=(const FGameTime& rValue)
+FInGameTime& FInGameTime::operator+=(const FInGameTime& rValue)
 {
 	*this = *this + rValue;
 
 	return *this;
 }
 
-FGameTime FGameTime::operator-(const FGameTime& rValue)
+FInGameTime FInGameTime::operator-(const FInGameTime& rValue)
 {
 	int32 year = this->Year - rValue.Year;
 	int32 month = this->Month - rValue.Month;
@@ -98,32 +98,32 @@ FGameTime FGameTime::operator-(const FGameTime& rValue)
 	}
 
 
-	return FGameTime(year, month, day, hour, minute);
+	return FInGameTime(year, month, day, hour, minute);
 }
 
-FGameTime& FGameTime::operator-=(const FGameTime& rValue)
+FInGameTime& FInGameTime::operator-=(const FInGameTime& rValue)
 {
 	*this = *this - rValue;
 
 	return *this;
 }
 
-FString FGameTime::ToString()
+FString FInGameTime::ToString()
 {
 	return FString::Printf(TEXT("| Year : %d -- Month : %d -- Day : %d -- Hour : %d -- Minute : %d |"), Year, Month, Day, Hour, Minute);
 }
 
-FGameTime FGameTime::Morning()
+FInGameTime FInGameTime::Morning()
 {
-	return FGameTime(0, 0, 0, 6, 0);
+	return FInGameTime(0, 0, 0, 6, 0);
 }
 
-FGameTime FGameTime::Noon()
+FInGameTime FInGameTime::Noon()
 {
-	return FGameTime(0, 0, 0, 12, 0);
+	return FInGameTime(0, 0, 0, 12, 0);
 }
 
-FGameTime FGameTime::Evening()
+FInGameTime FInGameTime::Evening()
 {
-	return FGameTime(0, 0, 0, 18, 0);
+	return FInGameTime(0, 0, 0, 18, 0);
 }

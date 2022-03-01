@@ -19,20 +19,20 @@ void ABasicGameMode::IncreaseDay(int32 IncDay)
 
 	if (IsValid(gameInstance))
 	{
-		FGameTime currentGameTime = gameInstance->GameTime;
+		FInGameTime currentGameTime = gameInstance->GameTime;
 
-		FGameTime tomorrow(0, 0, 0, 0, 0);
+		FInGameTime tomorrow(0, 0, 0, 0, 0);
 		tomorrow.Year = currentGameTime.Year;
 		tomorrow.Month = currentGameTime.Month;
 		tomorrow.Day = currentGameTime.Day;
 
-		if (currentGameTime.Hour >= FGameTime::Morning().Hour) // still Today.
+		if (currentGameTime.Hour >= FInGameTime::Morning().Hour) // still Today.
 		{
-			tomorrow += FGameTime(0, 0, IncDay, 0, 0) + FGameTime::Morning();
+			tomorrow += FInGameTime(0, 0, IncDay, 0, 0) + FInGameTime::Morning();
 		}
 		else // already tomorrow
 		{
-			tomorrow += FGameTime::Morning();
+			tomorrow += FInGameTime::Morning();
 		}
 
 		gameInstance->GameTime = tomorrow;
