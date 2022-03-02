@@ -27,8 +27,8 @@ struct FConversationData : public FTableRowBase
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 ConversationID;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	int32 ConversationID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString Name;
@@ -37,8 +37,31 @@ public:
 		FString ConversationText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ConversationSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EEmotionType Emotion;
 
 	FConversationData();
+
+};
+
+USTRUCT(BlueprintType)
+struct FConversationChoiceData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	int32 ConversationID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ChoiceText;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EEmotionType Emotion;
+
+	FConversationChoiceData();
 
 };

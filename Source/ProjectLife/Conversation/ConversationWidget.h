@@ -8,7 +8,9 @@
 #include "ConversationWidget.generated.h"
 
 class UTextBlock;
-class UButton;
+class UButton; 
+class UVerticalBox;
+class UChoiceSlot;
 /**
  * 
  */
@@ -30,20 +32,44 @@ public:
 	UPROPERTY( BlueprintReadWrite, Meta = (BindWidget))
 		UButton* Button_End;
 
+	UPROPERTY(Meta = (BindWidget))
+	UVerticalBox* VerticalBox_Choices;
+
+	//FTimerHandle DialogueTimer;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Dialogue", meta = (MinClamp = 0.01f, MaxClamp = 1.0f))
+		float ConversationSpeed;
+
+	//대화 내용이 담긴 DataTable
+	UPROPERTY(BlueprintReadWrite, Category = "Conversation")
+		TArray<UDataTable*> ConversationDataTable;
+
+	//선택지가 담긴 DataTable
+	UPROPERTY(BlueprintReadWrite, Category = "Conversation")
+		TArray<UDataTable*> ChoiceDataTable;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Conversation")
+		TSubclassOf<UChoiceSlot> ChoiceSlot_BP;
+
+	//대화 내용 목록
+	UPROPERTY()
+		TArray<FConversationData> Conversations;
+
 	//TextOffset
 	UPROPERTY()
 		int32 CurrentConversationPos;
 
-	//FTimerHandle DialogueTimer;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Dialogue", meta = (MinClamp = 0.01, MaxClamp = 1.0))
-		float ConversationSpeed;
-
-	UPROPERTY()
-	TArray<FConversationData> Conversations;
-
+	//Current Conversation Number;
 	UPROPERTY()
 		int32 CurrentConversationNum;
+
+	//Current Conversation Number;
+	UPROPERTY()
+		int32 CurrentConversationDataTableNum;
+
+	//Current Choice Number;
+	UPROPERTY()
+		int32 CurrentChoiceDataTableNum;
 
 	UPROPERTY()
 	float ConversationTick;
@@ -51,7 +77,12 @@ public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-		void InitConversationWidget(TArray<FConversationData> InConversations);
+		void InitConversationWidget(TArray<UDataTable*> InConversations);
+
+	UFUNCTION(BlueprintCallable)
+		void InitConversationWidget_Choice(TArray<UDataTable*> InChoices);
+
+	void InitConversation();
 
 	UFUNCTION(BlueprintCallable)
 		void StartConversation();
@@ -63,4 +94,8 @@ public:
 		void ConversationFunction();
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+
+	void ReceiveChoice(int32 ChoiceNumber);
+
 };

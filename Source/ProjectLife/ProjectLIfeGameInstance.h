@@ -55,7 +55,7 @@ public:
 #pragma endregion
 #pragma region time
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		FGameTime GameTime = FGameTime();
+		FInGameTime GameTime = FInGameTime();
 #pragma endregion
 #pragma region quest
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest")

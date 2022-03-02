@@ -9,7 +9,7 @@
 class UVerticalBox;
 
 /**
- * 
+ *  !! May Not Need.
  */
 UCLASS()
 class PROJECTLIFE_API UMultipleChoiceWidget : public UUserWidget

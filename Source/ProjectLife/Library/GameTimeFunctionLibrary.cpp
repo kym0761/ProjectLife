@@ -3,52 +3,52 @@
 
 #include "GameTimeFunctionLibrary.h"
 
-FGameTime UGameTimeFunctionLibrary::Plus_GameTimeGameTime(FGameTime InValue1, FGameTime InValue2)
+FInGameTime UGameTimeFunctionLibrary::Plus_GameTimeGameTime(FInGameTime InValue1, FInGameTime InValue2)
 {
 	return InValue1 + InValue2;
 }
 
-FString UGameTimeFunctionLibrary::Conv_GameTimeToString(FGameTime InGameTime)
+FString UGameTimeFunctionLibrary::Conv_GameTimeToString(FInGameTime InGameTime)
 {
 	return InGameTime.ToString();
 }
 
-int32 UGameTimeFunctionLibrary::GetYear_GameTime(FGameTime InGameTime)
+int32 UGameTimeFunctionLibrary::GetYear_GameTime(FInGameTime InGameTime)
 {
 	return InGameTime.Year;
 }
 
-int32 UGameTimeFunctionLibrary::GetMonth_GameTime(FGameTime InGameTime)
+int32 UGameTimeFunctionLibrary::GetMonth_GameTime(FInGameTime InGameTime)
 {
 	return InGameTime.Month;
 }
 
-int32 UGameTimeFunctionLibrary::GetDay_GameTime(FGameTime InGameTime)
+int32 UGameTimeFunctionLibrary::GetDay_GameTime(FInGameTime InGameTime)
 {
 	return InGameTime.Day;
 }
 
-int32 UGameTimeFunctionLibrary::GetHour_GameTime(FGameTime InGameTime)
+int32 UGameTimeFunctionLibrary::GetHour_GameTime(FInGameTime InGameTime)
 {
 	return InGameTime.Hour;
 }
 
-int32 UGameTimeFunctionLibrary::GetMinute_GameTime(FGameTime InGameTime)
+int32 UGameTimeFunctionLibrary::GetMinute_GameTime(FInGameTime InGameTime)
 {
 	return InGameTime.Minute;
 }
 
-FGameTime UGameTimeFunctionLibrary::GetMorning_GameTime()
+FInGameTime UGameTimeFunctionLibrary::GetMorning_GameTime()
 {
-	return FGameTime::Morning();
+	return FInGameTime::Morning();
 }
 
-FGameTime UGameTimeFunctionLibrary::GetNoon_GameTime()
+FInGameTime UGameTimeFunctionLibrary::GetNoon_GameTime()
 {
-	return FGameTime::Noon();
+	return FInGameTime::Noon();
 }
 
-FGameTime UGameTimeFunctionLibrary::GetEvening_GameTime()
+FInGameTime UGameTimeFunctionLibrary::GetEvening_GameTime()
 {
-	return FGameTime::Evening();
+	return FInGameTime::Evening();
 }

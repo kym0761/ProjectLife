@@ -18,30 +18,30 @@ class PROJECTLIFE_API UGameTimeFunctionLibrary : public UBlueprintFunctionLibrar
 public: // if this is a problem. just make sure it for only Conv_ Functions.
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "GameTime + GameTime", CompactNodeTitle = "+", KeyWords = "+ Plus", CommutativeAssosiativeBinaryOperator = "true"), Category = "GameTime|Convert")
-		static FGameTime Plus_GameTimeGameTime(FGameTime InValue1, FGameTime InValue2);
+		static FInGameTime Plus_GameTimeGameTime(FInGameTime InValue1, FInGameTime InValue2);
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "ToString (GameTime)", CompactNodeTitle = "->", BlueprintAutocast), Category = "GameTime|Convert")
-		static FString Conv_GameTimeToString(FGameTime InGameTime);
+		static FString Conv_GameTimeToString(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static int32 GetYear_GameTime(FGameTime InGameTime);
+		static int32 GetYear_GameTime(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static int32 GetMonth_GameTime(FGameTime InGameTime);
+		static int32 GetMonth_GameTime(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static int32 GetDay_GameTime(FGameTime InGameTime);
+		static int32 GetDay_GameTime(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static int32 GetHour_GameTime(FGameTime InGameTime);
+		static int32 GetHour_GameTime(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static int32 GetMinute_GameTime(FGameTime InGameTime);
+		static int32 GetMinute_GameTime(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static FGameTime GetMorning_GameTime();
+		static FInGameTime GetMorning_GameTime();
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static FGameTime GetNoon_GameTime();
+		static FInGameTime GetNoon_GameTime();
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")
-		static FGameTime GetEvening_GameTime();
+		static FInGameTime GetEvening_GameTime();
 };

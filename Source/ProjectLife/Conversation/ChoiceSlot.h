@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ConversationStruct.h"
 #include "ChoiceSlot.generated.h"
 
-
+class UConversationWidget;
 class UTextBlock;
 class UImage;
 
@@ -26,7 +27,17 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UImage* Image_ChoiceIcon;
 
-	//UPROPERTY(Meta = (BindWidget))
-	//	UImage* Image_Background;
+	UPROPERTY()
+		int32 ChoiceNum;
+
+	UPROPERTY()
+		UConversationWidget* ConversationWidgetRef;
+
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	UFUNCTION(BlueprintCallable)
+	void TestFunction();
+
+	void InitChoiceSlot(UConversationWidget* ConversationWidget,FConversationChoiceData Indata,int32 Num);
 
 };

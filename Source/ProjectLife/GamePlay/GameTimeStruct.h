@@ -7,7 +7,7 @@
 #include "GameTimeStruct.Generated.h"
 
 USTRUCT(BlueprintType)
-struct FGameTime
+struct FInGameTime
 {
 	GENERATED_BODY()
 
@@ -37,19 +37,19 @@ public:
 	static const int32 WEEK = 7;
 	/*END*/
 
-	FGameTime(int32 InYear = 0, int32 InMonth = 1, int32 InDay = 1, int32 InHour = 0, int32 InMinute = 0);
+	FInGameTime(int32 InYear = 0, int32 InMonth = 1, int32 InDay = 1, int32 InHour = 0, int32 InMinute = 0);
 
-	FGameTime operator+(const FGameTime& rValue);
-	FGameTime& operator+=(const FGameTime& rValue);
+	FInGameTime operator+(const FInGameTime& rValue);
+	FInGameTime& operator+=(const FInGameTime& rValue);
 
-	FGameTime operator-(const FGameTime& rValue);
-	FGameTime& operator-=(const FGameTime& rValue);
+	FInGameTime operator-(const FInGameTime& rValue);
+	FInGameTime& operator-=(const FInGameTime& rValue);
 
 	FString ToString();
 
-	static FGameTime Morning();
-	static FGameTime Noon();
-	static FGameTime Evening();
+	static FInGameTime Morning();
+	static FInGameTime Noon();
+	static FInGameTime Evening();
 };
 
 USTRUCT(BlueprintType)
