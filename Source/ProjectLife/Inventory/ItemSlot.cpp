@@ -191,19 +191,19 @@ FReply UItemSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPoin
 
 	//TODO : 인벤토리 아이템 사용 기능부터 추가해야함.
 
-	//if (IsValid(InventoryManagerRef))
-	//{
-	//	bool bSucceed = InventoryRef->UseItemInInventory(InventoryIndex);
-	//	if (bSucceed)
-	//	{
-	//		UpdateSlot();
+	if (IsValid(InventoryComponentRef))
+	{
+		bool bSucceed = InventoryComponentRef->UseItemInInventory(InventorySlotNumber);
+		if (bSucceed)
+		{
+			UpdateItemSlot();
 
-	//		if (GEngine)
-	//		{
-	//			GEngine->AddOnScreenDebugMessage((int32)FMath::Rand(), 5.0f, FColor::Turquoise, TEXT("Using Item in your Inventory"));
-	//		}
-	//	}
-	//}
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage((int32)FMath::Rand(), 5.0f, FColor::Turquoise, TEXT("Using Item in your Inventory"));
+			}
+		}
+	}
 
 	return FReply::Handled();
 }

@@ -10,6 +10,7 @@
 class UGrowthComponent;
 class UStaticMeshComponent;
 class UBoxComponent;
+class AGridActor;
 
 UCLASS()
 class PROJECTLIFE_API ACrop : public AActor, public IInteractive
@@ -25,6 +26,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UStaticMeshComponent* Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+		AGridActor* GridRef;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Growth")
 		UGrowthComponent* GrowthComponent;

@@ -19,8 +19,9 @@
 #include "DamageTextActor.h"
 #include "Components/SceneComponent.h"
 
-#include "../Grid/GridComponent.h"
-#include "../Grid/GridManager.h"
+//#include "../Grid/GridComponent.h"
+//#include "../Grid/GridManager.h"
+#include "../Grid/GridDetectComponent.h"
 
 #include "../Ability/AbilityComponent.h"
 
@@ -55,6 +56,7 @@ ABasicCharacter::ABasicCharacter()
 	StatComponent = CreateDefaultSubobject<UStatComponent>(TEXT("StatComponent"));
 	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>(TEXT("EquipmentComponent"));
 	AbilityComponent = CreateDefaultSubobject<UAbilityComponent>(TEXT("AbilityComponent"));
+	GridDetectComponent = CreateDefaultSubobject<UGridDetectComponent>(TEXT("GridDetectComponent"));
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
@@ -288,10 +290,10 @@ void ABasicCharacter::InteractCheck()
 
 	UObject* interactee = FindInteractee();
 
+	//Basic Interact Check
 	ABasicPlayerController* playerController = GetController<ABasicPlayerController>();
 	if (playerController)
 	{
-
 		if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
 		{
 			playerController->NotifyInteract(interactee);
@@ -303,16 +305,17 @@ void ABasicCharacter::InteractCheck()
 
 	}
 
-	AGridManager* gridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
-	UGridComponent* grid = Cast<UGridComponent>(interactee);
-	if (IsValid(gridManager) && IsValid(grid))
-	{
-		gridManager->DrawAvailableMesh(grid);
-	}
-	else if (IsValid(gridManager) && !IsValid(grid))
-	{
-		gridManager->RemoveAvailableMesh();
-	}
+	////Grid
+	//AGridManager* gridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+	//UGridComponent* grid = Cast<UGridComponent>(interactee);
+	//if (IsValid(gridManager) && IsValid(grid))
+	//{
+	//	gridManager->DrawAvailableMesh(grid);
+	//}
+	//else if (IsValid(gridManager) && !IsValid(grid))
+	//{
+	//	gridManager->RemoveAvailableMesh();
+	//}
 
 }
 
@@ -419,30 +422,30 @@ UObject* ABasicCharacter::FindInteractee()
 		}
 	}
 
-	/*Actor Interactive Find would be Failed.  maybe, Is Your Intention To Find Component?*/
-	if (!IsValid(interactee))
-	{
-		TArray<UPrimitiveComponent*> overlappedComponents;
-		GetOverlappingComponents(overlappedComponents);
+	///*Actor Interactive Find would be Failed.  maybe, Is Your Intention To Find Component?*/
+	//if (!IsValid(interactee))
+	//{
+	//	TArray<UPrimitiveComponent*> overlappedComponents;
+	//	GetOverlappingComponents(overlappedComponents);
 
-		//Sort by Distance. descending order.
-		overlappedComponents.Sort(
-			[this](const UPrimitiveComponent& a, const UPrimitiveComponent& b)
-			->bool {
-				return FVector::Distance(GetActorLocation(), a.GetComponentLocation())
-					< FVector::Distance(GetActorLocation(), b.GetComponentLocation());
-			}
-		);
+	//	//Sort by Distance. descending order.
+	//	overlappedComponents.Sort(
+	//		[this](const UPrimitiveComponent& a, const UPrimitiveComponent& b)
+	//		->bool {
+	//			return FVector::Distance(GetActorLocation(), a.GetComponentLocation())
+	//				< FVector::Distance(GetActorLocation(), b.GetComponentLocation());
+	//		}
+	//	);
 
-		for (UPrimitiveComponent* i : overlappedComponents)
-		{
-			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-			{
-				interactee = i;
-				break;
-			}
-		}
-	}
+	//	for (UPrimitiveComponent* i : overlappedComponents)
+	//	{
+	//		if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
+	//		{
+	//			interactee = i;
+	//			break;
+	//		}
+	//	}
+	//}
 
 	if (IsValid(interactee))
 	{

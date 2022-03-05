@@ -5,6 +5,8 @@
 #include "../ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "../Item/Item.h"
+
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -272,6 +274,30 @@ bool UInventoryComponent::CheckPlayerInventoryHasSpace()
 		{
 			return true;
 		}
+	}
+
+	return false;
+}
+
+bool UInventoryComponent::UseItemInInventory(int32 ItemIndex)
+{
+	//TODO : Item 종류에 따라 아이템 갯수를 내리거나 등등의 기능 필요함.
+
+	if (Items.IsValidIndex(ItemIndex))
+	{
+		UProjectLIfeGameInstance* gameinstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (IsValid(gameinstance))
+		{
+			FItemData itemData = gameinstance->GetItemDataFromTable(Items[ItemIndex].ItemName);
+			AItem* item = GetWorld()->SpawnActor<AItem>(itemData.ItemClass);
+			if (IsValid(item))
+			{
+				item->SetOwner(GetOwner());
+				item->UseItem();
+				return true;
+			}
+		}
+
 	}
 
 	return false;

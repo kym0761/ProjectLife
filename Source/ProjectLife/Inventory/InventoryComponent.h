@@ -44,4 +44,5 @@ public:
 
 	bool CheckPlayerInventoryHasSpace();
 
+	bool UseItemInInventory(int32 ItemIndex);
 };

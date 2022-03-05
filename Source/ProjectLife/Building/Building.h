@@ -39,8 +39,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 		FBuildingInfo BuildingInfo;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
-		UGridComponent* CurrentGrid;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
+	//	UGridComponent* CurrentGrid;
 
 protected:
 	// Called when the game starts or when spawned

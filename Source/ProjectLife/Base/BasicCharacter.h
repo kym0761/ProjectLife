@@ -17,7 +17,7 @@ class USpeechWidgetComponent;
 class ADamageTextActor;
 class USceneComponent;
 class UAbilityComponent;
-
+class UGridDetectComponent;
 //class AFarmingTool;
 UENUM(BlueprintType)
 enum class ECameraType : uint8
@@ -63,6 +63,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 		UAbilityComponent* AbilityComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+		UGridDetectComponent* GridDetectComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TSubclassOf<ABasicWeapon> WeaponClass;
