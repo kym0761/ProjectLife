@@ -9,7 +9,7 @@ public class ProjectLife : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore"
-		, "AIModule", "GamePlayTasks", "UMG", "NavigationSystem", "Niagara"});
+		, "AIModule", "GameplayTasks", "UMG", "NavigationSystem", "Niagara"});
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 

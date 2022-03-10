@@ -12,7 +12,7 @@
 FInventory::FInventory()
 {
 	//현재 인벤토리 당 슬롯 갯수는 30개.
-
+	Money = 0;
 	MaxCapacity = 30;
 
 	for (int i = 0; i < 30; i++)

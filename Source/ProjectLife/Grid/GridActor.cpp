@@ -19,18 +19,21 @@ AGridActor::AGridActor()
 	GridMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GridMesh"));
 	GridMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 1.0f));
 	GridMesh->SetCollisionProfileName(TEXT("NoCollision"));
+	GridMesh->SetCastShadow(false);
 	GridMesh->SetupAttachment(RootComponent);
 
 	ValidGridMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ValidGridMesh"));
 	ValidGridMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 2.0f));
 	ValidGridMesh->SetVisibility(false);
 	ValidGridMesh->SetCollisionProfileName(TEXT("NoCollision"));
+	ValidGridMesh->SetCastShadow(false);
 	ValidGridMesh->SetupAttachment(RootComponent);
 
 	InvalidGridMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("InvalidGridMesh"));
 	InvalidGridMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 2.0f));
 	InvalidGridMesh->SetVisibility(false);
 	InvalidGridMesh->SetCollisionProfileName(TEXT("NoCollision"));
+	InvalidGridMesh->SetCastShadow(false);
 	InvalidGridMesh->SetupAttachment(RootComponent);
 }
 
