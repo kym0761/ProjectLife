@@ -26,7 +26,7 @@ void UStorageWidget::NativeConstruct()
 void UStorageWidget::InitStorageWidget(AActor* StorageActorRef)
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("INIT Storage Widget"));
+	//UE_LOG(LogTemp, Warning, TEXT("INIT Storage Widget"));
 
 	//보관함과 inventoryManager에 접근하고 ItemSlot에 해당 정보를 대입함.
 	AStorageBox* storageBox = Cast<AStorageBox>(StorageActorRef);

@@ -3,48 +3,44 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Item/ItemStruct.h"
-#include "../Base/InteractiveInterface.h"
 #include "GameFramework/Actor.h"
-#include "StorageBox.generated.h"
+#include "../Base/InteractiveInterface.h"
+#include "CookActor.generated.h"
 
+class UInventoryComponent;
 class USphereComponent;
 class USkeletalMeshComponent;
-class UStorageWidget;
-class UInventoryComponent;
-
-/**
- * 
- */
+class UDataTable;
 UCLASS()
-class PROJECTLIFE_API AStorageBox : public AActor, public IInteractive
+class PROJECTLIFE_API ACookActor : public AActor, public IInteractive
 {
 	GENERATED_BODY()
-public:
-
-	AStorageBox();
+	
+public:	
+	// Sets default values for this actor's properties
+	ACookActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USphereComponent* Sphere;
 
-	//스켈레탈 메시를 쓰는 이유는 상자 열고 닫는 거를 메시에 넣었기 때문임.
+	//StorageMesh will be SkeletalMesh because of "Open or Close"
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USkeletalMeshComponent* StorageMesh;
 
-	//TODO : Storage 고유 번호를 매겨서 저장할 때 써먹어야함.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Storage")
-		int32 StorageNumber;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
-		bool bOpen;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
 		UInventoryComponent* InventoryComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
+		bool bOpen;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
+		UDataTable* RecipeDataTable;
+
 protected:
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
+public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -53,4 +49,6 @@ public:
 
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
+
+	bool MakeCooking();
 };

@@ -191,3 +191,22 @@ public:
 	FShopItemData();
 
 };
+
+USTRUCT(BlueprintType)
+struct FItemRecipeData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+
+	//Result Item Name
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		FString ItemName;
+	//Result Item Quantity
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		int32 Quantity;
+	//Recipe (ResourceItemName, ResourceQuantity)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		TMap<FString, int32> Recipe;
+
+};

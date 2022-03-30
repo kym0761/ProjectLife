@@ -45,4 +45,7 @@ public:
 	bool CheckPlayerInventoryHasSpace();
 
 	bool UseItemInInventory(int32 ItemIndex);
+
+	bool CheckItemInInventory(FString ItemName, int32 Quantity);
+	bool UseItemsInInventory(FString ItemName, int32 Quantity);
 };

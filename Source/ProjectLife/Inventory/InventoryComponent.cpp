@@ -178,7 +178,7 @@ FItemDataSlot UInventoryComponent::GetInventoryItem(int32 SlotNumber)
 {
 	if (Items.IsValidIndex(SlotNumber))
 	{
-		//성공시 어떤 값?
+		//성공시 내용이 존재하는 어떤 값?
 		return Items[SlotNumber];
 	}
 
@@ -300,6 +300,76 @@ bool UInventoryComponent::UseItemInInventory(int32 ItemIndex)
 
 	}
 
+	return false;
+}
+
+bool UInventoryComponent::CheckItemInInventory(FString ItemName, int32 Quantity)
+{
+	int32 t_Quantity = Quantity;
+
+	for (int32 i = 0; i < Items.Num(); i++)
+	{
+		//아이템 찾아서 필요한 양을 찾아서 줄임. 그리고 t_Quantity가 <=0이 된다면 아이템이 충분히 있으니 종료.
+		if (ItemName == Items[i].ItemName)
+		{
+			t_Quantity -= Items[i].Quantity;
+			if (t_Quantity <= 0)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool UInventoryComponent::UseItemsInInventory(FString ItemName, int32 Quantity)
+{
+	//아마 이 함수를 사용하기 전에 한번 체크를 해볼 것 같지만, 사용 기능 안에서도 한번 더 체크함.
+	bool b1 = CheckItemInInventory(ItemName, Quantity);
+	if (b1 == false)
+	{
+		return false;
+	}
+
+	int32 t_Quantity = Quantity;
+
+	for (int32 i = 0; i < Items.Num(); i++)
+	{
+		
+		if (ItemName == Items[i].ItemName)
+		{
+			int32 i_Quantity = Items[i].Quantity;
+
+			if (i_Quantity == t_Quantity)
+			{
+				//값이 같다면 둘다 0값을 넣어줌.
+				t_Quantity = 0;
+				Items[i] = FItemDataSlot();
+			}
+			else if (i_Quantity > t_Quantity)
+			{
+				//인벤토리 슬롯에 있는 양만큼 사용하고 남은 값을 기존 인벤토리 슬롯에 넣어줌
+				int32 temp = i_Quantity - t_Quantity;
+				t_Quantity = 0;
+				Items[i].Quantity = temp;
+			}
+			else //i_Quantity < t_Quantity
+			{
+				//인벤토리 슬롯의 양이 필요한 양보다 적으면, 필요한 양을 깎고, 슬롯에는 빈값을 넣는다.
+				t_Quantity -= i_Quantity;
+				Items[i] = FItemDataSlot();
+			}
+
+			//필요한 양을 전부 깎았으면 종료			
+			if (t_Quantity <= 0)
+			{
+				return true;
+			}
+		}
+	}
+
+	//사실 위 루프가 실행되는 것은 인벤토리에 이미 아이템이 있을 것을 가정했을 때만 작동하므로, 여기까지 오지 않을 것임.
 	return false;
 }
 
