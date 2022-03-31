@@ -229,7 +229,7 @@ void UProjectLIfeGameInstance::SetAllInventories()
 	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (playerController)
 	{
-		playerController->UpdateInventory();
+		//playerController->UpdateInventory();
 		playerController->UpdateEquipment();
 	}
 }

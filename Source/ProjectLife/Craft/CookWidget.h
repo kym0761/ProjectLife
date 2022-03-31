@@ -34,9 +34,12 @@ public:
 
 	virtual void NativeConstruct() override;
 
+	virtual void NativeDestruct() override;
+
 	UFUNCTION(BlueprintCallable)
 	void InitCookWidget();
 
+	UFUNCTION()
 	void UpdateCookWidget();
 
 	UFUNCTION()

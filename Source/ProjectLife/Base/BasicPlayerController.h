@@ -37,7 +37,7 @@ public:
 
 	/*UI Functions.*/
 	void ToggleStorageWidget(AActor* StorageActorRef);
-	void UpdateInventory();
+	//void UpdateInventory();
 	void ToggleInventory();
 	void AddConditionIcon(AAbility* ConditionActorRef);
 	void RemoveConditionIcon(AAbility* ConditionActorRef);

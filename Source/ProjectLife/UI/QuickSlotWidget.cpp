@@ -6,7 +6,7 @@
 #include "../Base/BasicCharacter.h"
 #include "../Inventory/ItemSlot.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "../Inventory/InventoryComponent.h"
 
 void UQuickSlotWidget::NativeConstruct()
 {
@@ -31,7 +31,16 @@ void UQuickSlotWidget::InitQuickSlot()
 		QuickSlotArray[i]->InitItemSlot(GetOwningPlayer());
 		QuickSlotArray[i]->InventorySlotNumber = i;
 	}
+
 	UpdateQuickSlot();
+
+	UInventoryComponent* inventoryComponent = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
+
+	if (IsValid(inventoryComponent))
+	{
+		inventoryComponent->
+			OnInventoryDataChanged.AddDynamic(this, &UQuickSlotWidget::UpdateQuickSlot);
+	}
 }
 
 void UQuickSlotWidget::UpdateQuickSlot()

@@ -7,6 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryDataChanged);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIFE_API UInventoryComponent : public UActorComponent
@@ -48,4 +49,7 @@ public:
 
 	bool CheckItemInInventory(FString ItemName, int32 Quantity);
 	bool UseItemsInInventory(FString ItemName, int32 Quantity);
+
+	//call when Inventory's Item Data Changed.
+	FOnInventoryDataChanged OnInventoryDataChanged;
 };

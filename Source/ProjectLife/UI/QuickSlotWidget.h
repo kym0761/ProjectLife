@@ -29,5 +29,6 @@ public:
 
 	void InitQuickSlot();
 
+	UFUNCTION()
 	void UpdateQuickSlot();
 };

@@ -5,6 +5,7 @@
 #include "Components/UniformGridPanel.h"
 #include "ItemSlot.h"
 #include "../Base/BasicPlayerController.h"
+#include "InventoryComponent.h"
 
 void UInventoryWidget::NativeConstruct()
 {
@@ -29,6 +30,15 @@ void UInventoryWidget::InitInventoryWidget()
 	}
 
 	UpdateInventoryWidget();
+
+	UInventoryComponent* inventoryComponent = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
+	
+	if (IsValid(inventoryComponent))
+	{
+		inventoryComponent->
+			OnInventoryDataChanged.AddDynamic(this, &UInventoryWidget::UpdateInventoryWidget);
+	}
+
 }
 
 void UInventoryWidget::UpdateInventoryWidget()

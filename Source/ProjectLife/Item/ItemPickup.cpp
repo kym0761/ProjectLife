@@ -73,11 +73,11 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 
 	int32 leftover = inventoryComponent->AddItemToInventory(ItemDataSlot);
 
-	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
-	if (playerController)
-	{
-		playerController->UpdateInventory();
-	}
+	//ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
+	//if (playerController)
+	//{
+	//	playerController->UpdateInventory();
+	//}
 
 	if (leftover <= 0)
 	{

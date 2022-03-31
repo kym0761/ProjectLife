@@ -61,15 +61,15 @@ void UConfirmShopping::Clicked_OK()
 	if (IsValid(ShopOwnerRef))
 	{
 		bool bSucceed = ShopOwnerRef->Transaction(InventoryComponentRef, ShopItemIndex, Quantity);
-		//거래 성공시, inventory 내용 업데이트.
-		if (bSucceed)
-		{
-			ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-			if (IsValid(playerController))
-			{
-				playerController->UpdateInventory();
-			}
-		}
+		////거래 성공시, inventory 내용 업데이트.
+		//if (bSucceed)
+		//{
+		//	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+		//	if (IsValid(playerController))
+		//	{
+		//		playerController->UpdateInventory();
+		//	}
+		//}
 	}
 
 	//거래 완료가 됐든 실패가 됐든 기능 종료가 되면 사라짐.

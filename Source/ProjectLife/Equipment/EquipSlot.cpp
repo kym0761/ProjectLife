@@ -153,7 +153,7 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 						ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 						if (playerController)
 						{
-							playerController->UpdateInventory();
+							//playerController->UpdateInventory();
 							playerController->UpdateEquipment();
 							return true;
 						}
@@ -180,7 +180,7 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 				if (playerController)
 				{
-					playerController->UpdateInventory();
+					//playerController->UpdateInventory();
 					playerController->UpdateEquipment();
 					return true;
 				}

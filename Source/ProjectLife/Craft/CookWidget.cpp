@@ -9,6 +9,7 @@
 
 void UCookWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
 
 	for (int32 i = 0; i < 5; i++)
 	{
@@ -22,6 +23,22 @@ void UCookWidget::NativeConstruct()
 		Button_DoCooking->OnClicked.AddDynamic(this, &UCookWidget::Clicked_DoCooking);
 	}
 
+}
+
+void UCookWidget::NativeDestruct()
+{
+	//델리게이트 바인드 제거
+
+	UInventoryComponent* inventoryComponent = CookActorRef->FindComponentByClass<UInventoryComponent>();
+
+	if (IsValid(inventoryComponent))
+	{
+		inventoryComponent->OnInventoryDataChanged.RemoveDynamic(this, &UCookWidget::UpdateCookWidget);
+	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("Warning : Called NativeDestruct()"));
+
+	Super::NativeDestruct();
 }
 
 void UCookWidget::InitCookWidget()
@@ -45,6 +62,8 @@ void UCookWidget::InitCookWidget()
 	ItemSlot_Result->InventorySlotNumber = 10;
 
 	UpdateCookWidget();
+
+	inventoryComponent->OnInventoryDataChanged.AddDynamic(this , &UCookWidget::UpdateCookWidget);
 }
 
 void UCookWidget::UpdateCookWidget()
@@ -71,9 +90,9 @@ void UCookWidget::Clicked_DoCooking()
 	{
 		UpdateCookWidget();
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Warning : CookFailed in Clicked_DoCooking()"));
-	}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Warning : CookFailed in Clicked_DoCooking()"));
+	//}
 
 }

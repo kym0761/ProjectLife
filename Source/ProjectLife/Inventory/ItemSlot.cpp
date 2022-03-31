@@ -136,7 +136,9 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 					if (playerController)
 					{
 						//UE_LOG(LogTemp,Warning,TEXT("Attempt Update Inventory"));
-						playerController->UpdateInventory();
+						//playerController->UpdateInventory();
+
+						//TODO : Equipment도 인벤토리처럼 내부에서 알아서 슬롯 데이터들이 업데이트 되도록 해야함.
 						playerController->UpdateEquipment();
 						return true;
 					}
@@ -168,7 +170,8 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 				if (playerController)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
-					playerController->UpdateInventory();
+					//playerController->UpdateInventory();
+					//TODO : 동일
 					playerController->UpdateEquipment();
 					return true;
 				}

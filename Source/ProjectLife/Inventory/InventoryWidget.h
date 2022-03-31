@@ -31,5 +31,6 @@ public:
 
 	void InitInventoryWidget();
 
+	UFUNCTION()
 	void UpdateInventoryWidget();
 };

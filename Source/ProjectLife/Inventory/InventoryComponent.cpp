@@ -128,6 +128,8 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 			From->Items[FromSlot] = i2;
 			To->Items[ToSlot] = i1;
 
+			From->OnInventoryDataChanged.Broadcast();
+			To->OnInventoryDataChanged.Broadcast();
 			return true;
 		}
 		else  //같은 아이템이 존재한다면 join
@@ -152,6 +154,8 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 				To->Items[ToSlot] = i1;
 
 				//UE_LOG(LogTemp, Warning, TEXT("join1 Success"));
+				From->OnInventoryDataChanged.Broadcast();
+				To->OnInventoryDataChanged.Broadcast();
 				return true;
 			}
 			else //둘이 합쳐서 최대 수량을 초과하면.. "ToSlot"에는 Max Quantity 만큼 들어감 , "FromSlot"에는 나머지가 들어감.
@@ -166,6 +170,8 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 				To->Items[ToSlot] = i1;
 
 				//UE_LOG(LogTemp, Warning, TEXT("join2 Success"));
+				From->OnInventoryDataChanged.Broadcast();
+				To->OnInventoryDataChanged.Broadcast();
 				return true;
 			}
 		}
@@ -191,6 +197,7 @@ bool UInventoryComponent::SetInventoryItem(int32 SlotNumber, FItemDataSlot InDat
 	if (Items.IsValidIndex(SlotNumber))
 	{
 		Items[SlotNumber] = InData;
+		OnInventoryDataChanged.Broadcast();
 		return true;
 	}
 
@@ -239,11 +246,13 @@ int32 UInventoryComponent::AddItemToInventory(FItemDataSlot InData)
 			if (leftover.Quantity == 0)
 			{
 				//남은게 없으면 성공.
+				OnInventoryDataChanged.Broadcast();
 				return 0;
 			}
 			else if (leftover.Quantity < 0)
 			{
 				//음수면 문제가 있긴함. 다만, 인벤토리에 반영이 됐으므로 일단 0으로 취급
+				OnInventoryDataChanged.Broadcast();
 				return 0;
 			}
 		}
@@ -255,6 +264,7 @@ int32 UInventoryComponent::AddItemToInventory(FItemDataSlot InData)
 		if (Items[i].IsEmpty())
 		{
 			SetInventoryItem(i, leftover);
+			OnInventoryDataChanged.Broadcast();
 			return 0;
 		}
 	}
@@ -294,6 +304,7 @@ bool UInventoryComponent::UseItemInInventory(int32 ItemIndex)
 			{
 				item->SetOwner(GetOwner());
 				item->UseItem();
+				OnInventoryDataChanged.Broadcast();
 				return true;
 			}
 		}
@@ -364,6 +375,7 @@ bool UInventoryComponent::UseItemsInInventory(FString ItemName, int32 Quantity)
 			//필요한 양을 전부 깎았으면 종료			
 			if (t_Quantity <= 0)
 			{
+				OnInventoryDataChanged.Broadcast();
 				return true;
 			}
 		}
