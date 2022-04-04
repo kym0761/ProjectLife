@@ -5,7 +5,6 @@
 #include "../Inventory/InventoryComponent.h"
 #include "Components/SphereComponent.h"
 #include "../Base/BasicPlayerController.h"
-#include "../Item/ItemStruct.h"
 
 // Sets default values
 ACookActor::ACookActor()
@@ -78,11 +77,11 @@ void ACookActor::Interact_Implementation(APawn* InteractCauser)
 	}
 }
 
-bool ACookActor::MakeCooking()
+bool ACookActor::MakeCooking(FString CookItemName)
 {
 	//TODO : 요리할 아이템 이름 외부에서 받아오기
 
-	FString tempDishItemName = "Stirred-Carrot";
+	//FString tempDishItemName = "Stirred-Carrot";
 
 	if (!IsValid(RecipeDataTable))
 	{
@@ -90,7 +89,7 @@ bool ACookActor::MakeCooking()
 		return false;
 	}
 
-	FItemRecipeData* cookingRecipe = RecipeDataTable->FindRow<FItemRecipeData>(FName(*tempDishItemName), "");
+	FItemRecipeData* cookingRecipe = RecipeDataTable->FindRow<FItemRecipeData>(FName(*CookItemName), "");
 
 	//올바르지 않은 요리 레시피는 작동 불가능.
 	if (cookingRecipe == nullptr)
@@ -132,5 +131,51 @@ bool ACookActor::MakeCooking()
 	InventoryComponent->SetInventoryItem(10, result);
 
 	return true;
+}
+
+TArray<FItemRecipeData> ACookActor::CanMakeList()
+{
+
+	TArray<FItemRecipeData> result;
+
+	if (!IsValid(RecipeDataTable))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Warning : Recipe invalid"));
+		return result; // null
+	}
+
+	TArray<FItemRecipeData*> arr;
+	RecipeDataTable->GetAllRows<FItemRecipeData>("", arr);
+
+	for (FItemRecipeData* recipeItem : arr)
+	{
+		if (recipeItem == nullptr)
+		{
+			continue;
+		}
+
+		bool bCanMake = true;
+
+		for (TPair<FString, int32> i : recipeItem->Recipe)
+		{
+			FString ingredientName = i.Key; //재료이름
+			int32 ingredientQuantity = i.Value; //필요한 양
+
+			bool bCheckHasEnoughIngredient = InventoryComponent->CheckItemInInventory(ingredientName, ingredientQuantity);
+
+			if (bCheckHasEnoughIngredient == false)
+			{
+				bCanMake = false;
+				break;
+			}
+		}
+
+		if (bCanMake)
+		{
+			result.Add(*recipeItem);
+		}
+	}
+
+	return result;
 }
 

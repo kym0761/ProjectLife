@@ -69,7 +69,6 @@ public:
 	void AddConditionIcon(AAbility* ConditionActorRef);
 	void RemoveConditionIcon(AAbility* ConditionActorRef);
 
-
 	void NotifyInteract(UObject* InObject);
 	void UnnotifyInteract();
 

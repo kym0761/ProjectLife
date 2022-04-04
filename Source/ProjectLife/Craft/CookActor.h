@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../Item/ItemStruct.h"
 #include "../Base/InteractiveInterface.h"
 #include "CookActor.generated.h"
 
@@ -50,5 +51,7 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool MakeCooking();
+	bool MakeCooking(FString CookItemName);
+
+	TArray<FItemRecipeData> CanMakeList();
 };

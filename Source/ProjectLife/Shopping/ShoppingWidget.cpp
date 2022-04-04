@@ -15,11 +15,11 @@ void UShoppingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	//if (IsValid(MoneyTextBlock))
-	//{
-	//	MoneyTextBlock->TextDelegate.BindDynamic(this, &UShoppingWidget::SetMoneyText);
-	//	MoneyTextBlock->SynchronizeProperties();
-	//}
+	if (IsValid(MoneyTextBlock))
+	{
+		MoneyTextBlock->TextDelegate.BindDynamic(this, &UShoppingWidget::SetMoneyText);
+		MoneyTextBlock->SynchronizeProperties();
+	}
 
 	if (IsValid(ExitButton))
 	{
@@ -27,20 +27,20 @@ void UShoppingWidget::NativeConstruct()
 	}
 }
 
-//FText UShoppingWidget::SetMoneyText()
-//{
-//	if (IsValid(MoneyTextBlock))
-//	{
-//		AInventoryManager* inventoryManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AInventoryManager::StaticClass()));
-//		if (IsValid(inventoryManager))
-//		{
-//			FString inText = FString("Your Money : ") + FString::FromInt(inventoryManager->Money);
-//			return FText::FromString(inText);
-//		}
-//	}
-//
-//	return FText::GetEmpty();
-//}
+FText UShoppingWidget::SetMoneyText()
+{
+	if (IsValid(MoneyTextBlock))
+	{
+		UInventoryComponent* inventoryComponent = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
+		if (IsValid(inventoryComponent))
+		{
+			FString inText = FString("Your Money : ") + FString::FromInt(inventoryComponent->Money);
+			return FText::FromString(inText);
+		}
+	}
+
+	return FText::GetEmpty();
+}
 
 void UShoppingWidget::ExitButtonClicked()
 {

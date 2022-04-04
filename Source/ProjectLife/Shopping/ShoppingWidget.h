@@ -38,8 +38,8 @@ public:
 
 	virtual void NativeConstruct() override;
 
-	//UFUNCTION()
-	//	FText SetMoneyText();
+	UFUNCTION()
+		FText SetMoneyText();
 
 	UFUNCTION()
 		void ExitButtonClicked();

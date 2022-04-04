@@ -9,7 +9,8 @@
 class UItemSlot;
 class UButton;
 class ACookActor;
-
+class UVerticalBox;
+class UCookSelectionSlot;
 /**
  * 
  */
@@ -29,8 +30,17 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_DoCooking;
 
+	UPROPERTY(Meta = (BindWidget))
+		UVerticalBox* VerticalBox_CanDo;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
 		ACookActor* CookActorRef;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
+		TSubclassOf<UCookSelectionSlot> CookSelectionSlotClass;
+
+	UPROPERTY()
+		FString CookResultName;
 
 	virtual void NativeConstruct() override;
 
@@ -42,7 +52,10 @@ public:
 	UFUNCTION()
 	void UpdateCookWidget();
 
+	//CookResultName의 값을 보내서 CookActor가 요리를 하도록 요청
 	UFUNCTION()
 		void Clicked_DoCooking();
 
+	//CookActor의 인벤토리 내용물 바뀔때마다 제조 가능한 아이템 목록 업데이트
+	void UpdateSelections();
 };

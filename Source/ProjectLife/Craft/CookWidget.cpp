@@ -6,6 +6,8 @@
 #include "CookActor.h"
 #include "../Inventory/InventoryComponent.h"
 #include "Components/Button.h"
+#include "Components/VerticalBox.h"
+#include "CookSelectionSlot.h"
 
 void UCookWidget::NativeConstruct()
 {
@@ -27,7 +29,7 @@ void UCookWidget::NativeConstruct()
 
 void UCookWidget::NativeDestruct()
 {
-	//델리게이트 바인드 제거
+	//Widget삭제시 델리게이트 바인드를 제거
 
 	UInventoryComponent* inventoryComponent = CookActorRef->FindComponentByClass<UInventoryComponent>();
 
@@ -74,6 +76,8 @@ void UCookWidget::UpdateCookWidget()
 	}
 
 	ItemSlot_Result->UpdateItemSlot();
+
+	UpdateSelections();
 }
 
 void UCookWidget::Clicked_DoCooking()
@@ -84,7 +88,7 @@ void UCookWidget::Clicked_DoCooking()
 		return;
 	}
 
-	bool bSucceed = CookActorRef->MakeCooking();
+	bool bSucceed = CookActorRef->MakeCooking(CookResultName);
 
 	if (bSucceed)
 	{
@@ -95,4 +99,33 @@ void UCookWidget::Clicked_DoCooking()
 	//	UE_LOG(LogTemp, Warning, TEXT("Warning : CookFailed in Clicked_DoCooking()"));
 	//}
 
+}
+
+void UCookWidget::UpdateSelections()
+{
+	VerticalBox_CanDo->ClearChildren();
+	CookResultName = FString("");
+
+	if (!IsValid(CookActorRef))
+	{
+		//failed.
+		return;
+	}
+
+	if (!IsValid(CookSelectionSlotClass))
+	{
+		//failed.
+		return;
+	}
+
+	TArray<FItemRecipeData> list = CookActorRef->CanMakeList();
+
+	for (FItemRecipeData i : list)
+	{
+		UCookSelectionSlot* slot = NewObject<UCookSelectionSlot>(GetOwningPlayer(), CookSelectionSlotClass);
+		VerticalBox_CanDo->AddChild(slot);
+		slot->InitCookSelectionSlot(this, i);
+	} 
+
+	UE_LOG(LogTemp, Warning, TEXT("Warning : UpdateSelections()"));
 }
