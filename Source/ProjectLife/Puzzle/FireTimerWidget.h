@@ -21,7 +21,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UProgressBar* TimerProgressBar;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
+	//FireStand의 BeginPlay에서 초기화됨.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fire")
 		AFireStand* FireRef;
 
 	virtual void NativeConstruct() override;

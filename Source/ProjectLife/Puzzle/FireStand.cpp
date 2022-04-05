@@ -46,7 +46,7 @@ void AFireStand::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Set Default Timer Widget Object
+	//WidgetComponent 안에 있는 FireTimerWidget의 안에 있는 FireRef를 초기화함.
 	if (IsValid(Widget))
 	{
 		UFireTimerWidget* fireWidget = Cast<UFireTimerWidget>(Widget->GetUserWidgetObject());
@@ -99,7 +99,6 @@ void AFireStand::TriggerAction_Implementation()
 
 void AFireStand::Reset_Implementation()
 {
-
 	//Reset Fire Effect And TimerWidget.
 
 	bTriggerActive = false;
@@ -137,6 +136,7 @@ void AFireStand::TurnOnFire()
 		FireEffect->Activate();
 	}
 
+	//시간제한이 있는 경우. Widget이 보이도록 해야함.
 	if (bUseTimer)
 	{
 		CurrentTime = TriggerWaitTime;
@@ -150,7 +150,6 @@ void AFireStand::TurnOnFire()
 		{
 			Widget->SetHiddenInGame(false);
 		}
-		
 	}
 
 	//if (GEngine)
@@ -169,6 +168,7 @@ void AFireStand::TurnOnFire()
 	}
 
 	//Combust Timer On
+	//Combust 퍼지는 것이 0.0001초마다 빠르게 되는게 아니라 적절한 주기마다 일어남.
 	if (!CombustTimer.IsValid()) // Do Once. Check is Valid or not
 	{
 		GetWorldTimerManager().SetTimer(CombustTimer, this, &AFireStand::OverlapCombust, TimerInRate, true, TimerFirstDelay);
@@ -217,6 +217,8 @@ void AFireStand::TurnOffFire()
 
 void AFireStand::OverlapCombust()
 {
+	//근처에 ICombustible를 가진 Actor에게 Combust해줌.
+
 	if (bTriggerActive)
 	{
 		TArray<AActor*> overlapActors;
@@ -241,6 +243,5 @@ void AFireStand::OverlapCombust()
 			}
 		}
 	}
-
 
 }

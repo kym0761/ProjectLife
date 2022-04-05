@@ -33,5 +33,5 @@ public:
 
 	void CommitAbility();
 
-	void ReEvalueateAbility();
+	void ReEvaluateAbility();
 };

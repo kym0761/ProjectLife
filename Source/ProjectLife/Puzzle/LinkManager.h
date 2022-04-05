@@ -9,6 +9,8 @@
 class ULinkComponent;
 class ALinkEdge;
 
+//모든 Link를 연결하지 않고, Manager에만 걸린 Link만 Edge를 생성하도록 만들 때 필요할 지 모르는 Manager
+//TODO : Make Or Drop
 
 UCLASS()
 class PROJECTLIFE_API ALinkManager : public AActor

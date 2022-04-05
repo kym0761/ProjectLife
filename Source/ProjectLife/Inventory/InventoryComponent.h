@@ -37,19 +37,16 @@ public:
 	void GainMoney(int32 Gain);
 	bool CheckEnoughMoney(int32 ToCompare);
 	void TryMakeInventorySpace(int32 Num);
-
 	bool SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot);
 	FItemDataSlot GetInventoryItem(int32 SlotNumber);
 	bool SetInventoryItem(int32 SlotNumber, FItemDataSlot InData);
 	int32 AddItemToInventory(FItemDataSlot InData);
-
 	bool CheckPlayerInventoryHasSpace();
-
 	bool UseItemInInventory(int32 ItemIndex);
-
 	bool CheckItemInInventory(FString ItemName, int32 Quantity);
 	bool UseItemsInInventory(FString ItemName, int32 Quantity);
 
 	//call when Inventory's Item Data Changed.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="Inventory")
 	FOnInventoryDataChanged OnInventoryDataChanged;
 };

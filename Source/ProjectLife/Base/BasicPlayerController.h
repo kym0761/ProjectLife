@@ -28,7 +28,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "UI")
 		UMainHUD* MainHUDRef;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		class UInventoryComponent* InventoryComponent;
 
 	virtual void OnPossess(APawn* InPawn) override;
@@ -37,7 +37,6 @@ public:
 
 	/*UI Functions.*/
 	void ToggleStorageWidget(AActor* StorageActorRef);
-	//void UpdateInventory();
 	void ToggleInventory();
 	void AddConditionIcon(AAbility* ConditionActorRef);
 	void RemoveConditionIcon(AAbility* ConditionActorRef);

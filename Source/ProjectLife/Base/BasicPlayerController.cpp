@@ -68,14 +68,6 @@ void ABasicPlayerController::ToggleStorageWidget(AActor* StorageActorRef)
 	}
 }
 
-//void ABasicPlayerController::UpdateInventory()
-//{
-//	if (IsValid(MainHUDRef))
-//	{
-//		MainHUDRef->UpdateInventory();
-//	}
-//}
-
 void ABasicPlayerController::AddConditionIcon(AAbility* ConditionActorRef)
 {
 	if (IsValid(MainHUDRef))

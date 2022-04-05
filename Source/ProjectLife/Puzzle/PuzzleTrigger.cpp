@@ -30,7 +30,7 @@ void APuzzleTrigger::Tick(float DeltaTime)
 
 void APuzzleTrigger::InitializeTriggerArray()
 {
-	for (auto i : TriggeringArray)
+	for (AActor* i : TriggeringArray)
 	{
 		if (!IsValid(i))
 		{
@@ -42,6 +42,10 @@ void APuzzleTrigger::InitializeTriggerArray()
 			break;
 		}
 
+
+		//Trigger인지 Door인지에 따라서 조금 다름.
+		//Door는 누군가를 Trigger하지 않으므로 다른 액터임.
+		//TODO : Trigger와 Door 통합 가능한 지?
 		bool bIsChildOfPuzzleTrigger = i->GetClass()->IsChildOf(APuzzleTrigger::StaticClass());
 		if (bIsChildOfPuzzleTrigger)
 		{

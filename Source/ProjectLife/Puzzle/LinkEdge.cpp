@@ -56,6 +56,8 @@ void ALinkEdge::InitializeCompRefs(ULinkComponent* InComp1, ULinkComponent* InCo
 
 void ALinkEdge::SetEffectPoint()
 {
+	//연결 Effect의 포인트를 설정해주어야함. ULinkComponent가 USceneComponent이므로 X Y Z 값이 존재함.
+
 	if (LinkComps.IsValidIndex(0) && LinkComps.IsValidIndex(1))
 	{
 		LinkEffectComponent->SetNiagaraVariableVec3(TEXT("StartPoint"), LinkComps[0]->GetComponentLocation());

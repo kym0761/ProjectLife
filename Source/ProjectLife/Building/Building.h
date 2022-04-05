@@ -10,7 +10,6 @@
 
 class UBoxComponent;
 class UStaticMeshComponent;
-class UGridComponent;
 
 UCLASS()
 class PROJECTLIFE_API ABuilding : public AActor, public IInteractive

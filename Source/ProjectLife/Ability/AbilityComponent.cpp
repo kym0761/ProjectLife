@@ -57,7 +57,7 @@ void UAbilityComponent::CommitAbility()
 	//}
 }
 
-void UAbilityComponent::ReEvalueateAbility()
+void UAbilityComponent::ReEvaluateAbility()
 {
 	//AActor* owner = GetOwner();
 

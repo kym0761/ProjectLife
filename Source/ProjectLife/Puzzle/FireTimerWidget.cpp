@@ -8,7 +8,8 @@ void UFireTimerWidget::NativeConstruct()
 {
 	if (TimerProgressBar)
 	{
-		//Equal => TimerProgressBar->PercentDelegate.BindDynamic(this, &UDoorTimerWidget::DoorPercent);
+		//Equal == 
+		//TimerProgressBar->PercentDelegate.BindDynamic(this, &UFireTimerWidget::FirePercent);
 		TimerProgressBar->PercentDelegate.BindUFunction(this, TEXT("FirePercent"));
 		TimerProgressBar->SynchronizeProperties();
 	}
