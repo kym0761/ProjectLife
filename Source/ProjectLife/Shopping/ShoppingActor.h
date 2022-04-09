@@ -26,10 +26,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* ShoppingCollision;
 
-	////상점 아이템 정보?
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
-	//	TArray<FShopItemData> ShopItems;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingWidget> ShoppingWidgetClass;
 

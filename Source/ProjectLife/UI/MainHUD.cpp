@@ -18,25 +18,6 @@ void UMainHUD::NativeConstruct()
 	bStorageUsing = false;
 }
 
-//void UMainHUD::UpdateInventory()
-//{
-//	if (IsValid(Widget_Inventory))
-//	{
-//		Widget_Inventory->UpdateInventoryWidget();
-//	}
-//
-//	if (IsValid(Widget_QuickSlot))
-//	{
-//		Widget_QuickSlot->UpdateQuickSlot();
-//	}
-//
-//	if (IsValid(Widget_Storage))
-//	{
-//		Widget_Storage->UpdateStorageWidget();
-//	}
-//
-//}
-
 void UMainHUD::ToggleInventory()
 {
 	if (IsValid(InventoryAnimation))

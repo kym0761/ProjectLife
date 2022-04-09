@@ -77,9 +77,16 @@ void ACookActor::Interact_Implementation(APawn* InteractCauser)
 		}
 	}
 
+	//CookWidget 생성
+
 	if (!IsValid(CookWidgetClass))
 	{
 		return;
+	}
+
+	if (IsValid(CookWidgetRef))
+	{
+		CookWidgetRef->RemoveFromViewport();
 	}
 
 	CookWidgetRef = CreateWidget<UCookWidget>(playerController, CookWidgetClass);
@@ -96,10 +103,6 @@ void ACookActor::Interact_Implementation(APawn* InteractCauser)
 
 bool ACookActor::MakeCooking(FString CookItemName)
 {
-	//TODO : 요리할 아이템 이름 외부에서 받아오기
-
-	//FString tempDishItemName = "Stirred-Carrot";
-
 	if (!IsValid(RecipeDataTable))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning : Recipe invalid"));
@@ -143,7 +146,7 @@ bool ACookActor::MakeCooking(FString CookItemName)
 	result.ItemName = cookingRecipe->ItemName;
 	result.Quantity = cookingRecipe->Quantity;
 
-	//TODO : 결과물은 어떻게 처리해야하는지?
+
 	//10번째 inventory 공간에 아이템을 생성하도록 한다.
 	InventoryComponent->SetInventoryItem(10, result);
 
@@ -152,13 +155,15 @@ bool ACookActor::MakeCooking(FString CookItemName)
 
 TArray<FItemRecipeData> ACookActor::CanMakeList()
 {
+	//만들 수 있는 요리 목록을 전달함.
+	//위의 MakeCooking과 유사하게 인벤토리에 재료가 존재하는지 확인하고 가능한 레시피면 리스트에 넣어주고 전달.
 
 	TArray<FItemRecipeData> result;
 
 	if (!IsValid(RecipeDataTable))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning : Recipe invalid"));
-		return result; // null
+		return result; // empty list
 	}
 
 	TArray<FItemRecipeData*> arr;

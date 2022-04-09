@@ -59,7 +59,6 @@ public:
 
 	virtual void NativeConstruct() override;
 
-	//void UpdateInventory();
 	void ToggleInventory();
 
 	void UpdateEquipment();

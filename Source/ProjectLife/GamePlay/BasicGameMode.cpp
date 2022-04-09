@@ -26,11 +26,11 @@ void ABasicGameMode::IncreaseDay(int32 IncDay)
 		tomorrow.Month = currentGameTime.Month;
 		tomorrow.Day = currentGameTime.Day;
 
-		if (currentGameTime.Hour >= FInGameTime::Morning().Hour) // still Today.
+		if (currentGameTime.Hour >= FInGameTime::Morning().Hour) // still Today. EX) 17:00, 23:40...
 		{
 			tomorrow += FInGameTime(0, 0, IncDay, 0, 0) + FInGameTime::Morning();
 		}
-		else // already tomorrow
+		else // already tomorrow EX) 0:40
 		{
 			tomorrow += FInGameTime::Morning();
 		}

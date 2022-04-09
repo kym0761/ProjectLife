@@ -44,7 +44,6 @@ void UEquipmentWidget::InitEquipmentWidget()
 
 	}
 
-
 }
 
 void UEquipmentWidget::UpdateEquipmentWidget()

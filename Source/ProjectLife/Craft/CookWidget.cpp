@@ -90,6 +90,8 @@ void UCookWidget::UpdateCookWidget()
 
 void UCookWidget::Clicked_DoCooking()
 {
+	//CookResultName의 값을 보내서 CookActor가 요리를 하도록 요청
+
 	if (!IsValid(CookActorRef))
 	{
 		//failed.
@@ -111,6 +113,11 @@ void UCookWidget::Clicked_DoCooking()
 
 void UCookWidget::UpdateSelections()
 {
+	//제조 가능한 요리의 목록을 출력함
+	//CookActor의 인벤토리에 접근해서 가능한 요리를 찾아야하므로 CookActor에서 목록을 받아와서 처리
+
+
+	//Init : Clear
 	VerticalBox_CanDo->ClearChildren();
 	CookResultName = FString("");
 

@@ -27,6 +27,8 @@ void USpeechBubbleWidget::StartSpeech(FString InSpeech)
 
 void USpeechBubbleWidget::Speech()
 {
+	//대화창의 텍스트가 1개씩 추가로 보이도록 타이머를 사용함.
+
 	FString temp = UKismetStringLibrary::GetSubstring(SpeechString, 0, CurrentLength);
 	SpeechTextBlock->SetText(FText::FromString(temp));
 
