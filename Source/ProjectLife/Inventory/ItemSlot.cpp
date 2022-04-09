@@ -128,7 +128,7 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 			if (IsValid(drop_InventoryComponent) && IsValid(InventoryComponentRef)) //drop과 현재 슬롯의 Inventory Component 확인.
 			{
 				//drop과 정보 교체
-				bool bSucceed = InventoryComponentRef->SwapItemBetweenInventory(drop_InventoryComponent, drop_InventorySlotNumber, InventoryComponentRef, InventorySlotNumber);
+				bool bSucceed = UInventoryComponent::SwapItemBetweenInventory(drop_InventoryComponent, drop_InventorySlotNumber, InventoryComponentRef, InventorySlotNumber);
 				if (bSucceed)
 				{
 					//인벤토리 업데이트

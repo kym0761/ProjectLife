@@ -43,8 +43,16 @@ void UCookWidget::NativeDestruct()
 	Super::NativeDestruct();
 }
 
-void UCookWidget::InitCookWidget()
+void UCookWidget::InitCookWidget(ACookActor* CookActor)
 {
+
+	if (!IsValid(CookActor))
+	{
+		//failed.
+		return;
+	}
+
+	CookActorRef = CookActor;
 
 	if (!IsValid(CookActorRef))
 	{

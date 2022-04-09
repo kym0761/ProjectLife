@@ -112,7 +112,7 @@ void UInventoryComponent::TryMakeInventorySpace(int32 Num)
 
 bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot)
 {
-	if (!(IsValid(From) && IsValid(To)))
+	if (!(IsValid(From) && IsValid(To) && IsValid(GEngine)))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Not Valid Inventory"));
 		return false;
@@ -134,8 +134,9 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 		}
 		else  //같은 아이템이 존재한다면 join
 		{
+
 			//문제가 있을 수 있음. 임시로 뗌빵.
-			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GEngine->GetWorld()));
 
 			if (!IsValid(gameInstance))
 			{

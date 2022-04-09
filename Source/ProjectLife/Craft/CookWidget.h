@@ -50,8 +50,7 @@ public:
 
 	virtual void NativeDestruct() override;
 
-	UFUNCTION(BlueprintCallable)
-	void InitCookWidget();
+	void InitCookWidget(ACookActor* CookActor);
 
 	UFUNCTION()
 	void UpdateCookWidget();

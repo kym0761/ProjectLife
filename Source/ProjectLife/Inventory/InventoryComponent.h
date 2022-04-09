@@ -38,7 +38,7 @@ public:
 	void GainMoney(int32 Gain);
 	bool CheckEnoughMoney(int32 ToCompare);
 	void TryMakeInventorySpace(int32 Num);
-	bool SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot);
+	static bool SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot);
 	FItemSlotData GetInventoryItem(int32 SlotNumber);
 	bool SetInventoryItem(int32 SlotNumber, FItemSlotData InData);
 	int32 AddItemToInventory(FItemSlotData InData);

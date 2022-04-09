@@ -5,6 +5,7 @@
 #include "../Inventory/InventoryComponent.h"
 #include "Components/SphereComponent.h"
 #include "../Base/BasicPlayerController.h"
+#include "CookWidget.h"
 
 // Sets default values
 ACookActor::ACookActor()
@@ -75,6 +76,22 @@ void ACookActor::Interact_Implementation(APawn* InteractCauser)
 			bOpen = true;
 		}
 	}
+
+	if (!IsValid(CookWidgetClass))
+	{
+		return;
+	}
+
+	CookWidgetRef = CreateWidget<UCookWidget>(playerController, CookWidgetClass);
+	
+	if (!IsValid(CookWidgetRef))
+	{
+		return;
+	}
+
+	CookWidgetRef->AddToViewport();
+	CookWidgetRef->InitCookWidget(this);
+
 }
 
 bool ACookActor::MakeCooking(FString CookItemName)
