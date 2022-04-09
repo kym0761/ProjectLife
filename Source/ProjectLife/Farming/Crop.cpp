@@ -41,7 +41,7 @@ void ACrop::Interact_Implementation(APawn* InteractCauser)
 {
 	if (IsValid(GrowthComponent))
 	{
-		if (GrowthComponent->GrowthLevel >= GrowthComponent->MaxGrowthLevel)
+		if (GrowthComponent->GetGrowthLevel() >= GrowthComponent->MaxGrowthLevel)
 		{
 			if (GEngine)
 			{

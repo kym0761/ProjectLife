@@ -29,6 +29,8 @@ public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
 		TSubclassOf< UCalendarDummySlot> CalendarDummySlotClass;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	void InitCalendar();

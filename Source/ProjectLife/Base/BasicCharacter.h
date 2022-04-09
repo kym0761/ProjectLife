@@ -9,7 +9,6 @@
 
 class USpringArmComponent;
 class UCameraComponent;
-//class UInventoryComponent;
 class UStatComponent;
 class UEquipmentComponent;
 class ABasicWeapon;
@@ -18,7 +17,7 @@ class ADamageTextActor;
 class USceneComponent;
 class UAbilityComponent;
 class UGridDetectComponent;
-//class AFarmingTool;
+
 UENUM(BlueprintType)
 enum class ECameraType : uint8
 {
@@ -48,10 +47,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 		UCameraComponent* Camera;
-
-	////Inventory Component;
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-	//	UInventoryComponent* Inventory;
 
 	//StatComponent.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
@@ -91,9 +86,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
 		AActor* CurrentHold;
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Farming")
-	//	AFarmingTool* FarmingTool;
 
 protected:
 	// Called when the game starts or when spawned

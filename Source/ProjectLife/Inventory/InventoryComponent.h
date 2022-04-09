@@ -18,11 +18,12 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory", Meta = (AllowPrivateAccess = "true"))
 		int32 Money;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		TArray<FItemDataSlot> Items;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory", Meta = (AllowPrivateAccess = "true"))
+		TArray<FItemSlotData> Items;
 
 protected:
 	// Called when the game starts
@@ -38,9 +39,9 @@ public:
 	bool CheckEnoughMoney(int32 ToCompare);
 	void TryMakeInventorySpace(int32 Num);
 	bool SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot);
-	FItemDataSlot GetInventoryItem(int32 SlotNumber);
-	bool SetInventoryItem(int32 SlotNumber, FItemDataSlot InData);
-	int32 AddItemToInventory(FItemDataSlot InData);
+	FItemSlotData GetInventoryItem(int32 SlotNumber);
+	bool SetInventoryItem(int32 SlotNumber, FItemSlotData InData);
+	int32 AddItemToInventory(FItemSlotData InData);
 	bool CheckPlayerInventoryHasSpace();
 	bool UseItemInInventory(int32 ItemIndex);
 	bool CheckItemInInventory(FString ItemName, int32 Quantity);
@@ -49,4 +50,10 @@ public:
 	//call when Inventory's Item Data Changed.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="Inventory")
 	FOnInventoryDataChanged OnInventoryDataChanged;
+
+	int32 GetMoney() const;
+	void SetMoney(int32 InVal);
+
+	TArray<FItemSlotData> GetItems() const;
+	void SetItems(TArray<FItemSlotData> InVal);
 };

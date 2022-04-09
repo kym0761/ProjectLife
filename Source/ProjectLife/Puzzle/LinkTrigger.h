@@ -31,6 +31,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		ULinkComponent* LinkComponent;
 	
+public:
+
 	void SetTriggerActivate(bool InVal);
 
 

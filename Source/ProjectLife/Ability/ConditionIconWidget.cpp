@@ -43,3 +43,13 @@ void UConditionIconWidget::InitIcon(AAbility* ConditionActorRef)
 	//	}
 	//}
 }
+
+AAbility* UConditionIconWidget::GetConditionRef() const
+{
+	if (IsValid(ConditionRef))
+	{
+		return ConditionRef;
+	}
+
+	return nullptr;
+}

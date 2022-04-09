@@ -39,6 +39,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_Quantity;
 
+private:
+
 	//UI 상에서 나타나는 구매하고 싶은 양.
 	UPROPERTY()
 		int32 Quantity;
@@ -53,6 +55,8 @@ public:
 	//가리키고 있는 상점의 아이템 Array Number
 	UPROPERTY()
 		int32 ShopItemIndex;
+
+public:
 
 	virtual void NativeConstruct() override;
 

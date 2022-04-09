@@ -23,18 +23,18 @@ bool FItemData::IsEmpty()
 	return Name == FString("");
 }
 
-FItemDataSlot::FItemDataSlot()
+FItemSlotData::FItemSlotData()
 {
 	ItemName = FString("");
 	Quantity = 0;
 }
 
-bool FItemDataSlot::IsSameItem(const FItemDataSlot Other)
+bool FItemSlotData::IsSameItem(const FItemSlotData Other)
 {
 	return (ItemName == Other.ItemName);
 }
 
-bool FItemDataSlot::IsEmpty()
+bool FItemSlotData::IsEmpty()
 {
 	return ItemName == FString("");
 }

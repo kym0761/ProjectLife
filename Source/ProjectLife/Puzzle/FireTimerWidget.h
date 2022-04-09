@@ -25,6 +25,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fire")
 		AFireStand* FireRef;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

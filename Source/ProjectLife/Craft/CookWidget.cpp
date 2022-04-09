@@ -129,3 +129,8 @@ void UCookWidget::UpdateSelections()
 
 	UE_LOG(LogTemp, Warning, TEXT("Warning : UpdateSelections()"));
 }
+
+void UCookWidget::SetCookResultName(FString InVal)
+{
+	CookResultName = InVal;
+}

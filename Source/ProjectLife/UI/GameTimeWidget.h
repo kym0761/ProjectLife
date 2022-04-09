@@ -34,12 +34,15 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_Minute;
 
-	UPROPERTY()
-		UProjectLIfeGameInstance* GameInstanceRef;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
 		UDataTable* MonthTitleDataTable;
 
+private:
+
+	UPROPERTY()
+		UProjectLIfeGameInstance* GameInstanceRef;
+
+public:
 	virtual void NativeConstruct() override;
 
 	void InitGameTimeWidget();

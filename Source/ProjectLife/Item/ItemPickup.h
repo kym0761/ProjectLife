@@ -33,8 +33,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-		FItemDataSlot ItemDataSlot;
+private:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item", Meta = (AllowPrivateAccess = "true"))
+		FItemSlotData ItemSlotData;
 
 protected:
 	// Called when the game starts or when spawned

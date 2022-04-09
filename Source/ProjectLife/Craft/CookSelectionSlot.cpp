@@ -73,7 +73,7 @@ void UCookSelectionSlot::SetCookWidgetSelection()
 		return;
 	}
 
-	ParentCookWidgetRef->CookResultName = ItemNameText;
+	ParentCookWidgetRef->SetCookResultName(ItemNameText);
 
 
 }

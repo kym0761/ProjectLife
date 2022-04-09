@@ -17,7 +17,7 @@ FInventory::FInventory()
 
 	for (int i = 0; i < 30; i++)
 	{
-		Items.Add(FItemDataSlot());
+		Items.Add(FItemSlotData());
 	}
 }
 
@@ -164,8 +164,8 @@ void UProjectLIfeGameInstance::GetAllInventories()
 		//TODO? : 플레이어 ID에 따라 정확하게 저장하기?
 
 		PlayerInventory.Add(i, FInventory());
-		PlayerInventory[i].Items = inventoryComponent->Items;
-		PlayerInventory[i].Money = inventoryComponent->Money;
+		PlayerInventory[i].Items = inventoryComponent->GetItems();
+		PlayerInventory[i].Money = inventoryComponent->GetMoney();
 	}
 
 	TArray<AActor*> storageArray;
@@ -183,8 +183,8 @@ void UProjectLIfeGameInstance::GetAllInventories()
 		//TODO? : StorageBox ID에 따라 정확하게 저장하기?
 
 		StorageInventory.Add(i, FInventory());
-		StorageInventory[i].Items = inventoryComponent->Items;
-		StorageInventory[i].Money = inventoryComponent->Money;
+		StorageInventory[i].Items = inventoryComponent->GetItems();
+		StorageInventory[i].Money = inventoryComponent->GetMoney();
 	}
 
 
@@ -204,8 +204,8 @@ void UProjectLIfeGameInstance::SetAllInventories()
 			continue;
 		}
 
-		inventoryComponent->Items = PlayerInventory[i].Items;
-		inventoryComponent->Money = PlayerInventory[i].Money;
+		inventoryComponent->SetItems(PlayerInventory[i].Items);
+		inventoryComponent->SetMoney(PlayerInventory[i].Money);
 	}
 
 
@@ -222,8 +222,8 @@ void UProjectLIfeGameInstance::SetAllInventories()
 		}
 
 		//TODO? : StorageBox ID에 따라 정확하게 저장하기?
-		inventoryComponent->Items = StorageInventory[i].Items;
-		inventoryComponent->Money = StorageInventory[i].Money;
+		inventoryComponent->SetItems(StorageInventory[i].Items);
+		inventoryComponent->SetMoney(StorageInventory[i].Money);
 	}
 
 	ABasicPlayerController* playerController = Cast<ABasicPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));

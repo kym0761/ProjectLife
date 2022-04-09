@@ -34,7 +34,7 @@ FText UShoppingWidget::SetMoneyText()
 		UInventoryComponent* inventoryComponent = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
 		if (IsValid(inventoryComponent))
 		{
-			FString inText = FString("Your Money : ") + FString::FromInt(inventoryComponent->Money);
+			FString inText = FString("Your Money : ") + FString::FromInt(inventoryComponent->GetMoney());
 			return FText::FromString(inText);
 		}
 	}

@@ -38,6 +38,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speech")
 		float EndTime = 5.0f;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	FTimerHandle SpeechTimer;

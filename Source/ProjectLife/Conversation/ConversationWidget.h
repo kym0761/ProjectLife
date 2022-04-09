@@ -51,6 +51,8 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Conversation")
 		TSubclassOf<UChoiceSlot> ChoiceSlot_BP;
 
+private:
+
 	//대화 내용 목록
 	UPROPERTY()
 		TArray<FConversationData> Conversations;
@@ -73,6 +75,8 @@ public:
 
 	UPROPERTY()
 	float ConversationTick;
+
+public:
 
 	virtual void NativeConstruct() override;
 

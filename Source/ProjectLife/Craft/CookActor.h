@@ -31,11 +31,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
 		UInventoryComponent* InventoryComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
-		bool bOpen;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
 		UDataTable* RecipeDataTable;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
+		bool bOpen;
 
 protected:
 	// Called when the game starts or when spawned

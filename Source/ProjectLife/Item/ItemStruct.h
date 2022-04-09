@@ -150,7 +150,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct FItemDataSlot
+struct FItemSlotData
 {
 	GENERATED_BODY()
 
@@ -160,18 +160,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 Quantity;
 
-	FItemDataSlot();
+	FItemSlotData();
 
-	FORCEINLINE bool operator==(const FItemDataSlot& Other)
+	FORCEINLINE bool operator==(const FItemSlotData& Other)
 	{
 		return (ItemName == Other.ItemName);
 	}
-	FORCEINLINE bool operator!=(const FItemDataSlot& Other)
+	FORCEINLINE bool operator!=(const FItemSlotData& Other)
 	{
 		return !(ItemName == Other.ItemName);
 	}
 
-	bool IsSameItem(const FItemDataSlot Other);
+	bool IsSameItem(const FItemSlotData Other);
 	bool IsEmpty();
 };
 

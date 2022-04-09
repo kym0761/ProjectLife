@@ -55,7 +55,7 @@ public:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 		UWidgetAnimation* StorageAnimation;
 
-
+public:
 
 	virtual void NativeConstruct() override;
 

@@ -24,6 +24,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
 		APuzzleDoor* DoorRef;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

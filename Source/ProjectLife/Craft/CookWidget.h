@@ -33,14 +33,18 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UVerticalBox* VerticalBox_CanDo;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
-		ACookActor* CookActorRef;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
 		TSubclassOf<UCookSelectionSlot> CookSelectionSlotClass;
 
+private:
+
+	UPROPERTY()
+		ACookActor* CookActorRef;
+
 	UPROPERTY()
 		FString CookResultName;
+
+public:
 
 	virtual void NativeConstruct() override;
 
@@ -58,4 +62,7 @@ public:
 
 	//CookActor의 인벤토리 내용물 바뀔때마다 제조 가능한 아이템 목록 업데이트
 	void UpdateSelections();
+
+	void SetCookResultName(FString InVal);
+
 };

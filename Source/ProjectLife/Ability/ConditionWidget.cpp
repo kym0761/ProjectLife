@@ -35,7 +35,7 @@ void UConditionWidget::RemoveIcon(AAbility* ConditionActorRef)
 		UConditionIconWidget* child = Cast<UConditionIconWidget>(ConditionBox->GetChildAt(i));
 		if (child)
 		{
-			if (child->ConditionRef == ConditionActorRef)
+			if (child->GetConditionRef() == ConditionActorRef)
 			{
 				ConditionBox->RemoveChildAt(i);
 				child->RemoveFromParent();

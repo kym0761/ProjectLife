@@ -18,13 +18,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bTriggerActive;
 
-	//who will Trigger this? this Will be Initialized when Beginplay() played!
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
-		TArray<APuzzleTrigger*> TriggerArray;
-
 	//which you Want to Trigger? Add it from in the World.  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
-		TArray<AActor*> TriggeringArray;	
+		TArray<AActor*> TriggeringArray;
+
+protected:
+
+	//who will Trigger this? this Will be Initialized when Beginplay() played!
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger", Meta = (AllowPrivateAccess = "true"))
+		TArray<APuzzleTrigger*> TriggerArray;
 
 protected:
 	// Called when the game starts or when spawned

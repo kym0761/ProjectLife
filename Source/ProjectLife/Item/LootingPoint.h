@@ -21,11 +21,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBillboardComponent* Billboard;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Looting", Meta = (ClampMin = 0.0f, ClampMax = 100.0f))
-		float ProbabilityRate;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Looting")
 		TSubclassOf<AItemPickup> ItemPickupClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Looting", Meta = (ClampMin = 0.0f, ClampMax = 100.0f))
+		float ProbabilityRate;
 
 protected:
 	// Called when the game starts or when spawned

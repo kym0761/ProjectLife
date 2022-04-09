@@ -21,7 +21,9 @@ public:
 	// Sets default values for this actor's properties
 	AItem();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+private:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item", Meta = (AllowPrivateAccess = "true"))
 		FString ItemName;
 
 protected:

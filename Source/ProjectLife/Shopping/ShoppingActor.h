@@ -26,22 +26,22 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UBoxComponent* ShoppingCollision;
 
-	//상점 아이템 정보?
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
-		TArray<FShopItemData> ShopItems;
-
-	//구매 목록 Cache
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
-		TArray<FItemData> Items;
+	////상점 아이템 정보?
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping")
+	//	TArray<FShopItemData> ShopItems;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingWidget> ShoppingWidgetClass;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Shopping")
-		UShoppingWidget* ShoppingWidgetRef;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		UDataTable* ShoppingDataTable;
+
+	UPROPERTY()
+		UShoppingWidget* ShoppingWidgetRef;
+
+	//구매 목록 Cache
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping", Meta = (AllowPrivateAccess = "true"))
+		TArray<FItemData> Items;
 
 protected:
 	// Called when the game starts or when spawned

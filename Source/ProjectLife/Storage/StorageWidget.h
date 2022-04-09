@@ -22,8 +22,12 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UUniformGridPanel* SlotGridPanel;
 
+private:
+
 	UPROPERTY()
 		TArray<UItemSlot*> ItemSlotArray;
+
+public:
 
 	virtual void NativeConstruct() override;
 

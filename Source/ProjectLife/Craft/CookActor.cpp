@@ -122,7 +122,7 @@ bool ACookActor::MakeCooking(FString CookItemName)
 		InventoryComponent->UseItemsInInventory(ingredientName, ingredientQuantity);
 	}
 
-	FItemDataSlot result;
+	FItemSlotData result;
 	result.ItemName = cookingRecipe->ItemName;
 	result.Quantity = cookingRecipe->Quantity;
 
