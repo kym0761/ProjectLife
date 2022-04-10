@@ -22,7 +22,7 @@ public:
 		int32 Money;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<FItemDataSlot> Items;
+		TArray<FItemSlotData> Items;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 MaxCapacity;

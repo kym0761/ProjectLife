@@ -8,8 +8,11 @@ public class ProjectLife : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore"
-		, "AIModule", "GameplayTasks", "UMG", "NavigationSystem", "Niagara"});
+		//기본으로 존재한 모듈
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore"});
+
+		//추가된 모듈
+		PublicDependencyModuleNames.AddRange(new string[] {"AIModule", "GameplayTasks", "UMG", "NavigationSystem", "Niagara" });
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 

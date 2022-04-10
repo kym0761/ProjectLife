@@ -23,9 +23,6 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UImage* SlotImage;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment")
-		UEquipmentComponent* EquipmentCompRef;
-	
 	//Set Equipment Slot Type
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentSlot EquipmentSlot;
@@ -36,7 +33,14 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TSubclassOf<UEquipSlot> EquipSlotClass;
-	
+
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
+		UEquipmentComponent* EquipmentCompRef;
+
+public:
+
 	virtual void NativeConstruct() override;
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry,
@@ -51,4 +55,7 @@ public:
 		UDragDropOperation* InOperation) override;
 
 	void UpdateEquipSlot();
+
+	void SetEquipmentCompRef(UEquipmentComponent* InVal);
+	UEquipmentComponent* GetEquipmentCompRef() const;
 };

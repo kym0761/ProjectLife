@@ -39,7 +39,7 @@ void UEquipmentComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
-bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSlot InData)
+bool UEquipmentComponent::SetEquipment(EEquipmentSlot EquipmentSlot, FItemSlotData InData)
 {
 	bool bEquipable = false;
 
@@ -258,7 +258,7 @@ bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInven
 	}
 
 	FEquipmentItemData currentEquipment = GetEquipmentData(Equipmentslot);
-	FItemDataSlot fromEquipmentToInventory;
+	FItemSlotData fromEquipmentToInventory;
 
 	//장비 데이터를 FItemDataSlot으로 변환.
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
@@ -283,7 +283,7 @@ bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInven
 
 
 	//장비와 바꿀 인벤토리 아이템의 데이터.
-	FItemDataSlot inInventory = InventoryComponent->GetInventoryItem(SlotNumber);
+	FItemSlotData inInventory = InventoryComponent->GetInventoryItem(SlotNumber);
 	FItemData itemData_InInventory = gameInstance->GetItemDataFromTable(inInventory.ItemName);
 	
 	//인벤토리 데이터가 장비라면 장비를 교체함.
@@ -306,7 +306,7 @@ bool UEquipmentComponent::SwapWithInventory(EEquipmentSlot Equipmentslot, UInven
 		if (inInventory.IsEmpty()) // 빈 인벤토리 슬롯인지 확인
 		{
 			InventoryComponent->SetInventoryItem(SlotNumber, fromEquipmentToInventory);
-			SetEquipment(Equipmentslot, FItemDataSlot());
+			SetEquipment(Equipmentslot, FItemSlotData());
 
 			return true;
 		}

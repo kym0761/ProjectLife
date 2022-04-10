@@ -51,6 +51,8 @@ void UStorageWidget::InitStorageWidget(AActor* StorageActorRef)
 
 	UpdateStorageWidget();
 
+	inventoryComponent->OnInventoryDataChanged.Clear();
+
 	inventoryComponent->
 	OnInventoryDataChanged.AddDynamic(this, &UStorageWidget::UpdateStorageWidget);
 

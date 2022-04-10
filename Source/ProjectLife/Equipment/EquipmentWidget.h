@@ -33,6 +33,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UEquipSlot* Accessory2Slot;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	void InitEquipmentWidget();

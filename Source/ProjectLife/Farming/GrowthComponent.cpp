@@ -89,3 +89,23 @@ void UGrowthComponent::SetOwnerMesh()
 		}
 	}
 }
+
+bool UGrowthComponent::GetFruited() const
+{
+	return bFruited;
+}
+
+int32 UGrowthComponent::GetGrowthLevel() const
+{
+	return GrowthLevel;
+}
+
+int32 UGrowthComponent::GetCurrentGrowth() const
+{
+	return CurrentGrowth;
+}
+
+int32 UGrowthComponent::GetDay() const
+{
+	return Day;
+}

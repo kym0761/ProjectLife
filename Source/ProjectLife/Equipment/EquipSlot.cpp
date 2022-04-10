@@ -124,7 +124,7 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 				return false;
 			}
 
-			FItemDataSlot itemDataSlot = drop_InventoryComponent->GetInventoryItem(drop_InventorySlotNumber);
+			FItemSlotData itemDataSlot = drop_InventoryComponent->GetInventoryItem(drop_InventorySlotNumber);
 			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 			if (!IsValid(gameInstance))
 			{
@@ -144,7 +144,7 @@ bool UEquipSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent&
 					bool bSucceed = EquipmentCompRef->SetEquipment(EquipmentSlot, equipmentItemData);
 					if (bSucceed)
 					{
-						FItemDataSlot temp;
+						FItemSlotData temp;
 						temp.ItemName = currentEquipment.Name;
 						temp.Quantity = temp.ItemName != FString("") ? 1 : 0;
 
@@ -218,4 +218,22 @@ void UEquipSlot::UpdateEquipSlot()
 			SlotImage->SetBrushFromTexture(nullptr);
 		}
 	}
+}
+
+void UEquipSlot::SetEquipmentCompRef(UEquipmentComponent* InVal)
+{
+	if (IsValid(InVal))
+	{
+		EquipmentCompRef = InVal;
+	}
+}
+
+UEquipmentComponent* UEquipSlot::GetEquipmentCompRef() const
+{
+	if (IsValid(EquipmentCompRef))
+	{
+		return EquipmentCompRef;
+	}
+	
+	return nullptr;
 }

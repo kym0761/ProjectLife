@@ -17,13 +17,18 @@ UCLASS(abstract)
 class PROJECTLIFE_API UQuickSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 
 	UPROPERTY(Meta = (BindWidget))
 		UHorizontalBox* QuickSlotBox;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "QuickSlot")
+private:
+
+	UPROPERTY()
 		TArray<UItemSlot*> QuickSlotArray;
+
+public:
 
 	virtual void NativeConstruct() override;
 

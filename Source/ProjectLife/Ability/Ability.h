@@ -19,13 +19,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		FAbilityDataStruct AbilityData;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability")
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability", Meta = (AllowPrivateAccess = "true"))
 		float CurrentDurationTime;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability", Meta = (AllowPrivateAccess = "true"))
 		AActor* AbilityOwner;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability", Meta = (AllowPrivateAccess = "true"))
 		AActor* AbilityTarget;
 
 	FTimerHandle AbilityCountdownTimer;

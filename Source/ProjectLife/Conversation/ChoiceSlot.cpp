@@ -41,8 +41,6 @@ void UChoiceSlot::InitChoiceSlot(UConversationWidget* ConversationWidget, FConve
     
     ConversationWidgetRef = ConversationWidget;
 
-    //Image_ChoiceIcon ;;;;;;
-
     ChoiceNum = Num;
 
 }

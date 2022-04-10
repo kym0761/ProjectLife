@@ -17,10 +17,14 @@ class PROJECTLIFE_API UGameTimeFunctionLibrary : public UBlueprintFunctionLibrar
 
 public: // if this is a problem. just make sure it for only Conv_ Functions.
 
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "GameTime + GameTime", CompactNodeTitle = "+", KeyWords = "+ Plus", CommutativeAssosiativeBinaryOperator = "true"), Category = "GameTime|Convert")
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "GameTime + GameTime", 
+		CompactNodeTitle = "+", KeyWords = "+ Plus", CommutativeAssosiativeBinaryOperator = "true"), 
+		Category = "GameTime|Convert")
 		static FInGameTime Plus_GameTimeGameTime(FInGameTime InValue1, FInGameTime InValue2);
 
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "ToString (GameTime)", CompactNodeTitle = "->", BlueprintAutocast), Category = "GameTime|Convert")
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "ToString (GameTime)",
+		CompactNodeTitle = "->", BlueprintAutocast),
+		Category = "GameTime|Convert")
 		static FString Conv_GameTimeToString(FInGameTime InGameTime);
 
 	UFUNCTION(BlueprintPure, Category = "GameTime|Get")

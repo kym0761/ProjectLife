@@ -21,6 +21,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* DamageTextBlock;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	void SetDamageText(float InDamage);

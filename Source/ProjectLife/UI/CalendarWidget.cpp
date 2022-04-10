@@ -17,7 +17,7 @@ void UCalendarWidget::NativeConstruct()
 
 void UCalendarWidget::InitCalendar()
 {
-	if (!(IsValid(CalendarGridPanel) && IsValid(CalendarDateSlotClass) && IsValid(CalendarDateSlotClass)))
+	if (!(IsValid(CalendarGridPanel) && IsValid(CalendarDateSlotClass) && IsValid(CalendarDateSlotClass) && IsValid(CalendarDateSlot_Today_Class)))
 	{
 		return;
 	}
@@ -41,11 +41,12 @@ void UCalendarWidget::InitCalendar()
 		int32 column = 0;
 		int32 currentDay = 1;
 
+
+		//첫 주 더미 슬롯 추가. ex) 1일이 수요일이면 일 월 화는 더미 슬롯이어야 함.
 		for (column = 0; column < FInGameTime::WEEK; column++)
 		{
 			if (column < firstDayOfMonth)
 			{
-				//dummy
 				UCalendarDummySlot* dummySlot = CreateWidget<UCalendarDummySlot>(GetOwningPlayer(), CalendarDummySlotClass);
 				if (IsValid(dummySlot))
 				{
@@ -58,9 +59,21 @@ void UCalendarWidget::InitCalendar()
 			}
 		}
 
+		//실제 기능을 가진 Calendar Slot
 		while (currentDay <= gameTime.MAXDAY)
 		{
-			UCalendarDateSlot* dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
+			UCalendarDateSlot* dateSlot;
+			if (currentDay == gameInstance->GameTime.Day)
+			{
+				dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlot_Today_Class);
+			}
+			else
+			{
+				dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
+			}
+
+
+			//UCalendarDateSlot* dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
 			if (IsValid(dateSlot))
 			{
 				CalendarGridPanel->AddChildToUniformGrid(dateSlot, row, column);
@@ -76,6 +89,7 @@ void UCalendarWidget::InitCalendar()
 			}
 		}
 
+		//마지막 주 더미 슬롯 추가. ex) 30일이 수요일이면 목 금 토는 더미 슬롯이어야함.
 		while (column != 0 && column < FInGameTime::WEEK)
 		{
 			UCalendarDummySlot* dummySlot = CreateWidget<UCalendarDummySlot>(GetOwningPlayer(), CalendarDummySlotClass);

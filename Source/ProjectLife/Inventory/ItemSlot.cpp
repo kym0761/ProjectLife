@@ -48,13 +48,13 @@ void UItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointer
 		return;
 	}
 
-	if (!InventoryComponentRef->Items.IsValidIndex(InventorySlotNumber))
+	if (!InventoryComponentRef->GetItems().IsValidIndex(InventorySlotNumber))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Invalid Inventory Slot Number"));
 		return;
 	}
 
-	FItemDataSlot itemSlotData = InventoryComponentRef->GetInventoryItem(InventorySlotNumber);
+	FItemSlotData itemSlotData = InventoryComponentRef->GetInventoryItem(InventorySlotNumber);
 
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 	if (!IsValid(gameInstance))
@@ -128,7 +128,7 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 			if (IsValid(drop_InventoryComponent) && IsValid(InventoryComponentRef)) //drop과 현재 슬롯의 Inventory Component 확인.
 			{
 				//drop과 정보 교체
-				bool bSucceed = InventoryComponentRef->SwapItemBetweenInventory(drop_InventoryComponent, drop_InventorySlotNumber, InventoryComponentRef, InventorySlotNumber);
+				bool bSucceed = UInventoryComponent::SwapItemBetweenInventory(drop_InventoryComponent, drop_InventorySlotNumber, InventoryComponentRef, InventorySlotNumber);
 				if (bSucceed)
 				{
 					//인벤토리 업데이트
@@ -156,7 +156,7 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 			UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
 		}
 
-		UEquipmentComponent* equipmentComp = droppedEquipSlot->EquipmentCompRef;
+		UEquipmentComponent* equipmentComp = droppedEquipSlot->GetEquipmentCompRef();
 		EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
 
 		if (IsValid(equipmentComp))
@@ -169,7 +169,7 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 				if (playerController)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
+					//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
 					//playerController->UpdateInventory();
 					//TODO : 동일
 					playerController->UpdateEquipment();
@@ -236,13 +236,13 @@ void UItemSlot::UpdateItemSlot()
 		return;
 	}
 
-	if (!InventoryComponentRef->Items.IsValidIndex(InventorySlotNumber))
+	if (!InventoryComponentRef->GetItems().IsValidIndex(InventorySlotNumber))
 	{
 		return;
 	}
 
 	//인벤토리 데이터를 가져옴
-	FItemDataSlot itemSlotData = InventoryComponentRef->Items[InventorySlotNumber];
+	FItemSlotData itemSlotData = InventoryComponentRef->GetItems()[InventorySlotNumber];
 	
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 	if (IsValid(gameInstance))

@@ -18,11 +18,13 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory", Meta = (AllowPrivateAccess = "true"))
 		int32 Money;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		TArray<FItemDataSlot> Items;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory", Meta = (AllowPrivateAccess = "true"))
+		TArray<FItemSlotData> Items;
 
 protected:
 	// Called when the game starts
@@ -37,16 +39,27 @@ public:
 	void GainMoney(int32 Gain);
 	bool CheckEnoughMoney(int32 ToCompare);
 	void TryMakeInventorySpace(int32 Num);
-	bool SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot);
-	FItemDataSlot GetInventoryItem(int32 SlotNumber);
-	bool SetInventoryItem(int32 SlotNumber, FItemDataSlot InData);
-	int32 AddItemToInventory(FItemDataSlot InData);
+	static bool SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot);
+	FItemSlotData GetInventoryItem(int32 SlotNumber);
+	bool SetInventoryItem(int32 SlotNumber, FItemSlotData InData);
+	int32 AddItemToInventory(FItemSlotData InData);
 	bool CheckPlayerInventoryHasSpace();
 	bool UseItemInInventory(int32 ItemIndex);
 	bool CheckItemInInventory(FString ItemName, int32 Quantity);
 	bool UseItemsInInventory(FString ItemName, int32 Quantity);
-
-	//call when Inventory's Item Data Changed.
+	
+	/*-------------*/
+	//인벤토리 데이터가 변경이 된다면 Broadcast를 해주어야함.
+	//자동으로 데이터가 변경된 인벤토리의 슬롯의 정보를 변경시켜줌
+	//해당 UI가 ONInventoryChanged에 UpdateXXXXXWidget?을 Bind해줘야함.
+	//혹시 UI가 삭제된 뒤에 문제가 생기면 여기에 있는 Bind를 제거하는 요청을 해주어야함.
+	/*-------------*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="Inventory")
 	FOnInventoryDataChanged OnInventoryDataChanged;
+
+	int32 GetMoney() const;
+	void SetMoney(int32 InVal);
+
+	TArray<FItemSlotData> GetItems() const;
+	void SetItems(TArray<FItemSlotData> InVal);
 };

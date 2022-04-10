@@ -39,6 +39,8 @@ public:
 
 	FTimerHandle LinkTimer;
 
+private:
+
 	const float LinkJobInterval = 0.03f;
 
 protected:

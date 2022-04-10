@@ -17,8 +17,6 @@ class PROJECTLIFE_API USpeechWidgetComponent : public UWidgetComponent
 public:
 	USpeechWidgetComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speech")
-		int32 temp;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

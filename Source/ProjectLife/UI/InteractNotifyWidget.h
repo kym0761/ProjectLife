@@ -21,9 +21,13 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* NameTextBlock;
 
+private:
+
 	//Interact 오브젝트는 여러가지가 존재하므로, UObject를 통해 확인.
 	UPROPERTY()
 		UObject* ObjectRef;
+
+public:
 
 	virtual void NativeConstruct() override;
 

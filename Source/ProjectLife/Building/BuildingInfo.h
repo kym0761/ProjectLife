@@ -11,6 +11,8 @@ struct FBuildingInfo : public FTableRowBase
 {
 	GENERATED_BODY()
 
+public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 SizeX;
 

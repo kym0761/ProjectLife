@@ -17,29 +17,34 @@ public:
 	// Sets default values for this component's properties
 	UGrowthComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
-		bool bFruited;
-
+	//최대 Level
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
 		int32 MaxGrowthLevel;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
-		int32 GrowthLevel;
-
+	//작물 level에 필요한 일 수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
 		int32 GrowthLevelThreshold;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
-		int32 CurrentGrowth;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
-		int32 Day;
-
+	//작물 갯수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
 		int32 NumberOfHarvest;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
 		TArray<UStaticMesh*> GrowthMeshs;
+
+private:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth", Meta = (AllowPrivateAccess = "true"))
+		bool bFruited;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth", Meta = (AllowPrivateAccess = "true"))
+		int32 GrowthLevel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth", Meta = (AllowPrivateAccess = "true"))
+		int32 CurrentGrowth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth", Meta = (AllowPrivateAccess = "true"))
+		int32 Day;
 
 protected:
 	// Called when the game starts
@@ -53,4 +58,10 @@ public:
 	void Fruit();
 
 	void SetOwnerMesh();
+
+	bool GetFruited() const;
+	int32 GetGrowthLevel() const;
+	int32 GetCurrentGrowth() const;
+	int32 GetDay() const;
+
 };

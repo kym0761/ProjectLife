@@ -73,7 +73,6 @@ void UCookSelectionSlot::SetCookWidgetSelection()
 		return;
 	}
 
-	ParentCookWidgetRef->CookResultName = ItemNameText;
-
-
+	//CookWidget의 선택된 레시피 요리 이름
+	ParentCookWidgetRef->SetCookResultName(ItemNameText);
 }

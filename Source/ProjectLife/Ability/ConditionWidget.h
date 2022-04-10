@@ -25,6 +25,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TSubclassOf<UConditionIconWidget> ConditionIconClass;
 
+public:
+
 	virtual void NativeConstruct() override;
 
 	void AddIcon(AAbility* ConditionActorRef);

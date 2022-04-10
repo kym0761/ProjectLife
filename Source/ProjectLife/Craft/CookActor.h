@@ -12,6 +12,7 @@ class UInventoryComponent;
 class USphereComponent;
 class USkeletalMeshComponent;
 class UDataTable;
+class UCookWidget;
 UCLASS()
 class PROJECTLIFE_API ACookActor : public AActor, public IInteractive
 {
@@ -31,11 +32,20 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
 		UInventoryComponent* InventoryComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
+		UDataTable* RecipeDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
+		TSubclassOf<UCookWidget> CookWidgetClass;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
 		bool bOpen;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
-		UDataTable* RecipeDataTable;
+private:
+
+	UPROPERTY()
+		UCookWidget* CookWidgetRef;
+
 
 protected:
 	// Called when the game starts or when spawned

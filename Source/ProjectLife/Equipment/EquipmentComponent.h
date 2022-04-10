@@ -19,24 +19,26 @@ public:
 	// Sets default values for this component's properties
 	UEquipmentComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+private:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
 		FEquipmentItemData WeaponData;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
 		FEquipmentItemData ShieldData;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
 		FEquipmentItemData ArmorData;
 	
 	/* 2 Slot for Accessories*/
 	/*Accessory1*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
 		FEquipmentItemData AccessoryData1;
 	/*Accessory2*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
 		FEquipmentItemData AccessoryData2;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
 		ABasicWeapon* CurrentWeapon;
 
 protected:
@@ -47,7 +49,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	bool SetEquipment(EEquipmentSlot EquipmentSlot, FItemDataSlot InData);
+	bool SetEquipment(EEquipmentSlot EquipmentSlot, FItemSlotData InData);
 	bool SetEquipment(EEquipmentSlot EquipmentSlot, FEquipmentItemData InData);
 
 	FEquipmentItemData GetEquipmentData(EEquipmentSlot Equipmentslot);

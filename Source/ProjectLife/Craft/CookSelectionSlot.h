@@ -27,6 +27,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_SlotItemName;
 
+private:
+
 	//슬롯 선택시 아이템 정보를 불러올 수 있도록 아이템 이름을 저장함.
 	UPROPERTY()
 		FString ItemNameText;
@@ -34,9 +36,7 @@ public:
 	UPROPERTY()
 		UCookWidget* ParentCookWidgetRef;
 
-	////Using for Drag Drop
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	//	TSubclassOf<UItemSlot> ItemSlotClass;
+public:
 
 	virtual void NativeConstruct() override;
 

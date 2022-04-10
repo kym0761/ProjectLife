@@ -21,12 +21,19 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (BindWidget))
 		UImage* ConditionImage;
 
+private:
+
 	//Buff or DeBuff
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+	UPROPERTY()
 		AAbility* ConditionRef;
+
+public:
 
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
 	void InitIcon(AAbility* ConditionActorRef);
+
+	AAbility* GetConditionRef() const;
+
 };

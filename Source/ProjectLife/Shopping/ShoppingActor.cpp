@@ -36,10 +36,6 @@ void AShoppingActor::InitShop()
 	{
 		TArray<FShopItemData*> temp;
 		ShoppingDataTable->GetAllRows<FShopItemData>("", temp);
-		for (FShopItemData* item : temp)
-		{
-			ShopItems.Add(*item);
-		}
 
 		TArray<FName> names = ShoppingDataTable->GetRowNames();
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
@@ -110,7 +106,7 @@ bool AShoppingActor::Transaction(UInventoryComponent* InventoryComponent, int32 
 	int totalPrice = Items[Index].ItemPrice * Quantity;
 	if (InventoryComponent->CheckEnoughMoney(totalPrice))
 	{
-		FItemDataSlot inData;
+		FItemSlotData inData;
 		inData.ItemName = Items[Index].Name;
 		inData.Quantity = Quantity;
 

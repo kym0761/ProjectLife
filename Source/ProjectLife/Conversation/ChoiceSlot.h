@@ -27,17 +27,20 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UImage* Image_ChoiceIcon;
 
+private:
 	UPROPERTY()
 		int32 ChoiceNum;
 
 	UPROPERTY()
 		UConversationWidget* ConversationWidgetRef;
 
+public:
+
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	UFUNCTION(BlueprintCallable)
 	void TestFunction();
 
-	void InitChoiceSlot(UConversationWidget* ConversationWidget,FConversationChoiceData Indata,int32 Num);
+	void InitChoiceSlot(UConversationWidget* ConversationWidget, FConversationChoiceData Indata,int32 Num);
 
 };

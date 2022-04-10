@@ -18,6 +18,7 @@ void USpeechWidgetComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//SpeechWidgetComponent안에 존재하는 말풍선 유저위젯 블루프린트에 접근
 	USpeechBubbleWidget* bubbleRef = Cast<USpeechBubbleWidget>(GetUserWidgetObject());
 	if (bubbleRef)
 	{

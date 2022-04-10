@@ -14,4 +14,7 @@ class PROJECTLIFE_API UCalendarDummySlot : public UUserWidget
 {
 	GENERATED_BODY()
 	
+	//더미 슬롯이라 현재 아무런 기능이 없음.
+	//앞으로도 없을 가능성이 높음.
+
 };

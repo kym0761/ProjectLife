@@ -71,7 +71,7 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 		return;
 	}
 
-	int32 leftover = inventoryComponent->AddItemToInventory(ItemDataSlot);
+	int32 leftover = inventoryComponent->AddItemToInventory(ItemSlotData);
 
 	//ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
 	//if (playerController)
@@ -85,7 +85,7 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 	}
 	else
 	{
-		ItemDataSlot.Quantity = leftover;
+		ItemSlotData.Quantity = leftover;
 	}
 
 }
@@ -93,7 +93,7 @@ void AItemPickup::Interact_Implementation(APawn* InteractCauser)
 void AItemPickup::RandomItem()
 {
 	//item 정보가 없을 시에는 랜덤 정보를 가져와서 템을 생성함.
-	if (ItemDataSlot.IsEmpty())
+	if (ItemSlotData.IsEmpty())
 	{
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		if (IsValid(gameInstance))
@@ -104,8 +104,8 @@ void AItemPickup::RandomItem()
 
 			FItemData itemData = gameInstance->GetItemDataFromTable(names[randIndex].ToString());
 
-			ItemDataSlot.ItemName = itemData.Name;
-			ItemDataSlot.Quantity = 1;
+			ItemSlotData.ItemName = itemData.Name;
+			ItemSlotData.Quantity = 1;
 
 			Mesh->SetStaticMesh(itemData.ItemMesh);
 		}

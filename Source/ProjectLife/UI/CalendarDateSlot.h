@@ -20,6 +20,8 @@ public :
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* SlotDayNumber;
 
+public:
+
 	void SetDay(int32 Day);
 
 };

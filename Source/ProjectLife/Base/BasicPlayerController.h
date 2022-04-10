@@ -25,14 +25,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
 		TSubclassOf<UMainHUD> MainHUDClass;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "UI")
+private:
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "UI", Meta = (AllowPrivateAccess = "true"))
 		UMainHUD* MainHUDRef;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory", Meta = (AllowPrivateAccess = "true"))
 		class UInventoryComponent* InventoryComponent;
 
-	virtual void OnPossess(APawn* InPawn) override;
+public:
 
+	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 
 	/*UI Functions.*/

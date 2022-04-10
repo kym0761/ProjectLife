@@ -410,6 +410,8 @@ void ULinkComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 
 void ULinkComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	//다른 LinkComponent가 Overlap이 끝날 때 Edge를 제거하는 작업.
+
 	if (IsValid(OtherActor))
 	{
 		ULinkComponent* linkComp = OtherActor->FindComponentByClass<ULinkComponent>();

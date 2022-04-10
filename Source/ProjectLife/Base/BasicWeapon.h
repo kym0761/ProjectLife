@@ -26,6 +26,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		FEquipmentItemData WeaponData;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

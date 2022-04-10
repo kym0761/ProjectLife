@@ -55,11 +55,10 @@ public:
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 		UWidgetAnimation* StorageAnimation;
 
-
+public:
 
 	virtual void NativeConstruct() override;
 
-	//void UpdateInventory();
 	void ToggleInventory();
 
 	void UpdateEquipment();
