@@ -17,7 +17,7 @@ void UCalendarWidget::NativeConstruct()
 
 void UCalendarWidget::InitCalendar()
 {
-	if (!(IsValid(CalendarGridPanel) && IsValid(CalendarDateSlotClass) && IsValid(CalendarDateSlotClass)))
+	if (!(IsValid(CalendarGridPanel) && IsValid(CalendarDateSlotClass) && IsValid(CalendarDateSlotClass) && IsValid(CalendarDateSlot_Today_Class)))
 	{
 		return;
 	}
@@ -62,7 +62,18 @@ void UCalendarWidget::InitCalendar()
 		//실제 기능을 가진 Calendar Slot
 		while (currentDay <= gameTime.MAXDAY)
 		{
-			UCalendarDateSlot* dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
+			UCalendarDateSlot* dateSlot;
+			if (currentDay == gameInstance->GameTime.Day)
+			{
+				dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlot_Today_Class);
+			}
+			else
+			{
+				dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
+			}
+
+
+			//UCalendarDateSlot* dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
 			if (IsValid(dateSlot))
 			{
 				CalendarGridPanel->AddChildToUniformGrid(dateSlot, row, column);

@@ -112,6 +112,9 @@ void UInventoryComponent::TryMakeInventorySpace(int32 Num)
 
 bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, int32 FromSlot, UInventoryComponent* To, int32 ToSlot)
 {
+	//static Function에선 GetWorld()를 바로 할 수 없다.
+	//GEngine을 먼저 불러와서 Valid 체크를 한 뒤에 GetWorld를 확인해야함.
+
 	if (!(IsValid(From) && IsValid(To) && IsValid(GEngine)))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Not Valid Inventory"));
@@ -134,8 +137,6 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 		}
 		else  //같은 아이템이 존재한다면 join
 		{
-
-			//문제가 있을 수 있음. 임시로 뗌빵.
 			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GEngine->GetWorld()));
 
 			if (!IsValid(gameInstance))
@@ -271,6 +272,7 @@ int32 UInventoryComponent::AddItemToInventory(FItemSlotData InData)
 	}
 	//Warning 1 : leftover의 아이템을 약간 얻었는데, 바닥에 떨어진 아이템 처리가 제대로 되지 않음.
 	//Warning 2 : 보상을 얻으려 했는데, 보상이 초과되서 남음 or 인벤토리 공간이 없어서 보상을 아예 얻지 못함.
+	OnInventoryDataChanged.Broadcast();
 	return leftover.Quantity;
 
 

@@ -169,7 +169,7 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
 				if (playerController)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
+					//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
 					//playerController->UpdateInventory();
 					//TODO : µ¿ÀÏ
 					playerController->UpdateEquipment();

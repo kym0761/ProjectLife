@@ -36,10 +36,6 @@ void AShoppingActor::InitShop()
 	{
 		TArray<FShopItemData*> temp;
 		ShoppingDataTable->GetAllRows<FShopItemData>("", temp);
-		//for (FShopItemData* item : temp)
-		//{
-		//	ShopItems.Add(*item);
-		//}
 
 		TArray<FName> names = ShoppingDataTable->GetRowNames();
 		UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));

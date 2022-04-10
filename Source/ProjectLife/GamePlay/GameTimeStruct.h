@@ -28,6 +28,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 Minute;
 
+#pragma region ConstTimeValue
 	/*Do Not Motify These Carelessly*/
 	static const int32 MAXYEAR = 10000000;
 	static const int32 MAXMONTH = 12;
@@ -36,6 +37,7 @@ public:
 	static const int32 MAXMINUTE = 60;
 	static const int32 WEEK = 7;
 	/*END*/
+#pragma endregion
 
 	FInGameTime(int32 InYear = 0, int32 InMonth = 1, int32 InDay = 1, int32 InHour = 0, int32 InMinute = 0);
 
