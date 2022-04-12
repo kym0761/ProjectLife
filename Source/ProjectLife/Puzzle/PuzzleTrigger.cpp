@@ -43,9 +43,7 @@ void APuzzleTrigger::InitializeTriggerArray()
 		}
 
 
-		//Trigger인지 Door인지에 따라서 조금 다름.
-		//Door는 누군가를 Trigger하지 않으므로 다른 액터임.
-		//TODO : Trigger와 Door 통합 가능한 지?
+		//TriggerArray에 등록되어야 Trigger가 제대로 동작함.
 		bool bIsChildOfPuzzleTrigger = i->GetClass()->IsChildOf(APuzzleTrigger::StaticClass());
 		if (bIsChildOfPuzzleTrigger)
 		{
@@ -53,18 +51,6 @@ void APuzzleTrigger::InitializeTriggerArray()
 			if (trigger)
 			{
 				trigger->TriggerArray.Add(this);
-			}
-		}
-		else
-		{
-			bool bIsChildOfPuzzleDoor = i->GetClass()->IsChildOf(APuzzleDoor::StaticClass());
-			if (bIsChildOfPuzzleDoor)
-			{
-				APuzzleDoor* door = Cast<APuzzleDoor>(i);
-				if (door)
-				{
-					door->TriggerArray.Add(this);
-				}
 			}
 		}
 	}

@@ -41,7 +41,8 @@ APuzzleDoor::APuzzleDoor()
 // Called when the game starts or when spawned
 void APuzzleDoor::BeginPlay()
 {
-	Super::BeginPlay();
+	//APuzzleDoor는 InitializeTriggerArray()을 Call할 필요가 없음.
+	Super::Super::BeginPlay();
 	
 	//Set Default Widget Object.
 	if (IsValid(Widget))

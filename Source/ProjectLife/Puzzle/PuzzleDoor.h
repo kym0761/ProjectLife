@@ -4,19 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Components/TimelineComponent.h"
-#include "GameFramework/Actor.h"
+//#include "GameFramework/Actor.h"
 #include "PuzzleInterfaces.h"
+#include "PuzzleTrigger.h"
 #include "PuzzleDoor.generated.h"
 
 class UBoxComponent;
 class UStaticMeshComponent;
-class APuzzleTrigger;
+//class APuzzleTrigger;
 class UCurveFloat;
 class UWidgetComponent;
 class UNiagaraSystem;
 
 UCLASS()
-class PROJECTLIFE_API APuzzleDoor : public AActor, public ITriggerable, public IResetable
+class PROJECTLIFE_API APuzzleDoor : public APuzzleTrigger, public ITriggerable, public IResetable
 {
 	GENERATED_BODY()
 	
@@ -32,9 +33,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 		UWidgetComponent* Widget;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
-		TArray<APuzzleTrigger*> TriggerArray;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bDoorOpen;

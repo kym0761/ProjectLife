@@ -151,37 +151,34 @@ bool UItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& 
 	/*EquipSlot, similar With [Item Slot] code*/
 	{
 		UEquipSlot* droppedEquipSlot = Cast<UEquipSlot>(InOperation->Payload);
-		if (!IsValid(droppedEquipSlot))
+		if (IsValid(droppedEquipSlot))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
-		}
+			UEquipmentComponent* equipmentComp = droppedEquipSlot->GetEquipmentCompRef();
+			EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
 
-		UEquipmentComponent* equipmentComp = droppedEquipSlot->GetEquipmentCompRef();
-		EEquipmentSlot droppedEquipmentslot = droppedEquipSlot->EquipmentSlot;
-
-		if (IsValid(equipmentComp))
-		{
-			bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentslot, InventoryComponentRef, InventorySlotNumber);
-			if (bSucceed)
+			if (IsValid(equipmentComp))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip OK? "));
-
-				ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
-				if (playerController)
+				bool bSucceed = equipmentComp->SwapWithInventory(droppedEquipmentslot, InventoryComponentRef, InventorySlotNumber);
+				if (bSucceed)
 				{
-					//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
-					//playerController->UpdateInventory();
-					//TODO : 동일
-					playerController->UpdateEquipment();
-					return true;
+					UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip OK? "));
+
+					ABasicPlayerController* playerController = Cast<ABasicPlayerController>(GetOwningPlayer());
+					if (playerController)
+					{
+						//UE_LOG(LogTemp, Warning, TEXT("Attempt Update Equipment"));
+						//playerController->UpdateInventory();
+						//TODO : 바로 위의 TODO와 동일
+						playerController->UpdateEquipment();
+						return true;
+					}
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
 				}
 			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("swap inventory - equip NO? "));
-			}
 		}
-
 	}
 
 

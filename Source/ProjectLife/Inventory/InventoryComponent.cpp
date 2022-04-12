@@ -137,7 +137,16 @@ bool UInventoryComponent::SwapItemBetweenInventory(UInventoryComponent* From, in
 		}
 		else  //같은 아이템이 존재한다면 join
 		{
-			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(GEngine->GetWorld()));
+			//static Function이므로 World를 GEngine에서 받아와야함.
+			UWorld* world = GEngine->GetWorldFromContextObject(From, EGetWorldErrorMode::LogAndReturnNull);
+
+			if (!IsValid(world))
+			{
+				//world null?
+				return false;
+			}
+
+			UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(UGameplayStatics::GetGameInstance(world));
 
 			if (!IsValid(gameInstance))
 			{
