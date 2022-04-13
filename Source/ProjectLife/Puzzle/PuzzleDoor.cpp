@@ -42,6 +42,7 @@ APuzzleDoor::APuzzleDoor()
 void APuzzleDoor::BeginPlay()
 {
 	//APuzzleDoor는 InitializeTriggerArray()을 Call할 필요가 없음.
+	//APuzzleDoor가 누군가를 Trigger할 일은 지금 현재로는 없음.
 	Super::Super::BeginPlay();
 	
 	//Set Default Widget Object.
@@ -153,6 +154,8 @@ void APuzzleDoor::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		}
 	}
 
+	//만약 아직 overlap하는 물체가 있다면 문 열린 상태를 그냥 유지함.
+	//아니라면 false가 될 것이고 문이 닫힐 것임
 	bBoxOverlapping = temp;
 
 }
@@ -189,6 +192,7 @@ void APuzzleDoor::OpenDoor()
 		{
 			float tempTime = 1000000.0f;
 
+			//Get Remain Time which is Shortest.
 			for (APuzzleTrigger* i : TriggerArray)
 			{
 				AFireStand* fireStand = Cast<AFireStand>(i);

@@ -27,4 +27,8 @@ void ARouteNode::Tick(float DeltaTime)
 
 URouteInfo::URouteInfo()
 {
+	F = 0;
+	G = 0;
+	RouteNode = nullptr;
+	RouteParentInfo = nullptr;
 }

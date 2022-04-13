@@ -21,8 +21,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Route")
 		FString NodeName;
 
-	//ARouteNode* RouteParent;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -32,23 +30,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 };
-
-//USTRUCT(BlueprintType)
-//struct FRouteInfo
-//{
-//	GENERATED_BODY()
-//
-//public:
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		float F;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		float G;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		ARouteNode* RouteNode;
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		ARouteNode* RouteParent;
-//
-//};
 
 UCLASS(BlueprintType)
 class URouteInfo : public UObject

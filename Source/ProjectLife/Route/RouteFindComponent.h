@@ -25,6 +25,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	ARouteNode* FindNearestRouteNode();
-	void FindRoute();
+	UFUNCTION(BlueprintCallable)
+		ARouteNode* FindNearestRouteNode();
+
+	UFUNCTION(BlueprintCallable)
+		TArray<ARouteNode*> FindRoute(ARouteNode* Destination);
 };
