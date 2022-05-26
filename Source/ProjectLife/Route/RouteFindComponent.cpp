@@ -112,7 +112,7 @@ TArray<ARouteNode*> URouteFindComponent::FindRoute(ARouteNode* Destination)
 		if (q.Num() > 1)
 		{
 			//새롭게 받은 큐의 정보들을 F가 가장 작은 기준으로 정렬함.
-			q.Sort([](const URouteInfo& a, const URouteInfo& b)
+			q.HeapSort([](const URouteInfo& a, const URouteInfo& b)
 				{
 					return a.F < b.F;
 				});
@@ -167,6 +167,8 @@ TArray<ARouteNode*> URouteFindComponent::FindRoute(ARouteNode* Destination)
 			//성공했다면 큐에 넣는다.
 			URouteInfo* nextNodeInfo = NewObject<URouteInfo>();
 			nextNodeInfo->G = distance;
+
+			//F값을 어떻게 조절할 것인지?
 			nextNodeInfo->F = nodeInfo->F + nextNodeInfo->G;
 			nextNodeInfo->RouteNode = current;
 			nextNodeInfo->RouteParentInfo = nodeInfo;

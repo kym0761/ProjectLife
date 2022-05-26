@@ -305,18 +305,6 @@ void ABasicCharacter::InteractCheck()
 
 	}
 
-	////Grid
-	//AGridManager* gridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
-	//UGridComponent* grid = Cast<UGridComponent>(interactee);
-	//if (IsValid(gridManager) && IsValid(grid))
-	//{
-	//	gridManager->DrawAvailableMesh(grid);
-	//}
-	//else if (IsValid(gridManager) && !IsValid(grid))
-	//{
-	//	gridManager->RemoveAvailableMesh();
-	//}
-
 }
 
 void ABasicCharacter::InteractTrigger()

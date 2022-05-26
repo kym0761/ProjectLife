@@ -405,7 +405,9 @@ void ULinkComponent::LinkJob()
 
 void ULinkComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	// 기획 단계에서 overlap Begin되면 감지할 ULinkComponent 를 추가하려고 했는데
+	// 어차피 Timer로 주기적으로 감지하게 되어 BeginOverlap에서 아무 것도 안함
+	// 혹시 필요할 일이 있을지도 모르니 냅둠.
 }
 
 void ULinkComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
