@@ -9,7 +9,7 @@
 class UNiagaraComponent;
 
 /**
- * 
+ *  전체적인 로직은 AFireStand와 유사함. APhysicsHold를 상속받았기 때문에 AFireStand를 상속받지 못하여 따로 구현.
  */
 UCLASS()
 class PROJECTLIFE_API AFireTorch : public APhysicsHold, public ICombustible
@@ -35,6 +35,10 @@ public:
 
 	virtual void Combust_Implementation();
 
-	//TODO : FireTorch Function Will Remake Like FireStand.
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	////TODO : FireTorch Function Will Remake Like FireStand.
+	//virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+	FTimerHandle CombustTimer;
+	UFUNCTION()
+		void OverlapCombust();
 };

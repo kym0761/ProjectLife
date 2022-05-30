@@ -30,7 +30,7 @@ void APuzzleTrigger::Tick(float DeltaTime)
 
 void APuzzleTrigger::InitializeTriggerArray()
 {
-	for (AActor* i : TriggeringArray)
+	for (AActor* i : ToTrigger)
 	{
 		if (!IsValid(i))
 		{
@@ -50,7 +50,7 @@ void APuzzleTrigger::InitializeTriggerArray()
 			APuzzleTrigger* trigger = Cast<APuzzleTrigger>(i);
 			if (trigger)
 			{
-				trigger->TriggerArray.Add(this);
+				trigger->FromTrigger.Add(this);
 			}
 		}
 	}

@@ -22,12 +22,23 @@ void AFireTorch::FireOn()
 {
 	FireEffect->Activate();
 	bFireOn = true;
+
+
+	if (!CombustTimer.IsValid())
+	{
+		GetWorldTimerManager().SetTimer(CombustTimer, this, &AFireTorch::OverlapCombust, 0.1f, true, 0.0f);
+	}
 }
 
 void AFireTorch::FireOff()
 {
 	FireEffect->DeactivateImmediate();
 	bFireOn = false;
+
+	if (CombustTimer.IsValid())
+	{
+		GetWorldTimerManager().ClearTimer(CombustTimer);
+	}
 }
 
 void AFireTorch::Combust_Implementation()
@@ -35,19 +46,40 @@ void AFireTorch::Combust_Implementation()
 	FireOn();
 }
 
-void AFireTorch::NotifyActorBeginOverlap(AActor* OtherActor)
-{
-	Super::NotifyActorBeginOverlap(OtherActor);
+//void AFireTorch::NotifyActorBeginOverlap(AActor* OtherActor)
+//{
+//	Super::NotifyActorBeginOverlap(OtherActor);
+//
+//	if (bFireOn)
+//	{
+//		bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+//
+//		if (bInterfaceValid)
+//		{
+//			ICombustible::Execute_Combust(OtherActor);
+//		}
+//	}
+//
+//
+//}
 
+void AFireTorch::OverlapCombust()
+{
 	if (bFireOn)
 	{
-		bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+		TArray<AActor*> overlapActors;
 
-		if (bInterfaceValid)
+		FireOverlap->GetOverlappingActors(overlapActors);
+		overlapActors.Remove(this);
+
+		for (AActor* i : overlapActors)
 		{
-			ICombustible::Execute_Combust(OtherActor);
+			bool bInterfaceValid = i->GetClass()->ImplementsInterface(UCombustible::StaticClass());
+			if (bInterfaceValid)
+			{
+				ICombustible::Execute_Combust(i);
+			}
 		}
 	}
-
 
 }

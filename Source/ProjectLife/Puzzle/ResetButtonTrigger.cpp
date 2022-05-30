@@ -44,7 +44,7 @@ void AResetButtonTrigger::ButtonUp()
 void AResetButtonTrigger::Trigger()
 {
 	//find Resetable Actor and Do Reset.
-	for (AActor* i : TriggeringArray)
+	for (AActor* i : ToTrigger)
 	{
 		bool bInterfaceValid = i->GetClass()->ImplementsInterface(UResetable::StaticClass());
 		if (bInterfaceValid)

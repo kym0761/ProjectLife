@@ -90,7 +90,7 @@ void APuzzleDoor::TriggerAction_Implementation()
 	bool bReady = true;
 
 	//Check All Allocated Triggers are Being Activated.
-	for (APuzzleTrigger* i : TriggerArray)
+	for (APuzzleTrigger* i : FromTrigger)
 	{
 		//One Of Them is not Activated.
 		if (i->bTriggerActive == false)
@@ -174,7 +174,7 @@ void APuzzleDoor::OpenDoor()
 	{
 		// If FireTorch is Using Timer, Then Set Time of This.
 		bool bCheck = false;
-		for (APuzzleTrigger* i : TriggerArray)
+		for (APuzzleTrigger* i : FromTrigger)
 		{
 			AFireStand* fireStand = Cast<AFireStand>(i);
 			if (fireStand)
@@ -193,7 +193,7 @@ void APuzzleDoor::OpenDoor()
 			float tempTime = 1000000.0f;
 
 			//Get Remain Time which is Shortest.
-			for (APuzzleTrigger* i : TriggerArray)
+			for (APuzzleTrigger* i : FromTrigger)
 			{
 				AFireStand* fireStand = Cast<AFireStand>(i);
 				if (fireStand)

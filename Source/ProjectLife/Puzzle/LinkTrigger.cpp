@@ -27,7 +27,7 @@ void ALinkTrigger::SetTriggerActivate(bool InVal)
 
 void ALinkTrigger::Trigger()
 {
-	for (AActor* i : TriggeringArray)
+	for (AActor* i : ToTrigger)
 	{
 		bool bInterfaceValid = i->GetClass()->ImplementsInterface(UTriggerable::StaticClass());
 		if (bInterfaceValid)

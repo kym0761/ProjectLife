@@ -75,23 +75,23 @@ void AFireStand::Tick(float DeltaTime)
 
 void AFireStand::TriggerAction_Implementation()
 {
-	bool bReady = true;
+	bool bAllTriggerOK = true;
 
 	//Check All Allocated Trigger are Activated.
-	for (APuzzleTrigger* i : TriggerArray)
+	for (APuzzleTrigger* i : FromTrigger)
 	{
 		if (i->bTriggerActive == false)
 		{
-			bReady = false;
+			bAllTriggerOK = false;
 			break;
 		}
 	}
 
-	if (bReady)
+	if (bAllTriggerOK)
 	{
 		TurnOnFire();
 	}
-	else if (bOffImmediately && bTriggerActive && !bReady) // if This Fire Need To Off Immediately, and not Ready, will Turn off the Fire.
+	else if (bOffImmediately && bTriggerActive && !bAllTriggerOK) // if This Fire Need To Off Immediately, and not Ready, will Turn off the Fire.
 	{
 		TurnOffFire();
 	}
@@ -101,8 +101,7 @@ void AFireStand::Reset_Implementation()
 {
 	//Reset Fire Effect And TimerWidget.
 
-	bTriggerActive = false;
-	FireEffect->DeactivateImmediate();
+	TurnOffFire();
 
 	if (ResetNiagaraSystem)
 	{
@@ -158,7 +157,7 @@ void AFireStand::TurnOnFire()
 	//}
 
 	//Trigger All things that must Trigger.
-	for (AActor* i : TriggeringArray)
+	for (AActor* i : ToTrigger)
 	{
 		bool bInterfaceValid = i->GetClass()->ImplementsInterface(UTriggerable::StaticClass());
 		if (bInterfaceValid)
@@ -198,7 +197,7 @@ void AFireStand::TurnOffFire()
 
 
 	//Notify that It Won't Activate.
-	for (AActor* i : TriggeringArray)
+	for (AActor* i : ToTrigger)
 	{
 		bool bInterfaceValid = i->GetClass()->ImplementsInterface(UTriggerable::StaticClass());
 		if (bInterfaceValid)

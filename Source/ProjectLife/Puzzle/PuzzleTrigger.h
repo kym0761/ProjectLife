@@ -18,15 +18,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bTriggerActive;
 
-	//which you Want to Trigger? Add it from in the World.  
+	//World에서 트리거하기를 원하는 액터를 선택해서 넣어야함.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
-		TArray<AActor*> TriggeringArray;
+		TArray<AActor*> ToTrigger;
 
 protected:
 
-	//who will Trigger this? this Will be Initialized when Beginplay() played!
+	//누가 이 액터를 Trigger하는지는 ToTrigger에 있는 액터가 BeginPlay()에서 추가됨.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger", Meta = (AllowPrivateAccess = "true"))
-		TArray<APuzzleTrigger*> TriggerArray;
+		TArray<APuzzleTrigger*> FromTrigger;
 
 protected:
 	// Called when the game starts or when spawned

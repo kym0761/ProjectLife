@@ -26,6 +26,7 @@ APhysicsHold::APhysicsHold()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->SetCanEverAffectNavigation(false);
+
 }
 
 // Called when the game starts or when spawned
