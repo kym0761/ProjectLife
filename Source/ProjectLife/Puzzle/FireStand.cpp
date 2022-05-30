@@ -100,7 +100,6 @@ void AFireStand::TriggerAction_Implementation()
 void AFireStand::Reset_Implementation()
 {
 	//Reset Fire Effect And TimerWidget.
-
 	TurnOffFire();
 
 	if (ResetNiagaraSystem)
@@ -232,12 +231,6 @@ void AFireStand::OverlapCombust()
 			if (bInterfaceValid)
 			{
 				ICombustible::Execute_Combust(i);
-
-				//if (GEngine)
-				//{
-				//	FString temp = FString("Combust! Call OverlapCombust()! ---> combusted Actor Name : ") + i->GetName();
-				//	GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Red, temp);
-				//}
 
 			}
 		}
