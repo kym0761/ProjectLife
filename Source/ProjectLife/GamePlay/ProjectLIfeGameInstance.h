@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "Item/ItemStruct.h"
-#include "GamePlay/GameTimeStruct.h"
-#include "Quest/Quest.h"
+#include "../Item/ItemStruct.h"
+#include "../GamePlay/GameTimeStruct.h"
+#include "../Quest/Quest.h"
 #include "ProjectLIfeGameInstance.generated.h"
 
 class UDataTable;
@@ -53,10 +53,7 @@ public:
 	FEquipmentItemData GetEquipmentItemDataFromTable(FString Name);
 
 #pragma endregion
-#pragma region time
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		FInGameTime GameTime = FInGameTime();
-#pragma endregion
+
 #pragma region quest
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FQuest> QuestList;

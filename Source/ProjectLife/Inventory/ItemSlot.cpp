@@ -13,7 +13,7 @@
 #include "../Equipment/EquipSlot.h"
 #include "../Equipment/EquipmentComponent.h"
 
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 //#include "Kismet/KismetInputLibrary.h"

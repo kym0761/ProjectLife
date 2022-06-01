@@ -5,7 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "../Base/StatComponent.h"
 #include "../Item/Item.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 
 //UQuest::UQuestBase()
 //{

@@ -5,7 +5,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "CookWidget.h"
 
 void UCookSelectionSlot::NativeConstruct()

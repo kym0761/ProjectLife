@@ -5,7 +5,7 @@
 #include "../Base/StatComponent.h"
 #include "../Base/BasicWeapon.h"
 #include "../Base/BasicCharacter.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "../Inventory/InventoryComponent.h"
 

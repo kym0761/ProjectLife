@@ -9,7 +9,7 @@
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../Base/BasicPlayerController.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "../Inventory/InventoryComponent.h"
 

@@ -6,7 +6,7 @@
 #include "Components/VerticalBox.h"
 #include "Components/Button.h"
 #include "Components/ScrollBox.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 void UQuestViewWidget::NativeConstruct()
 {

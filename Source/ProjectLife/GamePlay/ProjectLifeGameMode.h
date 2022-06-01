@@ -3,21 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameMode.h"
-#include "GameTimeStruct.h"
-#include "BasicGameMode.generated.h"
+#include "GameFramework/GameModeBase.h"
+#include "ProjectLifeGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTLIFE_API ABasicGameMode : public AGameMode
+class PROJECTLIFE_API AProjectLifeGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 public:
 
-	ABasicGameMode();
+	AProjectLifeGameMode();
 
 protected:
 	// Called when the game starts or when spawned

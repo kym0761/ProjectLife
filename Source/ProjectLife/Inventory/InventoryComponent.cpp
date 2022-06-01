@@ -2,7 +2,7 @@
 
 
 #include "InventoryComponent.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "../Item/Item.h"

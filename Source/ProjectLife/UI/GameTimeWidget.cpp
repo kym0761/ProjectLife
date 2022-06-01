@@ -5,7 +5,9 @@
 #include "Components/TextBlock.h"
 #include "Kismet/KismetTextLibrary.h"
 #include "Engine/DataTable.h"
-#include "../ProjectLIfeGameInstance.h"
+//#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLifeGameState.h"
+#include "Kismet/GameplayStatics.h"
 
 void UGameTimeWidget::NativeConstruct()
 {
@@ -46,14 +48,15 @@ void UGameTimeWidget::InitGameTimeWidget()
 		TextBlock_Minute->SynchronizeProperties();
 	}
 
-	GameInstanceRef = Cast<UProjectLIfeGameInstance>(GetGameInstance());
+	GameStateRef = Cast<AProjectLifeGameState>(UGameplayStatics::GetActorOfClass(GetWorld(), AProjectLifeGameState::StaticClass()));
+
 }
 
 FText UGameTimeWidget::SetYearText()
 {
-	if (IsValid(GameInstanceRef))
+	if (IsValid(GameStateRef))
 	{
-		int32 year = GameInstanceRef->GameTime.Year;
+		int32 year = GameStateRef->InGameTime.Year;
 
 		FText text = UKismetTextLibrary::Conv_IntToText(year, false, true, 1, 324);
 
@@ -83,9 +86,9 @@ FText UGameTimeWidget::SetYearText()
 
 FText UGameTimeWidget::SetMonthText()
 {
-	if (IsValid(GameInstanceRef) && IsValid(MonthTitleDataTable))
+	if (IsValid(GameStateRef) && IsValid(MonthTitleDataTable))
 	{
-		int32 month = GameInstanceRef->GameTime.Month;
+		int32 month = GameStateRef->InGameTime.Month;
 		FString monthString = FString::FromInt(month);
 		FMonthRow* monthRow = MonthTitleDataTable->FindRow<FMonthRow>(FName(*monthString), "");
 
@@ -99,9 +102,9 @@ FText UGameTimeWidget::SetMonthText()
 
 FText UGameTimeWidget::SetDayText()
 {
-	if (IsValid(GameInstanceRef))
+	if (IsValid(GameStateRef))
 	{
-		int32 day = GameInstanceRef->GameTime.Day;
+		int32 day = GameStateRef->InGameTime.Day;
 
 		FText text = UKismetTextLibrary::Conv_IntToText(day, false, true, 1, 324);
 
@@ -131,9 +134,9 @@ FText UGameTimeWidget::SetDayText()
 
 FText UGameTimeWidget::SetHourText()
 {
-	if (IsValid(GameInstanceRef))
+	if (IsValid(GameStateRef))
 	{
-		int32 hour = GameInstanceRef->GameTime.Hour;
+		int32 hour = GameStateRef->InGameTime.Hour;
 		return UKismetTextLibrary::Conv_IntToText(hour, false, true, 2, 324);
 	}
 	return FText();
@@ -141,9 +144,9 @@ FText UGameTimeWidget::SetHourText()
 
 FText UGameTimeWidget::SetMinuteText()
 {
-	if (IsValid(GameInstanceRef))
+	if (IsValid(GameStateRef))
 	{
-		int32 minute = GameInstanceRef->GameTime.Minute;
+		int32 minute = GameStateRef->InGameTime.Minute;
 		return UKismetTextLibrary::Conv_IntToText(minute, false, true, 2, 324);
 	}
 

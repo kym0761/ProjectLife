@@ -6,7 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "ShoppingWidget.h"
 #include "../Base/BasicPlayerController.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "../Inventory/InventoryComponent.h"
 

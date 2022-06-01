@@ -2,7 +2,7 @@
 
 
 #include "QuestManager.h"
-#include "../ProjectLIfeGameInstance.h"
+#include "../GamePlay/ProjectLIfeGameInstance.h"
 
 // Sets default values
 AQuestManager::AQuestManager()

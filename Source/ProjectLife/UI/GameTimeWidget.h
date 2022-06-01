@@ -7,7 +7,7 @@
 #include "GameTimeWidget.generated.h"
 
 class UTextBlock;
-class UProjectLIfeGameInstance;
+class AProjectLifeGameState;
 class UDataTable;
 /**
  * 
@@ -40,7 +40,10 @@ public:
 private:
 
 	UPROPERTY()
-		UProjectLIfeGameInstance* GameInstanceRef;
+		AProjectLifeGameState* GameStateRef;
+
+
+
 
 public:
 	virtual void NativeConstruct() override;
