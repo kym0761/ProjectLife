@@ -42,9 +42,6 @@ private:
 	UPROPERTY()
 		AProjectLifeGameState* GameStateRef;
 
-
-
-
 public:
 	virtual void NativeConstruct() override;
 

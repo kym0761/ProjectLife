@@ -24,18 +24,25 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UTextBlock* QuestNameText;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UTextBlock* QuestDescriptionText;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UVerticalBox* QuestObjectivesBox;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UVerticalBox* QuestRewardsBox;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UButton* CurrentQuestButton;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UButton* CompletedQuestButton;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UButton* ExitButton;
+
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
 		UScrollBox* QuestScrollBox;
 

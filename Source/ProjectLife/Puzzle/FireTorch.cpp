@@ -46,23 +46,6 @@ void AFireTorch::Combust_Implementation()
 	FireOn();
 }
 
-//void AFireTorch::NotifyActorBeginOverlap(AActor* OtherActor)
-//{
-//	Super::NotifyActorBeginOverlap(OtherActor);
-//
-//	if (bFireOn)
-//	{
-//		bool bInterfaceValid = OtherActor->GetClass()->ImplementsInterface(UCombustible::StaticClass());
-//
-//		if (bInterfaceValid)
-//		{
-//			ICombustible::Execute_Combust(OtherActor);
-//		}
-//	}
-//
-//
-//}
-
 void AFireTorch::OverlapCombust()
 {
 	if (bFireOn)

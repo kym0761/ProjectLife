@@ -36,7 +36,7 @@ void APuzzleTrigger::InitializeTriggerArray()
 		{
 			if (GEngine)
 			{
-				FString temp = FString("there is Not valid [TriggeringArray] in : ") + GetName();
+				FString temp = FString("there is Not valid [ToTrigger] in : ") + GetName();
 				GEngine->AddOnScreenDebugMessage(FMath::Rand(), 2.5f, FColor::Cyan, temp);
 			}
 			break;

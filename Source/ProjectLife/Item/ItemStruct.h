@@ -58,24 +58,34 @@ struct FItemData : public FTableRowBase
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString Name;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		UTexture2D* Thumbnail;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString Description;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		bool bIsStackable;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 MaxQuantity;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		TSubclassOf<AItem> ItemClass;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		EItemType ItemType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		EItemRarity ItemRarity;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 ItemPrice;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		UStaticMesh* ItemMesh;
 
@@ -100,24 +110,34 @@ struct FEquipmentItemData : public FTableRowBase
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		FString Name;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		float Attack;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		float Defense;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		float CriticalHit;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EEquipmentType EquipmentType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EGameAttackType AttackType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EGameAttackRangeType AttackRangeType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EGameDamageType DamageType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		EGameElementType ElementType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 		TSubclassOf<ABasicWeapon> WeaponClass;
 
@@ -143,7 +163,8 @@ struct FConsumableItemData : public FTableRowBase
 	GENERATED_BODY()
 
 public:
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString Name;
 
 	FConsumableItemData();
@@ -155,8 +176,10 @@ struct FItemSlotData
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString ItemName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 Quantity;
 
@@ -183,8 +206,10 @@ struct FShopItemData : public FTableRowBase
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString ItemName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		bool bLimited;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 Stock;
 
@@ -202,9 +227,11 @@ public:
 	//Result Item Name
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		FString ItemName;
+
 	//Result Item Quantity
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		int32 Quantity;
+
 	//Recipe (ResourceItemName, ResourceQuantity)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		TMap<FString, int32> Recipe;

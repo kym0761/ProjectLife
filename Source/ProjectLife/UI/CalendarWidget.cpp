@@ -85,8 +85,6 @@ void UCalendarWidget::InitCalendar()
 				dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
 			}
 
-
-			//UCalendarDateSlot* dateSlot = CreateWidget<UCalendarDateSlot>(GetOwningPlayer(), CalendarDateSlotClass);
 			if (IsValid(dateSlot))
 			{
 				CalendarGridPanel->AddChildToUniformGrid(dateSlot, row, column);

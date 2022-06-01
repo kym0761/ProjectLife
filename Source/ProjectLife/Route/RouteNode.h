@@ -15,9 +15,6 @@ public:
 	// Sets default values for this actor's properties
 	ARouteNode();
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Route")
-	//	TArray<ARouteNode*> NearNodes;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Route")
 		FString NodeName;
 

@@ -32,18 +32,16 @@ public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
 		TSubclassOf<UCalendarDateSlot> CalendarDateSlot_Today_Class;
 
-
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_Year;
 
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* TextBlock_Month;
 
-
-
 public:
 
 	virtual void NativeConstruct() override;
 
 	void InitCalendar();
+
 };

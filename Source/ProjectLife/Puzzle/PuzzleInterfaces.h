@@ -8,7 +8,7 @@
 
 /*
 ITriggerable : 트리거 대상일 때 필요한 인터페이스
-IResetable : 리셋이 가능한 대상일 때 필요한 인터페이스
+IResetable : 리셋이 가능한 대상일 때 필요한 인터페이스. ex) ResetButtonTrigger
 ICombustible : 불 붙는게 가능한 대상일 때 필요한 인터페이스. ex)FireTorch, FireStand
 */
 

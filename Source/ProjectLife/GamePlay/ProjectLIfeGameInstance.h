@@ -32,7 +32,7 @@ public:
 };
 
 /**
- * 
+ * 게임에서 공용으로 사용할 Data Table 들을 GameInstance 사용.
  */
 UCLASS()
 class PROJECTLIFE_API UProjectLIfeGameInstance : public UGameInstance

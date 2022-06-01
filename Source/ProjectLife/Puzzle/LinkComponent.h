@@ -76,7 +76,7 @@ public:
 	void LinkJob();
 
 
-	/*BeginOverlap will not Need. Because, Overlap check is needed periodically. so Overlap Will Active cyclically*/
+	/*Overlap 체크가 주기적으로 되기 때문에 지금 OnBeginOverlap은 필요가 없음.*/
 	UFUNCTION()
 		void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
