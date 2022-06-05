@@ -4,6 +4,7 @@
 #include "GridDetectComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GridActor.h"
+
 // Sets default values for this component's properties
 UGridDetectComponent::UGridDetectComponent()
 {

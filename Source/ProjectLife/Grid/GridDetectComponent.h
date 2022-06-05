@@ -8,6 +8,8 @@
 
 class AGridActor;
 
+//TODO : GridDetect도 InteractDetect처럼 변경해야함.
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTLIFE_API UGridDetectComponent : public UActorComponent
 {

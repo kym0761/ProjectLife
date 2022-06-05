@@ -17,6 +17,7 @@ class ADamageTextActor;
 class USceneComponent;
 class UAbilityComponent;
 class UGridDetectComponent;
+class UInteractDetectComponent;
 
 UENUM(BlueprintType)
 enum class ECameraType : uint8
@@ -61,6 +62,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 		UGridDetectComponent* GridDetectComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+		UInteractDetectComponent* InteractDetectComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TSubclassOf<ABasicWeapon> WeaponClass;
@@ -114,23 +118,20 @@ public:
 
 	const float InteractCheckInterval = 0.1f;
 	FTimerHandle InteractCheckTimer;
+
 	//Check There is Interactable Actor.
 	void InteractCheck();
 
 	//Call Interact Function which has Interactive Interface. 
 	void InteractTrigger();
 
-	//Interactee Means Someone or Something is interacted by Interact() Function. Concept is Something like [employ"ee"]
-	//UFUNCTION needed temporally for using in blueprint.
-	UFUNCTION(BlueprintCallable)
-	UObject* FindInteractee();
+	void Interact_Implementation(APawn* InteractCauser);
 
+	//Inventory Toggle
 	void ToggleInventory();
 
 	UFUNCTION(BlueprintCallable) //Temporary In Blueprint Cause by Farming tool
 	void Hold(AActor* ToHold);
 	void UnHold();
 
-	//virtual void Interact(APawn* InteractCauser);
-	void Interact_Implementation(APawn* InteractCauser);
 };

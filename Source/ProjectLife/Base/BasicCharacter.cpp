@@ -8,7 +8,6 @@
 #include "Kismet/KismetSystemLibrary.h" //UKismetSystemLibrary
 #include "Kismet/GameplayStatics.h" //UGamePlayStatics
 #include "Components/SkeletalMeshComponent.h"
-//#include "../Inventory/InventoryComponent.h"
 #include  "StatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BasicWeapon.h"
@@ -18,12 +17,9 @@
 #include "SpeechWidgetComponent.h"
 #include "DamageTextActor.h"
 #include "Components/SceneComponent.h"
-
-//#include "../Grid/GridComponent.h"
-//#include "../Grid/GridManager.h"
 #include "../Grid/GridDetectComponent.h"
-
 #include "../Ability/AbilityComponent.h"
+#include "InteractDetectComponent.h"
 
 // Sets default values
 ABasicCharacter::ABasicCharacter()
@@ -57,6 +53,12 @@ ABasicCharacter::ABasicCharacter()
 	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>(TEXT("EquipmentComponent"));
 	AbilityComponent = CreateDefaultSubobject<UAbilityComponent>(TEXT("AbilityComponent"));
 	GridDetectComponent = CreateDefaultSubobject<UGridDetectComponent>(TEXT("GridDetectComponent"));
+	
+	InteractDetectComponent = CreateDefaultSubobject<UInteractDetectComponent>(TEXT("InteractDetectComponent"));
+	InteractDetectComponent->SetupAttachment(RootComponent);
+	InteractDetectComponent->InitSphereRadius(96.0f);
+	InteractDetectComponent->SetRelativeLocation(FVector(80.0f, 0.0f, 0.0f));
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
@@ -282,15 +284,18 @@ void ABasicCharacter::SettingWithCameraType()
 
 void ABasicCharacter::InteractCheck()
 {
+	//NotifyInteract UI를 보여주어 현재 Interact가 가능한지 보여주기 위한 기능
+
 	//Disable the Check When Hold Something.
 	if (bHoldSomething)
 	{
 		return;
 	}
 
-	UObject* interactee = FindInteractee();
+	//UObject* interactee = FindInteractee();
+	AActor* interactee = InteractDetectComponent->GetInteractiveActor();
 
-	//Basic Interact Check
+	//Interact Check
 	ABasicPlayerController* playerController = GetController<ABasicPlayerController>();
 	if (playerController)
 	{
@@ -309,14 +314,18 @@ void ABasicCharacter::InteractCheck()
 
 void ABasicCharacter::InteractTrigger()
 {
-	//if Hold Something, Unhold And End Interaction Trigger.
+	//참고 : PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ABasicCharacter::InteractTrigger);
+	//Interact 실행.
+
+	//Disable the Check When Hold Something.
 	if (bHoldSomething)
 	{
-		UnHold();
+		//UnHold();
 		return;
 	}
 
-	UObject* interactee = FindInteractee();
+	//UObject* interactee = FindInteractee();
+	AActor* interactee = InteractDetectComponent->GetInteractiveActor();
 
 	//check valid and Interact Execute.
 	if (IsValid(interactee) && interactee->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
@@ -325,125 +334,11 @@ void ABasicCharacter::InteractTrigger()
 	}
 }
 
-UObject* ABasicCharacter::FindInteractee()
+void ABasicCharacter::Interact_Implementation(APawn* InteractCauser)
 {
-	/*First, LineTrace Detection. First Priority is Actor's look Direction.*/
-	/*second Priority is Overlapped Actor detection & most Closest Actor.*/
-
-	TArray<TEnumAsByte<EObjectTypeQuery>> objects;
-
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
-	objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
-	objects.Add(EObjectTypeQuery::ObjectTypeQuery7); // interact object type.
-
-	TArray<AActor*> ignores;
-	ignores.Add(this);
-	ignores.Add(CurrentWeapon);
-	ignores.Add(CurrentHold);
-
-	FVector traceStart = GetActorLocation() + FVector(0.0f, 0.0f, -50.0f); // A little Downward of Trace Start Location.
-	FVector traceEnd = traceStart + GetActorForwardVector() * 100.0f;
-
-	FHitResult hit;
-
-	bool result = UKismetSystemLibrary::LineTraceSingleForObjects(
-		GetWorld(),
-		traceStart,
-		traceEnd,
-		objects,
-		true,
-		ignores,
-		EDrawDebugTrace::None, 
-		//EDrawDebugTrace::ForDuration,
-		hit,
-		true,
-		FLinearColor::Red,
-		FLinearColor::Blue,
-		5.0f
-	);
-
-	UObject* interactee = nullptr;
-
-	if (result)
-	{
-		AActor* actor = hit.GetActor();
-		if (IsValid(actor) && actor->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-		{
-			//bCheck = true;
-			interactee = actor;
-		}
-
-		UPrimitiveComponent* comp = hit.GetComponent();
-		if (IsValid(comp) && comp->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Interactive Component Call Ok."));
-			interactee = comp;
-		}
-
-	}
-	
-	//if interactee still not Valid.. Line Trace Failed... Use Overlap Detection.
-	if(!IsValid(interactee))
-	{
-		TArray<AActor*> overlapped;
-
-		GetOverlappingActors(overlapped);
-
-		//Sort by Distance. descending order.
-		overlapped.Sort(
-			[this](const AActor& a, const AActor& b)
-			->bool {
-				return FVector::Distance(GetActorLocation(), a.GetActorLocation())
-					< FVector::Distance(GetActorLocation(), b.GetActorLocation());
-			}
-		);
-
-		for (AActor* i : overlapped)
-		{
-			if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-			{
-				interactee = i;
-				break;
-			}
-		}
-	}
-
-	///*Actor Interactive Find would be Failed.  maybe, Is Your Intention To Find Component?*/
-	//if (!IsValid(interactee))
-	//{
-	//	TArray<UPrimitiveComponent*> overlappedComponents;
-	//	GetOverlappingComponents(overlappedComponents);
-
-	//	//Sort by Distance. descending order.
-	//	overlappedComponents.Sort(
-	//		[this](const UPrimitiveComponent& a, const UPrimitiveComponent& b)
-	//		->bool {
-	//			return FVector::Distance(GetActorLocation(), a.GetComponentLocation())
-	//				< FVector::Distance(GetActorLocation(), b.GetComponentLocation());
-	//		}
-	//	);
-
-	//	for (UPrimitiveComponent* i : overlappedComponents)
-	//	{
-	//		if (IsValid(i) && i->GetClass()->ImplementsInterface(UInteractive::StaticClass()))
-	//		{
-	//			interactee = i;
-	//			break;
-	//		}
-	//	}
-	//}
-
-	if (IsValid(interactee))
-	{
-		return interactee;
-	}
-	else
-	{
-		return nullptr;
-	}
+	UE_LOG(LogTemp, Warning, TEXT("C++ Interact(). Override Needed?"));
 }
+
 
 void ABasicCharacter::ToggleInventory()
 {
@@ -505,9 +400,3 @@ void ABasicCharacter::UnHold()
 		CurrentHold = nullptr;
 	}
 }
-
-void ABasicCharacter::Interact_Implementation(APawn* InteractCauser)
-{
-	UE_LOG(LogTemp, Warning, TEXT("C++ Interact(). Override Needed?"));
-}
-
