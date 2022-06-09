@@ -4,45 +4,45 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CookWidget.generated.h"
+#include "CraftWidget.generated.h"
 
 class UItemSlot;
 class UButton;
-class ACookActor;
+class ACraftActor;
 class UVerticalBox;
-class UCookSelectionSlot;
+class UCraftSelectionSlot;
+
 /**
  * 
  */
 UCLASS()
-class PROJECTLIFE_API UCookWidget : public UUserWidget
+class PROJECTLIFE_API UCraftWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
 public:
 
 	UPROPERTY()
 		TArray<UItemSlot*> ItemSlotArray;
 
 	UPROPERTY(Meta = (BindWidget))
-	UItemSlot* ItemSlot_Result;
+		UItemSlot* ItemSlot_Result;
 
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_DoCooking;
+		UButton* Button_DoCrafting;
 
 	UPROPERTY(Meta = (BindWidget))
 		UVerticalBox* VerticalBox_CanDo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
-		TSubclassOf<UCookSelectionSlot> CookSelectionSlotClass;
+		TSubclassOf<UCraftSelectionSlot> CraftSelectionSlotClass;
 
 private:
 
 	UPROPERTY()
-		ACookActor* CookActorRef;
+		ACraftActor* CraftActorRef;
 
 	UPROPERTY()
-		FString CookResultName;
+		FString CraftResultName;
 
 public:
 
@@ -50,16 +50,15 @@ public:
 
 	virtual void NativeDestruct() override;
 
-	void InitCookWidget(ACookActor* CookActor);
+	void InitCraftWidget(ACraftActor* CraftActor);
 
 	UFUNCTION()
-	void UpdateCookWidget();
+		void UpdateCraftWidget();
 
 	UFUNCTION()
-		void Clicked_DoCooking();
+		void Clicked_DoCrafting();
 
 	void UpdateSelections();
 
-	void SetCookResultName(FString InVal);
-
+	void SetCraftResultName(FString InVal);
 };

@@ -8,6 +8,7 @@ UInteractDetectComponent::UInteractDetectComponent()
 {
 	HasInteractive = nullptr;
 
+	//TODO : Make And Apply Interact Collision
 }
 
 void UInteractDetectComponent::BeginPlay()

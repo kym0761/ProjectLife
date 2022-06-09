@@ -1,38 +1,38 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CookSelectionSlot.h"
+#include "CraftSelectionSlot.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../GamePlay/ProjectLIfeGameInstance.h"
-#include "CookWidget.h"
+#include "CraftWidget.h"
 
-void UCookSelectionSlot::NativeConstruct()
+void UCraftSelectionSlot::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 }
 
-FReply UCookSelectionSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+FReply UCraftSelectionSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	return FReply::Handled();
 }
 
-FReply UCookSelectionSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+FReply UCraftSelectionSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	Super::NativeOnMouseButtonUp(InGeometry,InMouseEvent);
+	Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 
-	SetCookWidgetSelection();
+	SetCraftWidgetSelection();
 
 	return FReply::Handled();
 }
 
-void UCookSelectionSlot::InitCookSelectionSlot(UCookWidget* ParentCookWidget, FItemRecipeData RecipeData)
+void UCraftSelectionSlot::InitCraftSelectionSlot(UCraftWidget* ParentCraftWidget, FItemRecipeData RecipeData)
 {
-	ParentCookWidgetRef = ParentCookWidget;
+	ParentCraftWidgetRef = ParentCraftWidget;
 
 	UProjectLIfeGameInstance* gameInstance = Cast<UProjectLIfeGameInstance>(GetGameInstance());
 
@@ -62,17 +62,15 @@ void UCookSelectionSlot::InitCookSelectionSlot(UCookWidget* ParentCookWidget, FI
 
 		TextBlock_SlotItemName->SetText(FText::FromString(ItemNameText));
 	}
-
-
 }
 
-void UCookSelectionSlot::SetCookWidgetSelection()
+void UCraftSelectionSlot::SetCraftWidgetSelection()
 {
-	if (!IsValid(ParentCookWidgetRef))
+	if (!IsValid(ParentCraftWidgetRef))
 	{
 		return;
 	}
 
-	//CookWidget의 선택된 레시피 요리 이름
-	ParentCookWidgetRef->SetCookResultName(ItemNameText);
+	//CraftWidget의 선택된 레시피의 아이템 이름
+	ParentCraftWidgetRef->SetCraftResultName(ItemNameText);
 }

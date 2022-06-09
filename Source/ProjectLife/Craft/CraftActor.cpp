@@ -1,107 +1,104 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CookActor.h"
+#include "CraftActor.h"
 #include "../Inventory/InventoryComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "../Base/BasicPlayerController.h"
-#include "CookWidget.h"
+#include "CraftWidget.h"
 
 // Sets default values
-ACookActor::ACookActor()
+ACraftActor::ACraftActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	StorageMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(StorageMesh);
-
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(StorageMesh);
+	SetRootComponent(Sphere);
 	Sphere->SetCollisionProfileName(FName("OverlapAll"));
 	Sphere->SetSphereRadius(128.0f);
 
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->SetupAttachment(Sphere);
 
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+	bCanUse = true;
 }
 
 // Called when the game starts or when spawned
-void ACookActor::BeginPlay()
+void ACraftActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ACookActor::Tick(float DeltaTime)
+void ACraftActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void ACookActor::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ACraftActor::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	//if Player's StorageUI is ON, Remove that.
+	//TODO : EndOverlap이 되면 사용중이던 CraftActor UI를 삭제하여 평소 플레이로 돌아갈 수 있게 함.
+	// 필요없게 된다면 굳이 안만들어도 됨.
 
-	if (bOpen)
-	{
-		APawn* player = Cast<APawn>(OtherActor);
-		if (player)
-		{
-			ABasicPlayerController* playerController = player->GetController<ABasicPlayerController>();
-			if (playerController)
-			{
-				//playerController->ToggleStorageWidget(this);
-				bOpen = false;
-			}
-		}
-	}
 }
 
-void ACookActor::Interact_Implementation(APawn* InteractCauser)
+void ACraftActor::Interact_Implementation(APawn* InteractCauser)
 {
+
 	//Add To Viewport Storage UI.
 
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
-	if (playerController)
+	if (!IsValid(playerController))
 	{
-		//playerController->ToggleStorageWidget(this);
-
-		if (bOpen)
-		{
-			bOpen = false;
-		}
-		else
-		{
-			bOpen = true;
-		}
+		//controller failed
+		return;
 	}
+	//if (playerController)
+	//{
+	//	//playerController->ToggleStorageWidget(this);
 
-	//CookWidget 생성
+	//	if (bOpen)
+	//	{
+	//		bOpen = false;
+	//	}
+	//	else
+	//	{
+	//		bOpen = true;
+	//	}
+	//}
 
-	if (!IsValid(CookWidgetClass))
+	//CraftWidget 생성
+
+	if (!IsValid(CraftWidgetClass))
 	{
 		return;
 	}
 
-	if (IsValid(CookWidgetRef))
+	if (IsValid(CraftWidgetRef))
 	{
-		CookWidgetRef->RemoveFromViewport();
+		CraftWidgetRef->RemoveFromViewport();
 	}
 
-	CookWidgetRef = CreateWidget<UCookWidget>(playerController, CookWidgetClass);
-	
-	if (!IsValid(CookWidgetRef))
+	CraftWidgetRef = CreateWidget<UCraftWidget>(playerController, CraftWidgetClass);
+
+	if (!IsValid(CraftWidgetRef))
 	{
 		return;
 	}
 
-	CookWidgetRef->AddToViewport();
-	CookWidgetRef->InitCookWidget(this);
+	CraftWidgetRef->AddToViewport();
+	CraftWidgetRef->InitCraftWidget(this);
+
+
 
 }
 
-bool ACookActor::MakeCooking(FString CookItemName)
+bool ACraftActor::Crafting(FString ItemNameToCraft)
 {
 	if (!IsValid(RecipeDataTable))
 	{
@@ -109,23 +106,23 @@ bool ACookActor::MakeCooking(FString CookItemName)
 		return false;
 	}
 
-	FItemRecipeData* cookingRecipe = RecipeDataTable->FindRow<FItemRecipeData>(FName(*CookItemName), "");
+	FItemRecipeData* craftingRecipe = RecipeDataTable->FindRow<FItemRecipeData>(FName(*ItemNameToCraft), "");
 
 	//올바르지 않은 요리 레시피는 작동 불가능.
-	if (cookingRecipe == nullptr)
+	if (craftingRecipe == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning : no Recipe"));
 		return false;
 	}
 
 	//실제로 재료들이 있는지 확인함. 전부 확인한 뒤에 요리를 시작할 수 있음.
-	for (TPair<FString, int32> i : cookingRecipe->Recipe)
+	for (TPair<FString, int32> i : craftingRecipe->Recipe)
 	{
 		FString ingredientName = i.Key; //재료이름
 		int32 ingredientQuantity = i.Value; //필요한 양
 
 		bool bCheckHasEnoughIngredient = InventoryComponent->CheckItemInInventory(ingredientName, ingredientQuantity);
-		
+
 		if (bCheckHasEnoughIngredient == false)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Warning : no enough Ingredient"));
@@ -134,7 +131,7 @@ bool ACookActor::MakeCooking(FString CookItemName)
 	}
 
 	//실제로 아이템을 소비함. 위에서 존재 자체를 이미 체크했으므로, 소비시 체크를 굳이 하지 않음.
-	for (TPair<FString, int32> i : cookingRecipe->Recipe)
+	for (TPair<FString, int32> i : craftingRecipe->Recipe)
 	{
 		FString ingredientName = i.Key; //재료이름
 		int32 ingredientQuantity = i.Value; //필요한 양
@@ -143,8 +140,8 @@ bool ACookActor::MakeCooking(FString CookItemName)
 	}
 
 	FItemSlotData result;
-	result.ItemName = cookingRecipe->ItemName;
-	result.Quantity = cookingRecipe->Quantity;
+	result.ItemName = craftingRecipe->ItemName;
+	result.Quantity = craftingRecipe->Quantity;
 
 
 	//10번째 inventory 공간에 아이템을 생성하도록 한다.
@@ -153,10 +150,10 @@ bool ACookActor::MakeCooking(FString CookItemName)
 	return true;
 }
 
-TArray<FItemRecipeData> ACookActor::CanMakeList()
+TArray<FItemRecipeData> ACraftActor::GetCanMakeList() const
 {
-	//만들 수 있는 요리 목록을 전달함.
-	//위의 MakeCooking과 유사하게 인벤토리에 재료가 존재하는지 확인하고 가능한 레시피면 리스트에 넣어주고 전달.
+	//만들 수 있는 요리 목록을 UI에 전달함.
+	//위의 Crafting과 유사하게 인벤토리에 재료가 존재하는지 확인하고 가능한 레시피면 리스트에 넣어주고 전달.
 
 	TArray<FItemRecipeData> result;
 

@@ -6,45 +6,45 @@
 #include "GameFramework/Actor.h"
 #include "../Item/ItemStruct.h"
 #include "../Base/InteractiveInterface.h"
-#include "CookActor.generated.h"
+#include "CraftActor.generated.h"
 
-class UInventoryComponent;
 class USphereComponent;
-class USkeletalMeshComponent;
+class UStaticMeshComponent;
+class UInventoryComponent;
 class UDataTable;
-class UCookWidget;
+class UCraftWidget;
+
 UCLASS()
-class PROJECTLIFE_API ACookActor : public AActor, public IInteractive
+class PROJECTLIFE_API ACraftActor : public AActor, public IInteractive
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ACookActor();
+	ACraftActor();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USphereComponent* Sphere;
 
-	//StorageMesh will be SkeletalMesh because of "Open or Close"
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		USkeletalMeshComponent* StorageMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		UStaticMeshComponent* Mesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Craft")
 		UInventoryComponent* InventoryComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
 		UDataTable* RecipeDataTable;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
-		TSubclassOf<UCookWidget> CookWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
+		TSubclassOf<UCraftWidget> CraftWidgetClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cook")
-		bool bOpen;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Craft")
+		bool bCanUse;
 
 private:
 
 	UPROPERTY()
-		UCookWidget* CookWidgetRef;
+		UCraftWidget* CraftWidgetRef;
 
 
 protected:
@@ -52,6 +52,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -61,7 +62,9 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool MakeCooking(FString CookItemName);
+	bool Crafting(FString ItemNameToCraft);
 
-	TArray<FItemRecipeData> CanMakeList();
+	TArray<FItemRecipeData> GetCanMakeList() const;
+
+
 };

@@ -5,17 +5,18 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "../Item/ItemStruct.h"
-#include "CookSelectionSlot.generated.h"
+#include "CraftSelectionSlot.generated.h"
 
 class UImage;
 class UTextBlock;
-class UCookWidget;
+class UCraftWidget;
+
 
 /**
  * 
  */
 UCLASS()
-class PROJECTLIFE_API UCookSelectionSlot : public UUserWidget
+class PROJECTLIFE_API UCraftSelectionSlot : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -34,7 +35,7 @@ private:
 		FString ItemNameText;
 
 	UPROPERTY()
-		UCookWidget* ParentCookWidgetRef;
+		UCraftWidget* ParentCraftWidgetRef;
 
 public:
 
@@ -45,7 +46,8 @@ public:
 
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-	void InitCookSelectionSlot(UCookWidget* ParentCookWidget, FItemRecipeData RecipeData);
+	void InitCraftSelectionSlot(UCraftWidget* ParentCraftWidget, FItemRecipeData RecipeData);
 
-	void SetCookWidgetSelection();
+	void SetCraftWidgetSelection();
+
 };
