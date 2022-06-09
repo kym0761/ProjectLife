@@ -83,12 +83,13 @@ void ACraftActor::Interact_Implementation(APawn* InteractCauser)
 
 }
 
-bool ACraftActor::Crafting(FString ItemNameToCraft)
+void ACraftActor::Crafting(FString ItemNameToCraft)
 {
 	if (!IsValid(RecipeDataTable))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning : Recipe invalid"));
-		return false;
+		//return false;
+		return;
 	}
 
 	FItemRecipeData* craftingRecipe = RecipeDataTable->FindRow<FItemRecipeData>(FName(*ItemNameToCraft), "");
@@ -97,7 +98,8 @@ bool ACraftActor::Crafting(FString ItemNameToCraft)
 	if (craftingRecipe == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning : no Recipe"));
-		return false;
+		//return false;
+		return;
 	}
 
 	//실제로 재료들이 있는지 확인함. 전부 확인한 뒤에 요리를 시작할 수 있음.
@@ -111,12 +113,53 @@ bool ACraftActor::Crafting(FString ItemNameToCraft)
 		if (bCheckHasEnoughIngredient == false)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Warning : no enough Ingredient"));
-			return false;
+			//return false;
+			return;
 		}
 	}
 
-	//실제로 아이템을 소비함. 위에서 존재 자체를 이미 체크했으므로, 소비시 체크를 굳이 하지 않음.
-	for (TPair<FString, int32> i : craftingRecipe->Recipe)
+	StartCrafting(*craftingRecipe);
+
+}
+
+void ACraftActor::StartCrafting(FItemRecipeData RecipeData)
+{
+	float leadTime = RecipeData.LeadTime;
+
+	if (IsValid(CraftWidgetRef))
+	{
+		CraftWidgetRef->SetProgress(0.0f);
+	}
+
+	FTimerDelegate timerDelegate = FTimerDelegate::CreateUObject(this, &ACraftActor::WhileCrafting, RecipeData);
+
+	float interval = 1 / 60.0f;
+	GetWorldTimerManager().SetTimer(CraftTimer, timerDelegate, interval, true);
+
+}
+
+void ACraftActor::WhileCrafting(FItemRecipeData RecipeData)
+{
+	if (Progress >= RecipeData.LeadTime)
+	{
+		GetWorldTimerManager().ClearTimer(CraftTimer);
+		FinishCrafting(RecipeData);
+	}
+
+
+	if (!IsValid(CraftWidgetRef))
+	{
+		return;
+	}
+
+	Progress += 1 / 60.0f;
+	CraftWidgetRef->SetProgress(Progress / RecipeData.LeadTime);
+}
+
+void ACraftActor::FinishCrafting(FItemRecipeData RecipeData)
+{
+	//실제로 아이템을 소비함. 이미 이전에 존재 자체를 이미 체크했으므로, 소비시 체크를 굳이 하지 않음.
+	for (TPair<FString, int32> i : RecipeData.Recipe)
 	{
 		FString ingredientName = i.Key; //재료이름
 		int32 ingredientQuantity = i.Value; //필요한 양
@@ -125,14 +168,27 @@ bool ACraftActor::Crafting(FString ItemNameToCraft)
 	}
 
 	FItemSlotData result;
-	result.ItemName = craftingRecipe->ItemName;
-	result.Quantity = craftingRecipe->Quantity;
-
+	result.ItemName = RecipeData.ItemName;
+	result.Quantity = RecipeData.Quantity;
 
 	//10번째 inventory 공간에 아이템을 생성하도록 한다.
 	InventoryComponent->SetInventoryItem(10, result);
 
-	return true;
+	//if (!IsValid(CraftWidgetRef))
+	//{
+	//	return;
+	//}
+
+	//CraftWidgetRef->UpdateCraftWidget();
+
+	if (!IsValid(CraftWidgetRef))
+	{
+		return;
+	}
+
+	//Progress 초기화
+	Progress = 0.0f;
+	CraftWidgetRef->SetProgress(Progress);
 }
 
 TArray<FItemRecipeData> ACraftActor::GetCanMakeList() const

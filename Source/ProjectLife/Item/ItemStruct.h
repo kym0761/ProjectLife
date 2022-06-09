@@ -236,4 +236,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 		TMap<FString, int32> Recipe;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		float LeadTime;
 };

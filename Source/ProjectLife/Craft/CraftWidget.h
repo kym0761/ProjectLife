@@ -11,6 +11,7 @@ class UButton;
 class ACraftActor;
 class UVerticalBox;
 class UCraftSelectionSlot;
+class UProgressBar;
 
 /**
  * 
@@ -36,6 +37,9 @@ public:
 	//Crafting이 가능한 아이템 목록.
 	UPROPERTY(Meta = (BindWidget))
 		UVerticalBox* VerticalBox_CanDo;
+
+	UPROPERTY(Meta = (BindWidget))
+		UProgressBar* ProgressBar_Crafting;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
 		TSubclassOf<UCraftSelectionSlot> CraftSelectionSlotClass;
@@ -65,4 +69,6 @@ public:
 	void UpdateSelections();
 
 	void SetCraftResultName(FString InVal);
+
+	void SetProgress(float InVal);
 };

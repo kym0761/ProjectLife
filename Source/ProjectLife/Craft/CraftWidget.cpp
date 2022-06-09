@@ -8,7 +8,7 @@
 #include "Components/Button.h"
 #include "Components/VerticalBox.h"
 #include "CraftSelectionSlot.h"
-
+#include "Components/ProgressBar.h"
 
 void UCraftWidget::NativeConstruct()
 {
@@ -96,12 +96,16 @@ void UCraftWidget::Clicked_DoCrafting()
 		return;
 	}
 
-	bool bSucceed = CraftActorRef->Crafting(CraftResultName);
+	//TODO : 제작 시간 추가
+	//제작 시간 끝나면 생성함.
 
-	if (bSucceed)
-	{
-		UpdateCraftWidget();
-	}
+	//bool bSucceed = 
+		CraftActorRef->Crafting(CraftResultName);
+
+	//if (bSucceed)
+	//{
+	//	UpdateCraftWidget();
+	//}
 	//else
 	//{
 	//	UE_LOG(LogTemp, Warning, TEXT("Warning : CookFailed in Clicked_DoCooking()"));
@@ -144,4 +148,14 @@ void UCraftWidget::UpdateSelections()
 void UCraftWidget::SetCraftResultName(FString InVal)
 {
 	CraftResultName = InVal;
+}
+
+void UCraftWidget::SetProgress(float InVal)
+{
+	if (!IsValid(ProgressBar_Crafting))
+	{
+		return;
+	}
+
+	ProgressBar_Crafting->SetPercent(InVal);
 }

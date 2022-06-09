@@ -46,6 +46,7 @@ private:
 	UPROPERTY()
 		UCraftWidget* CraftWidgetRef;
 
+	float Progress;
 
 protected:
 	// Called when the game starts or when spawned
@@ -62,9 +63,16 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	bool Crafting(FString ItemNameToCraft);
+	void Crafting(FString ItemNameToCraft);
+
+	void StartCrafting(FItemRecipeData RecipeData);
+
+	FTimerHandle CraftTimer;
+	void WhileCrafting(FItemRecipeData RecipeData);
+
+	void FinishCrafting(FItemRecipeData RecipeData);
+
 
 	TArray<FItemRecipeData> GetCanMakeList() const;
-
 
 };
