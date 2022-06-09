@@ -51,39 +51,26 @@ void ACraftActor::Interact_Implementation(APawn* InteractCauser)
 {
 
 	//Add To Viewport Storage UI.
-
 	ABasicPlayerController* playerController = InteractCauser->GetController<ABasicPlayerController>();
 	if (!IsValid(playerController))
 	{
 		//controller failed
 		return;
 	}
-	//if (playerController)
-	//{
-	//	//playerController->ToggleStorageWidget(this);
 
-	//	if (bOpen)
-	//	{
-	//		bOpen = false;
-	//	}
-	//	else
-	//	{
-	//		bOpen = true;
-	//	}
-	//}
-
-	//CraftWidget 생성
-
+	//CraftWidget 생성 전 확인
 	if (!IsValid(CraftWidgetClass))
 	{
 		return;
 	}
 
+	//기존에 있던 CraftWidget 제거
 	if (IsValid(CraftWidgetRef))
 	{
 		CraftWidgetRef->RemoveFromViewport();
 	}
 
+	//생성
 	CraftWidgetRef = CreateWidget<UCraftWidget>(playerController, CraftWidgetClass);
 
 	if (!IsValid(CraftWidgetRef))
@@ -93,8 +80,6 @@ void ACraftActor::Interact_Implementation(APawn* InteractCauser)
 
 	CraftWidgetRef->AddToViewport();
 	CraftWidgetRef->InitCraftWidget(this);
-
-
 
 }
 
@@ -154,7 +139,6 @@ TArray<FItemRecipeData> ACraftActor::GetCanMakeList() const
 {
 	//만들 수 있는 요리 목록을 UI에 전달함.
 	//위의 Crafting과 유사하게 인벤토리에 재료가 존재하는지 확인하고 가능한 레시피면 리스트에 넣어주고 전달.
-
 	TArray<FItemRecipeData> result;
 
 	if (!IsValid(RecipeDataTable))

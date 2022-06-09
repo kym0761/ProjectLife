@@ -25,6 +25,7 @@ FReply UCraftSelectionSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, c
 {
 	Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 
+	//슬롯이 눌러지면은, 눌렀던 슬롯의 데이터를 CraftWidget에 전달함.
 	SetCraftWidgetSelection();
 
 	return FReply::Handled();
