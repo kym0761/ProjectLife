@@ -75,3 +75,8 @@ void UCraftSelectionSlot::SetCraftWidgetSelection()
 	//CraftWidget의 선택된 레시피의 아이템 이름
 	ParentCraftWidgetRef->SetCraftResultName(ItemNameText);
 }
+
+FString UCraftSelectionSlot::GetItemName() const
+{
+	return ItemNameText;
+}

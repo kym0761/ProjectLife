@@ -11,7 +11,7 @@
 class USphereComponent;
 class UStaticMeshComponent;
 class UInventoryComponent;
-class UDataTable;
+class UCraftComponent;
 class UCraftWidget;
 
 UCLASS()
@@ -32,8 +32,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Craft")
 		UInventoryComponent* InventoryComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
-		UDataTable* RecipeDataTable;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Craft")
+		UCraftComponent* CraftComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
 		TSubclassOf<UCraftWidget> CraftWidgetClass;
@@ -46,10 +46,6 @@ private:
 	//현재 자신에게 걸린 CraftWidgetRef 접근 용도
 	UPROPERTY()
 		UCraftWidget* CraftWidgetRef;
-
-	//제작 진행도
-	UPROPERTY()
-		float Progress;
 
 protected:
 	// Called when the game starts or when spawned
@@ -66,16 +62,6 @@ public:
 
 	virtual void Interact_Implementation(APawn* InteractCauser);
 
-	void Crafting(FString ItemNameToCraft);
-
-	void StartCrafting(FItemRecipeData RecipeData);
-
-	FTimerHandle CraftTimer;
-	void WhileCrafting(FItemRecipeData RecipeData);
-
-	void FinishCrafting(FItemRecipeData RecipeData);
-
-
-	TArray<FItemRecipeData> GetCanMakeList() const;
+	void RequestCrafting(FString ItemNameToCraft);
 
 };

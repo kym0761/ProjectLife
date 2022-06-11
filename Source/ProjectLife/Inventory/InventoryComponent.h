@@ -47,7 +47,7 @@ public:
 	bool UseItemInInventory(int32 ItemIndex);
 	bool CheckItemInInventory(FString ItemName, int32 Quantity);
 	bool UseItemsInInventory(FString ItemName, int32 Quantity);
-	
+	int32 GetItemQuantity(FString ItemName);
 	/*-------------*/
 	//인벤토리 데이터가 변경이 된다면 Broadcast를 해주어야함.
 	//자동으로 데이터가 변경된 인벤토리의 슬롯의 정보를 변경시켜줌

@@ -5,6 +5,7 @@
 #include "../Inventory/ItemSlot.h"
 #include "CraftActor.h"
 #include "../Inventory/InventoryComponent.h"
+#include "CraftComponent.h"
 #include "Components/Button.h"
 #include "Components/VerticalBox.h"
 #include "CraftSelectionSlot.h"
@@ -21,6 +22,7 @@ void UCraftWidget::NativeConstruct()
 		ItemSlotArray.Add(slot);
 	}
 
+	//버튼 기능 Bind
 	if (IsValid(Button_DoCrafting))
 	{
 		Button_DoCrafting->OnClicked.AddDynamic(this, &UCraftWidget::Clicked_DoCrafting);
@@ -35,6 +37,8 @@ void UCraftWidget::NativeDestruct()
 	{
 		inventoryComponent->OnInventoryDataChanged.RemoveDynamic(this, &UCraftWidget::UpdateCraftWidget);
 	}
+
+	CraftActorRef->CraftComponent->OnCrafting.RemoveDynamic(this, &UCraftWidget::SetProgress);
 
 	Super::NativeDestruct();
 }
@@ -72,6 +76,7 @@ void UCraftWidget::InitCraftWidget(ACraftActor* CraftActor)
 
 	//Inventory 값이 변경되면 자동으로 Inventory Slot의 업데이트를 위해 델리게이트에 Bind함.
 	inventoryComponent->OnInventoryDataChanged.AddDynamic(this, &UCraftWidget::UpdateCraftWidget);
+	CraftActorRef->CraftComponent->OnCrafting.AddDynamic(this, &UCraftWidget::SetProgress);
 }
 
 void UCraftWidget::UpdateCraftWidget()
@@ -97,7 +102,7 @@ void UCraftWidget::Clicked_DoCrafting()
 	}
 
 	//Craft Actor에게 제작 요청
-	CraftActorRef->Crafting(CraftResultName);
+	CraftActorRef->RequestCrafting(CraftResultName);
 
 }
 
@@ -106,13 +111,18 @@ void UCraftWidget::UpdateSelections()
 	//제조 가능한 아이템의 목록을 출력함
 	//CraftActor의 인벤토리에 접근해서 가능한 요리를 찾아야하므로 CraftActor에서 목록을 받아와서 처리
 
-	//Init : Clear
+	//기존의 만들 수 있던 아이템 목록을 전부 Clear
 	VerticalBox_CanDo->ClearChildren();
-	CraftResultName = FString("");
 
 	if (!IsValid(CraftActorRef))
 	{
 		//Ref failed.
+		return;
+	}
+
+	if (!IsValid(CraftActorRef->CraftComponent))
+	{
+		//Craft Comp Ref failed.
 		return;
 	}
 
@@ -123,16 +133,46 @@ void UCraftWidget::UpdateSelections()
 	}
 
 	//만들 수 있는 아이템 목록
-	TArray<FItemRecipeData> list = CraftActorRef->GetCanMakeList();
+	TArray<FItemRecipeData> list = CraftActorRef->CraftComponent->GetCanMakeList();
+
+	//CraftResultName을 초기화해야 하는지 확인.
+	bool bClearResultName = true;
 
 	for (FItemRecipeData i : list)
 	{
 		UCraftSelectionSlot* slot = NewObject<UCraftSelectionSlot>(GetOwningPlayer(), CraftSelectionSlotClass);
 		VerticalBox_CanDo->AddChild(slot);
 		slot->InitCraftSelectionSlot(this, i);
+
+
+		if (i.ItemName == CraftResultName) // 기존에 만들었던 것 발견.
+		{
+			bClearResultName = false;
+		}
+
 	}
 
-	//UE_LOG(LogTemp, Warning, TEXT("Warning : UpdateSelections()"));
+	//초기화 할 필요 있다면 초기화.
+	if (bClearResultName)
+	{
+		if (VerticalBox_CanDo->HasAnyChildren())
+		{
+			UCraftSelectionSlot* slot = Cast<UCraftSelectionSlot>(VerticalBox_CanDo->GetChildAt(0));
+			if (IsValid(slot))
+			{
+				CraftResultName = slot->GetItemName();
+			}
+			else
+			{
+				CraftResultName = FString("");
+			}
+		}
+		else
+		{
+			CraftResultName = FString("");
+		}
+	}
+
 }
 
 void UCraftWidget::SetCraftResultName(FString InVal)
@@ -147,6 +187,6 @@ void UCraftWidget::SetProgress(float InVal)
 		return;
 	}
 
-	//0.0f ~ 1.0f 값인데, 이미 InVal이 이를 감안하고 Parameter로 들어오므로 상관할 필요는 없음.
+	//InVal은 0.0f ~ 1.0f 값으로, 이미 감안하고 Parameter로 들어오므로 상관할 필요는 없을 것.
 	ProgressBar_Crafting->SetPercent(InVal);
 }

@@ -51,4 +51,5 @@ public:
 
 	void SetCraftWidgetSelection();
 
+	FString GetItemName() const;
 };

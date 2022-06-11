@@ -41,21 +41,20 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UProgressBar* ProgressBar_Crafting;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cook")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
 		TSubclassOf<UCraftSelectionSlot> CraftSelectionSlotClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FString CraftResultName;
 
 private:
 
 	UPROPERTY()
 		ACraftActor* CraftActorRef;
 
-	UPROPERTY()
-		FString CraftResultName;
-
 public:
 
 	virtual void NativeConstruct() override;
-
 	virtual void NativeDestruct() override;
 
 	void InitCraftWidget(ACraftActor* CraftActor);
@@ -70,5 +69,7 @@ public:
 
 	void SetCraftResultName(FString InVal);
 
+	//InVal == 0.0f ~ 1.0f
+	UFUNCTION() // CraftComponent의 OnCrafting 델리게이트 사용을 위한 UFUNCTION()
 	void SetProgress(float InVal);
 };

@@ -229,6 +229,7 @@ int32 UInventoryComponent::AddItemToInventory(FItemSlotData InData)
 	
 	if (!IsValid(gameinstance))
 	{
+		//아이템 정보 확인이 불가능.
 		return -1;
 	}
 
@@ -240,7 +241,7 @@ int32 UInventoryComponent::AddItemToInventory(FItemSlotData InData)
 	}
 
 
-	//!! : 만약 한 번이라도 얻게 됐다면, 인벤토리에 반영이 되므로 FItemDataSlot의 빈 값을 내면 안됨.
+	//!! : 만약 한 번이라도 얻게 됐다면, 인벤토리에 반영이 되므로 Broadcast 해야함.
 	FItemSlotData leftover = InData;
 	for (int i = 0; i < Items.Num(); i++)
 	{
@@ -251,7 +252,6 @@ int32 UInventoryComponent::AddItemToInventory(FItemSlotData InData)
 			int32 tempOffset = FMath::Clamp(leftover.Quantity, 0, extra);
 
 			Items[i].Quantity += tempOffset;
-
 			leftover.Quantity -= tempOffset;
 
 			if (leftover.Quantity == 0)
@@ -279,11 +279,11 @@ int32 UInventoryComponent::AddItemToInventory(FItemSlotData InData)
 			return 0;
 		}
 	}
+	
 	//Warning 1 : leftover의 아이템을 약간 얻었는데, 바닥에 떨어진 아이템 처리가 제대로 되지 않음.
 	//Warning 2 : 보상을 얻으려 했는데, 보상이 초과되서 남음 or 인벤토리 공간이 없어서 보상을 아예 얻지 못함.
 	OnInventoryDataChanged.Broadcast();
 	return leftover.Quantity;
-
 
 }
 
@@ -395,6 +395,21 @@ bool UInventoryComponent::UseItemsInInventory(FString ItemName, int32 Quantity)
 
 	//사실 위 루프가 실행되는 것은 인벤토리에 이미 아이템이 있을 것을 가정했을 때만 작동하므로, 여기까지 오지 않을 것임.
 	return false;
+}
+
+int32 UInventoryComponent::GetItemQuantity(FString ItemName)
+{
+	int32 temp = TNumericLimits<int32>::Max();
+
+	for (int32 i = 0; i < Items.Num(); i++)
+	{
+		if (ItemName == Items[i].ItemName)
+		{
+			temp = Items[i].Quantity;
+		}
+	}
+
+	return temp;
 }
 
 int32 UInventoryComponent::GetMoney() const
