@@ -46,7 +46,7 @@ void AAbility::StartAbility()
 		}
 	}
 
-	//그 후에 액티브 효과 발동
+	//액티브 효과 발동
 	ActivateActiveEffect();
 
 	//패시브 효과도 발동
@@ -104,16 +104,19 @@ void AAbility::ActivateEndEffect_Implementation()
 	}
 }
 
-void AAbility::DestroyAbilityWithNoEndEffect()
+void AAbility::DestroyAbilityWithoutEndEffect()
 {
 	//강제로 종료 당했을 때 발동되어야함.
 	//예시) 보호막이 부셔졌을 때 후폭풍 효과가 없어야함.
 	
+	//타이머 종료
 	if (GetWorldTimerManager().IsTimerActive(AbilityCountdownTimer))
 	{
 		AbilityCountdownTimer.Invalidate();
 		GetWorldTimerManager().ClearTimer(AbilityCountdownTimer);
 	}
+
+	//끝날 때 효과 없이 Destroy
 	Destroy();
 }
 
@@ -122,11 +125,14 @@ void AAbility::DestroyAbilityWithEndEffect()
 	//지속시간이 다 되었을 때 발동되어야함.
 	//예시) 보호막이 지속시간까지 유지되었을 때 후폭풍 효과가 있어야함.
 
+	//타이머 종료
 	if (GetWorldTimerManager().IsTimerActive(AbilityCountdownTimer))
 	{
 		AbilityCountdownTimer.Invalidate();
 		GetWorldTimerManager().ClearTimer(AbilityCountdownTimer);
 	}
+
+	//끝날 때 효과 발동한 뒤에 Destroy.
 	ActivateEndEffect();
 	Destroy();
 }
@@ -144,28 +150,31 @@ void AAbility::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		{
 			abilityComponent->RemoveAbility(this);
 		}
+
 		EndAbility();
 	}
 }
 
 void AAbility::AbilityEndTimerFunction()
 {
-	//1초 단위로 지속시간이 1씩 까입니다.
+	//BeginPlay에 있는 타이머 설정에 의해
+	//1초 단위로 지속시간이 1씩 까인다.
+	//지속시간이 끝나면 정상적으로 종료함.
 	if (CurrentDurationTime <= 0.0f)
 	{
 		CurrentDurationTime = 0.0f;
 		DestroyAbilityWithEndEffect();
 	}
-	else
-	{
-		if (GEngine)
-		{
-			FString str = TEXT("currentTime : ")
-				+ FString::SanitizeFloat(CurrentDurationTime);
+	//else
+	//{
+	//	if (GEngine)
+	//	{
+	//		FString str = TEXT("currentTime : ")
+	//			+ FString::SanitizeFloat(CurrentDurationTime);
 
-			GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
-		}
-	}
+	//		GEngine->AddOnScreenDebugMessage(FMath::Rand(), 5.0f, FColor::Magenta, str);
+	//	}
+	//}
 
 	CurrentDurationTime = FMath::Clamp(CurrentDurationTime - 1.0f, 0.0f, AbilityData.Duration);
 }

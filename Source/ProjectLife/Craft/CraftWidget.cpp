@@ -96,20 +96,9 @@ void UCraftWidget::Clicked_DoCrafting()
 		return;
 	}
 
-	//TODO : 제작 시간 추가
-	//제작 시간 끝나면 생성함.
+	//Craft Actor에게 제작 요청
+	CraftActorRef->Crafting(CraftResultName);
 
-	//bool bSucceed = 
-		CraftActorRef->Crafting(CraftResultName);
-
-	//if (bSucceed)
-	//{
-	//	UpdateCraftWidget();
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Warning : CookFailed in Clicked_DoCooking()"));
-	//}
 }
 
 void UCraftWidget::UpdateSelections()
@@ -133,6 +122,7 @@ void UCraftWidget::UpdateSelections()
 		return;
 	}
 
+	//만들 수 있는 아이템 목록
 	TArray<FItemRecipeData> list = CraftActorRef->GetCanMakeList();
 
 	for (FItemRecipeData i : list)
@@ -142,7 +132,7 @@ void UCraftWidget::UpdateSelections()
 		slot->InitCraftSelectionSlot(this, i);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Warning : UpdateSelections()"));
+	//UE_LOG(LogTemp, Warning, TEXT("Warning : UpdateSelections()"));
 }
 
 void UCraftWidget::SetCraftResultName(FString InVal)
@@ -157,5 +147,6 @@ void UCraftWidget::SetProgress(float InVal)
 		return;
 	}
 
+	//0.0f ~ 1.0f 값인데, 이미 InVal이 이를 감안하고 Parameter로 들어오므로 상관할 필요는 없음.
 	ProgressBar_Crafting->SetPercent(InVal);
 }

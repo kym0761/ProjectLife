@@ -34,6 +34,7 @@ private:
 	UPROPERTY()
 		FString ItemNameText;
 
+	//Parent Á¢±Ù¿ë
 	UPROPERTY()
 		UCraftWidget* ParentCraftWidgetRef;
 

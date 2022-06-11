@@ -43,10 +43,13 @@ public:
 
 private:
 
+	//현재 자신에게 걸린 CraftWidgetRef 접근 용도
 	UPROPERTY()
 		UCraftWidget* CraftWidgetRef;
 
-	float Progress;
+	//제작 진행도
+	UPROPERTY()
+		float Progress;
 
 protected:
 	// Called when the game starts or when spawned

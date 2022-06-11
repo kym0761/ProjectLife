@@ -24,6 +24,7 @@ ACraftActor::ACraftActor()
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	bCanUse = true;
+	Progress = 0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -85,6 +86,13 @@ void ACraftActor::Interact_Implementation(APawn* InteractCauser)
 
 void ACraftActor::Crafting(FString ItemNameToCraft)
 {
+	if (bCanUse == false)
+	{
+		//제작 중이므로 제작 요청을 받고 있으면 안됨.
+		return;
+	}
+
+
 	if (!IsValid(RecipeDataTable))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning : Recipe invalid"));
@@ -118,21 +126,27 @@ void ACraftActor::Crafting(FString ItemNameToCraft)
 		}
 	}
 
+	//제작 시작
 	StartCrafting(*craftingRecipe);
 
 }
 
 void ACraftActor::StartCrafting(FItemRecipeData RecipeData)
 {
-	float leadTime = RecipeData.LeadTime;
+	//다른 제작을 할 수 없게 막음
+	bCanUse = false;
 
+	//초기화
 	if (IsValid(CraftWidgetRef))
 	{
 		CraftWidgetRef->SetProgress(0.0f);
 	}
+	Progress = 0.0f;
 
+	//Timer의 기능에 Parameter 추가하기 위해 델리게이트 선언
 	FTimerDelegate timerDelegate = FTimerDelegate::CreateUObject(this, &ACraftActor::WhileCrafting, RecipeData);
 
+	// 1/60초마다 Timer가 진행되도록 함.
 	float interval = 1 / 60.0f;
 	GetWorldTimerManager().SetTimer(CraftTimer, timerDelegate, interval, true);
 
@@ -140,19 +154,21 @@ void ACraftActor::StartCrafting(FItemRecipeData RecipeData)
 
 void ACraftActor::WhileCrafting(FItemRecipeData RecipeData)
 {
+	//만약 Progress가 LeadTime만큼 진행됐다면 타이머를 종료하고 완성으로 넘어감
 	if (Progress >= RecipeData.LeadTime)
 	{
 		GetWorldTimerManager().ClearTimer(CraftTimer);
 		FinishCrafting(RecipeData);
 	}
 
+	//Widget이 없어도 제작은 진행됨.
+	Progress += 1 / 60.0f;
 
+	//CraftWidget이 없으면 CraftWidget의 Progress 기능은 멈춰야함.
 	if (!IsValid(CraftWidgetRef))
 	{
 		return;
 	}
-
-	Progress += 1 / 60.0f;
 	CraftWidgetRef->SetProgress(Progress / RecipeData.LeadTime);
 }
 
@@ -167,6 +183,7 @@ void ACraftActor::FinishCrafting(FItemRecipeData RecipeData)
 		InventoryComponent->UseItemsInInventory(ingredientName, ingredientQuantity);
 	}
 
+	//완성품
 	FItemSlotData result;
 	result.ItemName = RecipeData.ItemName;
 	result.Quantity = RecipeData.Quantity;
@@ -174,20 +191,14 @@ void ACraftActor::FinishCrafting(FItemRecipeData RecipeData)
 	//10번째 inventory 공간에 아이템을 생성하도록 한다.
 	InventoryComponent->SetInventoryItem(10, result);
 
-	//if (!IsValid(CraftWidgetRef))
-	//{
-	//	return;
-	//}
-
-	//CraftWidgetRef->UpdateCraftWidget();
+	//초기화
+	bCanUse = true;
+	Progress = 0.0f;
 
 	if (!IsValid(CraftWidgetRef))
 	{
 		return;
 	}
-
-	//Progress 초기화
-	Progress = 0.0f;
 	CraftWidgetRef->SetProgress(Progress);
 }
 
@@ -229,6 +240,7 @@ TArray<FItemRecipeData> ACraftActor::GetCanMakeList() const
 			}
 		}
 
+		//제작이 가능한 아이템은 목록에 추가함.
 		if (bCanMake)
 		{
 			result.Add(*recipeItem);

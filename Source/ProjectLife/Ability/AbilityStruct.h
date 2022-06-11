@@ -43,24 +43,14 @@ struct FAbilityDataStruct : public FTableRowBase
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		EAbilityType AbilityType;
-	
+
+	//스킬의 효과량
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityEffectAmount1;
-	
+		TArray<float> AbilityEffectAmounts;
+
+	//스킬의 계수량
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityEffectAmount2;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityEffectAmount3;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityCoefficientAmount1;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityCoefficientAmount2;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		float AbilityCoefficientAmount3;
+		TArray<float> AbilityCoefficientAmounts;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		float CastingTime;

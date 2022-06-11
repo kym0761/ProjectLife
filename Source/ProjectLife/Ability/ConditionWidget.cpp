@@ -15,11 +15,11 @@ void UConditionWidget::NativeConstruct()
 void UConditionWidget::AddIcon(AAbility* ConditionActorRef)
 {
 	//추가된 Ability의 아이콘을 추가
-	if (ConditionBox && ConditionIconClass)
+	if (IsValid(ConditionBox) && IsValid(ConditionIconClass))
 	{
 		UConditionIconWidget* ConditionIcon = CreateWidget<UConditionIconWidget>(this, ConditionIconClass);
-		
-		if (ConditionIcon)
+
+		if (IsValid(ConditionIcon))
 		{
 			ConditionBox->AddChild(ConditionIcon);
 
@@ -34,7 +34,7 @@ void UConditionWidget::RemoveIcon(AAbility* ConditionActorRef)
 	for (int32 i = 0; i < ConditionBox->GetChildrenCount(); i++)
 	{
 		UConditionIconWidget* child = Cast<UConditionIconWidget>(ConditionBox->GetChildAt(i));
-		if (child)
+		if (IsValid(child))
 		{
 			if (child->GetConditionRef() == ConditionActorRef)
 			{

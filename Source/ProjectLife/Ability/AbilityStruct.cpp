@@ -12,14 +12,9 @@ FAbilityDataStruct::FAbilityDataStruct()
 	Cooldown = 5.0f;
 	
 	AbilityType = EAbilityType::None;
-	
-	AbilityEffectAmount1 = 20.0f;
-	AbilityEffectAmount2 = 00.0f;
-	AbilityEffectAmount3 = 00.0f;
-	
-	AbilityCoefficientAmount1 = 0.0f;
-	AbilityCoefficientAmount2 = 0.0f;
-	AbilityCoefficientAmount3 = 0.0f;
+
+	AbilityEffectAmounts.Add(20.0f);
+	AbilityCoefficientAmounts.Add(1.0f);
 
 	CastingTime = 2.0f;
 }
