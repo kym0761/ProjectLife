@@ -5,7 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Components/ScrollBox.h"
 #include "Components/Button.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 #include "ShoppingActor.h"
 #include "ShoppingSlot.h"
 #include "Kismet/GameplayStatics.h"

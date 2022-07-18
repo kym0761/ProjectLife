@@ -4,7 +4,7 @@
 #include "InventoryWidget.h"
 #include "Components/UniformGridPanel.h"
 #include "ItemSlot.h"
-#include "../Base/BasicPlayerController.h"
+#include "Base/BasicPlayerController.h"
 #include "InventoryComponent.h"
 
 void UInventoryWidget::NativeConstruct()

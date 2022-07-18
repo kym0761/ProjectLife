@@ -3,7 +3,7 @@
 
 #include "BasicWeapon.h"
 #include "Components/StaticMeshComponent.h"
-#include "../Base/StatComponent.h"
+#include "Base/StatComponent.h"
 // Sets default values
 ABasicWeapon::ABasicWeapon()
 {

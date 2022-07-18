@@ -2,7 +2,7 @@
 
 
 #include "SpeechWidgetComponent.h"
-#include "../Conversation/SpeechBubbleWidget.h"
+#include "Conversation/SpeechBubbleWidget.h"
 USpeechWidgetComponent::USpeechWidgetComponent()
 {
 	//Don't false in WidgetComponent. or it won't do Working.

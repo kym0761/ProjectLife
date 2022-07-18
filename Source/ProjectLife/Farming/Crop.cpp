@@ -5,7 +5,7 @@
 #include "GrowthComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
-#include "../Grid/GridActor.h"
+#include "Grid/GridActor.h"
 
 // Sets default values
 ACrop::ACrop()

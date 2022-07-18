@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "../Base/AttackStruct.h"
+#include "Base/AttackStruct.h"
 #include "ItemStruct.Generated.h"
 
 class AItem;

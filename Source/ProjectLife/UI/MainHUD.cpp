@@ -3,12 +3,12 @@
 
 #include "MainHUD.h"
 #include "QuickSlotWidget.h"
-#include "../Inventory/InventoryWidget.h"
-#include "../Ability/ConditionWidget.h"
-#include "../Storage/StorageWidget.h"
+#include "Inventory/InventoryWidget.h"
+#include "Ability/ConditionWidget.h"
+#include "Storage/StorageWidget.h"
 #include "Animation/WidgetAnimation.h"
 #include "InteractNotifyWidget.h"
-#include "../Equipment/EquipmentWidget.h"
+#include "Equipment/EquipmentWidget.h"
 
 void UMainHUD::NativeConstruct()
 {

@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "../Item/ItemStruct.h"
-#include "../Base/InteractiveInterface.h"
+#include "Item/ItemStruct.h"
+#include "Base/InteractiveInterface.h"
 #include "CraftActor.generated.h"
 
 class USphereComponent;

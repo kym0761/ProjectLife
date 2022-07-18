@@ -2,12 +2,12 @@
 
 
 #include "ProjectLIfeGameInstance.h"
-#include "../Item/ItemStruct.h"
+#include "Item/ItemStruct.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
-#include "../Storage/StorageBox.h"
-#include "../GamePlay/ProjectLifeSaveGame.h"
-#include "../Base/BasicPlayerController.h"
+#include "Inventory/InventoryComponent.h"
+#include "Storage/StorageBox.h"
+#include "GamePlay/ProjectLifeSaveGame.h"
+#include "Base/BasicPlayerController.h"
 
 FInventory::FInventory()
 {

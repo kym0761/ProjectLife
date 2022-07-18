@@ -2,12 +2,12 @@
 
 
 #include "EquipmentComponent.h"
-#include "../Base/StatComponent.h"
-#include "../Base/BasicWeapon.h"
-#include "../Base/BasicCharacter.h"
-#include "../GamePlay/ProjectLIfeGameInstance.h"
+#include "Base/StatComponent.h"
+#include "Base/BasicWeapon.h"
+#include "Base/BasicCharacter.h"
+#include "GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 // Sets default values for this component's properties
 UEquipmentComponent::UEquipmentComponent()

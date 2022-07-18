@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Item/ItemStruct.h"
+#include "Item/ItemStruct.h"
 #include "Blueprint/UserWidget.h"
 #include "EquipSlot.generated.h"
 

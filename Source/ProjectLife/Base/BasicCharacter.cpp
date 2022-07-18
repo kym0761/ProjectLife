@@ -13,12 +13,12 @@
 #include "BasicWeapon.h"
 #include "Blueprint/UserWidget.h" // CreateWidget
 #include "BasicPlayerController.h"
-#include "../Equipment/EquipmentComponent.h"
+#include "Equipment/EquipmentComponent.h"
 #include "SpeechWidgetComponent.h"
 #include "DamageTextActor.h"
 #include "Components/SceneComponent.h"
-#include "../Grid/GridDetectComponent.h"
-#include "../Ability/AbilityComponent.h"
+#include "Grid/GridDetectComponent.h"
+#include "Ability/AbilityComponent.h"
 #include "InteractDetectComponent.h"
 
 // Sets default values

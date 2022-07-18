@@ -3,11 +3,10 @@
 
 #include "CalendarWidget.h"
 #include "Components/UniformGridPanel.h"
-#include "../GamePlay/GameTimeStruct.h"
-//#include "../ProjectLIfeGameInstance.h"
+#include "GamePlay/GameTimeStruct.h"
 #include "CalendarDummySlot.h"
 #include "CalendarDateSlot.h"
-#include "../GamePlay/ProjectLifeGameState.h"
+#include "GamePlay/ProjectLifeGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/TextBlock.h"
 #include "Kismet/KismetTextLibrary.h"

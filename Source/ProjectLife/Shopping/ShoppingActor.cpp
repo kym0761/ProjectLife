@@ -2,13 +2,13 @@
 
 
 #include "ShoppingActor.h"
-#include "../Item/Item.h"
+#include "Item/Item.h"
 #include "Components/BoxComponent.h"
 #include "ShoppingWidget.h"
-#include "../Base/BasicPlayerController.h"
-#include "../GamePlay/ProjectLIfeGameInstance.h"
+#include "Base/BasicPlayerController.h"
+#include "GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 // Sets default values
 AShoppingActor::AShoppingActor()

@@ -2,11 +2,11 @@
 
 
 #include "CraftActor.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 #include "CraftComponent.h" 
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "../Base/BasicPlayerController.h"
+#include "Base/BasicPlayerController.h"
 #include "CraftWidget.h"
 
 // Sets default values

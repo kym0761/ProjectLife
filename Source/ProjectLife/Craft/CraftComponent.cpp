@@ -2,7 +2,7 @@
 
 
 #include "CraftComponent.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 
 // Sets default values for this component's properties

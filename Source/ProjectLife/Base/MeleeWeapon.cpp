@@ -4,7 +4,7 @@
 #include "MeleeWeapon.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Base/StatComponent.h"
+#include "Base/StatComponent.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {

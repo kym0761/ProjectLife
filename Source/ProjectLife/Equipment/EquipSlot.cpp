@@ -4,14 +4,14 @@
 #include "EquipSlot.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Components/Image.h"
-#include "../Inventory/ItemSlot.h"
+#include "Inventory/ItemSlot.h"
 #include "EquipmentComponent.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "../Base/BasicPlayerController.h"
-#include "../GamePlay/ProjectLIfeGameInstance.h"
+#include "Base/BasicPlayerController.h"
+#include "GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 void UEquipSlot::NativeConstruct()
 {

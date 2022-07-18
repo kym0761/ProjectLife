@@ -3,7 +3,7 @@
 
 #include "LivestockProduceComponent.h"
 #include "Animal.h"
-#include "../Item/Item.h"
+#include "Item/Item.h"
 
 // Sets default values for this component's properties
 ULivestockProduceComponent::ULivestockProduceComponent()

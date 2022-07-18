@@ -3,7 +3,7 @@
 
 #include "DamageTextActor.h"
 #include "Components/WidgetComponent.h"
-#include "../UI/DamageTextWidget.h"
+#include "UI/DamageTextWidget.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values

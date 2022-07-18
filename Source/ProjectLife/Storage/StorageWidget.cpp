@@ -3,9 +3,9 @@
 
 #include "StorageWidget.h"
 #include "Components/UniformGridPanel.h"
-#include "../Inventory/ItemSlot.h"
+#include "Inventory/ItemSlot.h"
 #include "StorageBox.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 void UStorageWidget::NativeConstruct()

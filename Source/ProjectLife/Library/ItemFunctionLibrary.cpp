@@ -2,8 +2,8 @@
 
 
 #include "ItemFunctionLibrary.h"
-#include "../Base/StatComponent.h"
-#include "../Item/Item.h"
+#include "Base/StatComponent.h"
+#include "Item/Item.h"
 #include "Kismet/GameplayStatics.h"
 
 bool UItemFunctionLibrary::Heal(AActor* WantToHeal, float HealAmount)

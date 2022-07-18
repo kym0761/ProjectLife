@@ -3,10 +3,10 @@
 
 #include "QuickSlotWidget.h"
 #include "Components/HorizontalBox.h"
-#include "../Base/BasicCharacter.h"
-#include "../Inventory/ItemSlot.h"
+#include "Base/BasicCharacter.h"
+#include "Inventory/ItemSlot.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 void UQuickSlotWidget::NativeConstruct()
 {

@@ -3,8 +3,8 @@
 
 #include "ProjectLifeGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Farming/Crop.h"
-#include "../Farming/GrowthComponent.h"
+#include "Farming/Crop.h"
+#include "Farming/GrowthComponent.h"
 #include "ProjectLifeGameState.h"
 
 AProjectLifeGameMode::AProjectLifeGameMode()

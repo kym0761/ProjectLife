@@ -4,7 +4,7 @@
 #include "PhysicsHold.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "../Base/BasicCharacter.h"
+#include "Base/BasicCharacter.h"
 
 // Sets default values
 APhysicsHold::APhysicsHold()

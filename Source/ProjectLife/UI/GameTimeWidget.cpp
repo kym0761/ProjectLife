@@ -5,8 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/KismetTextLibrary.h"
 #include "Engine/DataTable.h"
-//#include "../ProjectLIfeGameInstance.h"
-#include "../GamePlay/ProjectLifeGameState.h"
+#include "GamePlay/ProjectLifeGameState.h"
 #include "Kismet/GameplayStatics.h"
 
 void UGameTimeWidget::NativeConstruct()

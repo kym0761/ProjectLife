@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Item/ItemStruct.h"
-#include "../Base/InteractiveInterface.h"
+#include "Item/ItemStruct.h"
+#include "Base/InteractiveInterface.h"
 #include "GameFramework/Actor.h"
 #include "StorageBox.generated.h"
 

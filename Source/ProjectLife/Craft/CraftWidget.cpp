@@ -2,9 +2,9 @@
 
 
 #include "CraftWidget.h"
-#include "../Inventory/ItemSlot.h"
+#include "Inventory/ItemSlot.h"
 #include "CraftActor.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 #include "CraftComponent.h"
 #include "Components/Button.h"
 #include "Components/VerticalBox.h"

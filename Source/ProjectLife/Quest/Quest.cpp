@@ -3,9 +3,9 @@
 
 #include "Quest.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Base/StatComponent.h"
-#include "../Item/Item.h"
-#include "../GamePlay/ProjectLIfeGameInstance.h"
+#include "Base/StatComponent.h"
+#include "Item/Item.h"
+#include "GamePlay/ProjectLIfeGameInstance.h"
 
 //UQuest::UQuestBase()
 //{

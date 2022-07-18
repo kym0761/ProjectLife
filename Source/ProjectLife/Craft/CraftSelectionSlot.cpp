@@ -5,7 +5,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "../GamePlay/ProjectLIfeGameInstance.h"
+#include "GamePlay/ProjectLIfeGameInstance.h"
 #include "CraftWidget.h"
 
 void UCraftSelectionSlot::NativeConstruct()

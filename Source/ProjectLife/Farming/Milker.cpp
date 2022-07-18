@@ -3,9 +3,9 @@
 
 #include "Milker.h"
 #include "Components/SphereComponent.h"
-#include "../Animal/Cow.h"
-#include "../Animal/LivestockProduceComponent.h"
-#include "../Item/Item.h"
+#include "Animal/Cow.h"
+#include "Animal/LivestockProduceComponent.h"
+#include "Item/Item.h"
 
 AMilker::AMilker()
 {

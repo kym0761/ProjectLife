@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "../Item/ItemStruct.h"
-#include "../GamePlay/GameTimeStruct.h"
-#include "../Quest/Quest.h"
+#include "Item/ItemStruct.h"
+#include "GamePlay/GameTimeStruct.h"
+#include "Quest/Quest.h"
 #include "ProjectLIfeGameInstance.generated.h"
 
 class UDataTable;

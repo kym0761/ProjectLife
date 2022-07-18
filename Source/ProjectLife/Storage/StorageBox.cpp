@@ -6,8 +6,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "StorageWidget.h"
-#include "../Base/BasicPlayerController.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Base/BasicPlayerController.h"
+#include "Inventory/InventoryComponent.h"
 
 AStorageBox::AStorageBox()
 {

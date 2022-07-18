@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "../Item/ItemStruct.h"
+#include "Item/ItemStruct.h"
 #include "CraftSelectionSlot.generated.h"
 
 class UImage;

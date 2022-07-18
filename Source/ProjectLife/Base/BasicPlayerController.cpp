@@ -3,10 +3,10 @@
 
 #include "BasicPlayerController.h"
 #include "BasicCharacter.h"
-#include "../Storage/StorageWidget.h"
-#include "../Ability/ConditionWidget.h"
-#include "../UI/MainHUD.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Storage/StorageWidget.h"
+#include "Ability/ConditionWidget.h"
+#include "UI/MainHUD.h"
+#include "Inventory/InventoryComponent.h"
 
 ABasicPlayerController::ABasicPlayerController()
 {

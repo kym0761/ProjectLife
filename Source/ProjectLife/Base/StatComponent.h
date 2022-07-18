@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Item/ItemStruct.h"
+#include "Item/ItemStruct.h"
 #include "Components/ActorComponent.h"
 #include "StatComponent.generated.h"
 

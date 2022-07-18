@@ -4,9 +4,9 @@
 #include "ConfirmShopping.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
-#include "../Base/BasicPlayerController.h"
+#include "Base/BasicPlayerController.h"
 #include "ShoppingActor.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 void UConfirmShopping::NativeConstruct()

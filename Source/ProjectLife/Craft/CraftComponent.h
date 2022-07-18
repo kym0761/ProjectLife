@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "../Item/ItemStruct.h"
+#include "Item/ItemStruct.h"
 #include "CraftComponent.generated.h"
 
 class UDataTable;

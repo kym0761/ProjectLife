@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "../GamePlay/GameTimeStruct.h"
+#include "GamePlay/GameTimeStruct.h"
 #include "GameTimeFunctionLibrary.generated.h"
 
 /**

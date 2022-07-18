@@ -5,10 +5,10 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "../Base/BasicPlayerController.h"
-#include "../GamePlay/ProjectLIfeGameInstance.h"
+#include "Base/BasicPlayerController.h"
+#include "GamePlay/ProjectLIfeGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Inventory/InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 // Sets default values
 AItemPickup::AItemPickup()
