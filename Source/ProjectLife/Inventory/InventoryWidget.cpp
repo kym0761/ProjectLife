@@ -11,6 +11,14 @@ void UInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	UE_LOG(LogTemp, Warning, TEXT("NativeConstruct"));
+
+}
+
+void UInventoryWidget::InitInventoryWidget()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Init"));
+
 	for (int32 i = 0; i < 30; i++) // "i < 30" can be revised.
 	{
 		FString slotName = FString("ItemSlot_") + FString::FromInt(i);
@@ -18,10 +26,6 @@ void UInventoryWidget::NativeConstruct()
 		ItemSlotArray.Add(slot);
 	}
 
-}
-
-void UInventoryWidget::InitInventoryWidget()
-{
 	for (int32 i = 0; i < ItemSlotArray.Num(); i++)
 	{
 		ItemSlotArray[i]->InitItemSlot(GetOwningPlayer());
@@ -61,4 +65,11 @@ bool UInventoryWidget::Initialize()
 	InitInventoryWidget();
 
 	return true;
+}
+
+void UInventoryWidget::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+
+	UE_LOG(LogTemp, Warning, TEXT("NativePreConstruct"));
 }

@@ -12,6 +12,10 @@ void UQuickSlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+}
+
+void UQuickSlotWidget::InitQuickSlot()
+{
 	for (int32 i = 0; i < 10; i++)
 	{
 		FString slotName = FString("ItemSlot_") + FString::FromInt(i);
@@ -19,10 +23,6 @@ void UQuickSlotWidget::NativeConstruct()
 		QuickSlotArray.Add(slot);
 	}
 
-}
-
-void UQuickSlotWidget::InitQuickSlot()
-{
 	for (int32 i = 0; i < QuickSlotArray.Num(); i++)
 	{
 		//플레이어 컨트롤러가 인벤토리를 보유할 예정.
