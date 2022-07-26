@@ -12,7 +12,6 @@ void UGameTimeWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	InitGameTimeWidget();
 }
 
 void UGameTimeWidget::InitGameTimeWidget()
@@ -150,4 +149,18 @@ FText UGameTimeWidget::SetMinuteText()
 	}
 
 	return FText();
+}
+
+bool UGameTimeWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	InitGameTimeWidget();
+
+	return true;
 }

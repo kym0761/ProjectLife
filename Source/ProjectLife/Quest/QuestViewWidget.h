@@ -52,4 +52,9 @@ public:
 	virtual void NativeConstruct() override;
 
 	void InitializeWidget();
+
+protected:
+
+	virtual bool Initialize() override;
+
 };

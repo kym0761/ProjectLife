@@ -72,4 +72,8 @@ public:
 	//InVal == 0.0f ~ 1.0f
 	UFUNCTION() // CraftComponent의 OnCrafting 델리게이트 사용을 위한 UFUNCTION()
 	void SetProgress(float InVal);
+
+protected:
+
+	virtual bool Initialize() override;
 };

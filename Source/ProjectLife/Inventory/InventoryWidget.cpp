@@ -18,7 +18,6 @@ void UInventoryWidget::NativeConstruct()
 		ItemSlotArray.Add(slot);
 	}
 
-	InitInventoryWidget();
 }
 
 void UInventoryWidget::InitInventoryWidget()
@@ -48,4 +47,18 @@ void UInventoryWidget::UpdateInventoryWidget()
 		ItemSlotArray[i]->UpdateItemSlot();
 	}
 	UE_LOG(LogTemp, Warning, TEXT("UPDATE Success"));
+}
+
+bool UInventoryWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	InitInventoryWidget();
+
+	return true;
 }

@@ -62,4 +62,7 @@ public:
 	UFUNCTION()
 		FText SetMinuteText();
 
+protected:
+
+	virtual bool Initialize() override;
 };

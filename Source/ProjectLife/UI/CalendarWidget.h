@@ -44,4 +44,8 @@ public:
 
 	void InitCalendar();
 
+protected:
+
+	virtual bool Initialize() override;
+
 };

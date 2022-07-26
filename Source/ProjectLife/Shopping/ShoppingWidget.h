@@ -49,4 +49,9 @@ public:
 		void ExitButtonClicked();
 
 	void InitShoppingWidget(AShoppingActor* ShopOwner);
+
+protected:
+
+	virtual bool Initialize() override;
+
 };

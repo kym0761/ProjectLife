@@ -15,7 +15,6 @@ void UCalendarWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	InitCalendar();
 }
 
 void UCalendarWidget::InitCalendar()
@@ -111,4 +110,18 @@ void UCalendarWidget::InitCalendar()
 		}
 	}
 
+}
+
+bool UCalendarWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	InitCalendar();
+
+	return true;
 }

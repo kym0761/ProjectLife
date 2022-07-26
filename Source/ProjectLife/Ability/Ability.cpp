@@ -16,6 +16,8 @@ AAbility::AAbility()
 void AAbility::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetActorNameOrLabel();
 }
 
 // Called every frame

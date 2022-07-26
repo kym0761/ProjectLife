@@ -8,7 +8,6 @@ void UEquipmentWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	InitEquipmentWidget();
 }
 
 void UEquipmentWidget::InitEquipmentWidget()
@@ -74,4 +73,18 @@ void UEquipmentWidget::UpdateEquipmentWidget()
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("UpdateEquipmentWidget()"));
+}
+
+bool UEquipmentWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	InitEquipmentWidget();
+
+	return true;
 }

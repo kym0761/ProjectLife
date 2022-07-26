@@ -33,4 +33,9 @@ public:
 
 	UFUNCTION()
 	void UpdateInventoryWidget();
+
+protected:
+
+	virtual bool Initialize() override;
+
 };

@@ -22,11 +22,6 @@ void UCraftWidget::NativeConstruct()
 		ItemSlotArray.Add(slot);
 	}
 
-	//버튼 기능 Bind
-	if (IsValid(Button_DoCrafting))
-	{
-		Button_DoCrafting->OnClicked.AddDynamic(this, &UCraftWidget::Clicked_DoCrafting);
-	}
 }
 
 void UCraftWidget::NativeDestruct()
@@ -189,4 +184,22 @@ void UCraftWidget::SetProgress(float InVal)
 
 	//InVal은 0.0f ~ 1.0f 값으로, 이미 감안하고 Parameter로 들어오므로 상관할 필요는 없을 것.
 	ProgressBar_Crafting->SetPercent(InVal);
+}
+
+bool UCraftWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	//버튼 기능 Bind
+	if (IsValid(Button_DoCrafting))
+	{
+		Button_DoCrafting->OnClicked.AddDynamic(this, &UCraftWidget::Clicked_DoCrafting);
+	}
+
+	return true;
 }

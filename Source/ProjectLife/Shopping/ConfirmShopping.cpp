@@ -12,44 +12,6 @@
 void UConfirmShopping::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	if (IsValid(Button_OK))
-	{
-		Button_OK->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_OK);
-	}
-
-	if (IsValid(Button_Cancel))
-	{
-		Button_Cancel->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Cancel);
-	}
-
-	if (IsValid(Button_Plus))
-	{
-		Button_Plus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Plus);
-	}
-
-	if (IsValid(Button_10Plus))
-	{
-		Button_10Plus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_10Plus);
-	}
-
-	if (IsValid(Button_Minus))
-	{
-		Button_Minus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Minus);
-	}
-
-	if (IsValid(Button_10Minus))
-	{
-		Button_10Minus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_10Minus);
-	}
-
-	if (IsValid(TextBlock_Quantity))
-	{
-		TextBlock_Quantity->TextDelegate.BindDynamic(this, &UConfirmShopping::SetQuantityText);
-		TextBlock_Quantity->SynchronizeProperties();
-	}
-
-	InventoryComponentRef = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
 }
 
 void UConfirmShopping::Clicked_OK()
@@ -151,4 +113,55 @@ void UConfirmShopping::InitConfirmShopping(AShoppingActor* ShopOwner, int32 Inde
 	{
 		RemoveFromParent();
 	}
+}
+
+bool UConfirmShopping::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+
+	if (IsValid(Button_OK))
+	{
+		Button_OK->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_OK);
+	}
+
+	if (IsValid(Button_Cancel))
+	{
+		Button_Cancel->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Cancel);
+	}
+
+	if (IsValid(Button_Plus))
+	{
+		Button_Plus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Plus);
+	}
+
+	if (IsValid(Button_10Plus))
+	{
+		Button_10Plus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_10Plus);
+	}
+
+	if (IsValid(Button_Minus))
+	{
+		Button_Minus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_Minus);
+	}
+
+	if (IsValid(Button_10Minus))
+	{
+		Button_10Minus->OnClicked.AddDynamic(this, &UConfirmShopping::Clicked_10Minus);
+	}
+
+	if (IsValid(TextBlock_Quantity))
+	{
+		TextBlock_Quantity->TextDelegate.BindDynamic(this, &UConfirmShopping::SetQuantityText);
+		TextBlock_Quantity->SynchronizeProperties();
+	}
+
+	InventoryComponentRef = GetOwningPlayer()->FindComponentByClass<UInventoryComponent>();
+
+	return true;
 }

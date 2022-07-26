@@ -19,8 +19,6 @@ void UQuickSlotWidget::NativeConstruct()
 		QuickSlotArray.Add(slot);
 	}
 
-	InitQuickSlot();
-
 }
 
 void UQuickSlotWidget::InitQuickSlot()
@@ -49,4 +47,18 @@ void UQuickSlotWidget::UpdateQuickSlot()
 	{
 		QuickSlotArray[i]->UpdateItemSlot();
 	}
+}
+
+bool UQuickSlotWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	InitQuickSlot();
+
+	return true;
 }

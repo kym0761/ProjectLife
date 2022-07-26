@@ -9,7 +9,6 @@ void UConditionWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-
 }
 
 void UConditionWidget::AddIcon(AAbility* ConditionActorRef)

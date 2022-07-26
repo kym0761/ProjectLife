@@ -40,4 +40,8 @@ public:
 	void InitEquipmentWidget();
 
 	void UpdateEquipmentWidget();
+
+protected:
+
+	virtual bool Initialize() override;
 };

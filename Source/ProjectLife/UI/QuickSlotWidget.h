@@ -36,4 +36,9 @@ public:
 
 	UFUNCTION()
 	void UpdateQuickSlot();
+
+protected:
+
+	virtual bool Initialize() override;
+
 };

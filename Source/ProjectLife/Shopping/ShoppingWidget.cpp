@@ -15,16 +15,6 @@ void UShoppingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (IsValid(MoneyTextBlock))
-	{
-		MoneyTextBlock->TextDelegate.BindDynamic(this, &UShoppingWidget::SetMoneyText);
-		MoneyTextBlock->SynchronizeProperties();
-	}
-
-	if (IsValid(ExitButton))
-	{
-		ExitButton->OnClicked.AddDynamic(this, &UShoppingWidget::ExitButtonClicked);
-	}
 }
 
 FText UShoppingWidget::SetMoneyText()
@@ -63,4 +53,27 @@ void UShoppingWidget::InitShoppingWidget(AShoppingActor* ShopOwner)
 		}
 	}
 
+}
+
+bool UShoppingWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	if (IsValid(MoneyTextBlock))
+	{
+		MoneyTextBlock->TextDelegate.BindDynamic(this, &UShoppingWidget::SetMoneyText);
+		MoneyTextBlock->SynchronizeProperties();
+	}
+
+	if (IsValid(ExitButton))
+	{
+		ExitButton->OnClicked.AddDynamic(this, &UShoppingWidget::ExitButtonClicked);
+	}
+
+	return true;
 }

@@ -12,8 +12,6 @@ void UQuestViewWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	InitializeWidget();
-
 }
 
 void UQuestViewWidget::InitializeWidget()
@@ -28,4 +26,18 @@ void UQuestViewWidget::InitializeWidget()
 		}
 
 	}
+}
+
+bool UQuestViewWidget::Initialize()
+{
+	bool succeed = Super::Initialize();
+
+	if (!succeed)
+	{
+		return false;
+	}
+
+	InitializeWidget();
+
+	return true;
 }

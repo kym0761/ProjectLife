@@ -78,4 +78,8 @@ public:
 
 	void InitConfirmShopping(AShoppingActor* ShopOwner, int32 Index);
 
+protected:
+
+	virtual bool Initialize() override;
+
 };
