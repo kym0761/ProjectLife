@@ -21,10 +21,10 @@ public:
 	ABuilding();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 		int32 GoldIncomePerMinute;

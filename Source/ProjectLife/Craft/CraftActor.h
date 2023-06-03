@@ -24,16 +24,16 @@ public:
 	ACraftActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-		USphereComponent* Sphere;
+		TObjectPtr<USphereComponent> Sphere;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Craft")
-		UInventoryComponent* InventoryComponent;
+		TObjectPtr<UInventoryComponent> InventoryComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Craft")
-		UCraftComponent* CraftComponent;
+		TObjectPtr<UCraftComponent> CraftComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
 		TSubclassOf<UCraftWidget> CraftWidgetClass;
@@ -45,7 +45,7 @@ private:
 
 	//현재 자신에게 걸린 CraftWidgetRef 접근 용도
 	UPROPERTY()
-		UCraftWidget* CraftWidgetRef;
+		TObjectPtr<UCraftWidget> CraftWidgetRef;
 
 protected:
 	// Called when the game starts or when spawned

@@ -24,16 +24,16 @@ public:
 	AShoppingActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* ShoppingCollision;
+		TObjectPtr<UBoxComponent> ShoppingCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingWidget> ShoppingWidgetClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
-		UDataTable* ShoppingDataTable;
+		TObjectPtr<UDataTable> ShoppingDataTable;
 
 	UPROPERTY()
-		UShoppingWidget* ShoppingWidgetRef;
+		TObjectPtr<UShoppingWidget> ShoppingWidgetRef;
 
 	//구매 목록 Cache
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shopping", Meta = (AllowPrivateAccess = "true"))

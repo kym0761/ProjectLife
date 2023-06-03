@@ -20,12 +20,12 @@ class PROJECTLIFE_API UStorageWidget : public UUserWidget
 public:
 	
 	UPROPERTY(Meta = (BindWidget))
-		UUniformGridPanel* SlotGridPanel;
+		TObjectPtr<UUniformGridPanel> SlotGridPanel;
 
 private:
 
 	UPROPERTY()
-		TArray<UItemSlot*> ItemSlotArray;
+		TArray<TObjectPtr<UItemSlot>> ItemSlotArray;
 
 public:
 

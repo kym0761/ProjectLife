@@ -19,19 +19,19 @@ class PROJECTLIFE_API UEquipmentWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UEquipSlot* WeaponSlot;
+		TObjectPtr<UEquipSlot> WeaponSlot;
 
 	UPROPERTY(Meta = (BindWidget))
-		UEquipSlot* ArmorSlot;
+		TObjectPtr<UEquipSlot> ArmorSlot;
 
 	UPROPERTY(Meta = (BindWidget))
-		UEquipSlot* ShieldSlot;
+		TObjectPtr<UEquipSlot> ShieldSlot;
 
 	UPROPERTY(Meta = (BindWidget))
-		UEquipSlot* Accessory1Slot;
+		TObjectPtr<UEquipSlot> Accessory1Slot;
 
 	UPROPERTY(Meta = (BindWidget))
-		UEquipSlot* Accessory2Slot;
+		TObjectPtr<UEquipSlot> Accessory2Slot;
 
 public:
 

@@ -19,7 +19,7 @@ class PROJECTLIFE_API UDamageTextWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* DamageTextBlock;
+		TObjectPtr<UTextBlock> DamageTextBlock;
 
 public:
 

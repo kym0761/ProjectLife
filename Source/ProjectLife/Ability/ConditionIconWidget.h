@@ -19,13 +19,13 @@ class PROJECTLIFE_API UConditionIconWidget : public UUserWidget
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (BindWidget))
-		UImage* ConditionImage;
+		TObjectPtr<UImage> ConditionImage;
 
 private:
 
 	//Buff or DeBuff
 	UPROPERTY()
-		AAbility* ConditionRef;
+		TObjectPtr<AAbility> ConditionRef;
 
 public:
 

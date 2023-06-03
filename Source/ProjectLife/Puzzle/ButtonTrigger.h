@@ -24,19 +24,19 @@ public:
 	AButtonTrigger();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		USphereComponent* Sphere;
+		TObjectPtr<USphereComponent> Sphere;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Body;
+		TObjectPtr<UStaticMeshComponent> Body;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Button;
+		TObjectPtr<UStaticMeshComponent> Button;
 
 
 	FTimeline TimelineHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
-		UCurveFloat* CurveForTimeline;
+		TObjectPtr<UCurveFloat> CurveForTimeline;
 
 protected:
 	// Called when the game starts or when spawned

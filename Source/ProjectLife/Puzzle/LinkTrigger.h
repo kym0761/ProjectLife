@@ -23,13 +23,13 @@ public:
 	ALinkTrigger();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		ULinkComponent* LinkComponent;
+		TObjectPtr<ULinkComponent> LinkComponent;
 	
 public:
 

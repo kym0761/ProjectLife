@@ -20,6 +20,6 @@ public:
 	AChicken();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		ULivestockProduceComponent* LivestockProduceComponent;
+		TObjectPtr<ULivestockProduceComponent> LivestockProduceComponent;
 
 };

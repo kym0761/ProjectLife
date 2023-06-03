@@ -39,7 +39,7 @@ private:
 		FEquipmentItemData AccessoryData2;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
-		ABasicWeapon* CurrentWeapon;
+		TObjectPtr<ABasicWeapon> CurrentWeapon;
 
 protected:
 	// Called when the game starts

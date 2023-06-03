@@ -20,11 +20,11 @@ public:
 		bool bIsActivated;
 
 	UPROPERTY()
-		TArray<UWaterDeliveryComponent*> Connected;
+		TArray<TObjectPtr<UWaterDeliveryComponent>> Connected;
 
 	//물을 공급해주고 있는 WaterDeliveryComponent.
 	UPROPERTY()
-		UWaterDeliveryComponent* Forwarding;
+		TObjectPtr<UWaterDeliveryComponent> Forwarding;
 
 protected:
 	// Called when the game starts

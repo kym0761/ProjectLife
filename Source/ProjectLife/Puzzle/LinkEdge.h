@@ -20,13 +20,13 @@ public:
 	ALinkEdge();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		USceneComponent* DefaultRoot;
+		TObjectPtr<USceneComponent> DefaultRoot;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UNiagaraComponent* LinkEffectComponent;
+		TObjectPtr<UNiagaraComponent> LinkEffectComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ref")
-		TArray<ULinkComponent*> LinkComps;
+		TArray<TObjectPtr<ULinkComponent>> LinkComps;
 
 protected:
 	// Called when the game starts or when spawned

@@ -26,13 +26,13 @@ public:
 	APuzzleDoor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UWidgetComponent* Widget;
+		TObjectPtr<UWidgetComponent> Widget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bDoorOpen;
@@ -53,10 +53,10 @@ public:
 	FTimeline TimelineHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
-		UCurveFloat* CurveForTimeline;
+		TObjectPtr<UCurveFloat> CurveForTimeline;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reset")
-		UNiagaraSystem* ResetNiagaraSystem;
+		TObjectPtr<UNiagaraSystem> ResetNiagaraSystem;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Trigger")
 		bool bBoxOverlapping;

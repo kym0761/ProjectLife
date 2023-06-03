@@ -25,16 +25,16 @@ public:
 	AFireStand();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Stand;
+		TObjectPtr<UStaticMeshComponent> Stand;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UWidgetComponent* Widget;
+		TObjectPtr<UWidgetComponent> Widget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UNiagaraComponent* FireEffect;
+		TObjectPtr<UNiagaraComponent> FireEffect;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Effect")
-		UBoxComponent* FireOverlap;
+		TObjectPtr<UBoxComponent> FireOverlap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
 		bool bUseTimer;

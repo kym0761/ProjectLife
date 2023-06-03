@@ -28,10 +28,10 @@ public:
 private:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "UI", Meta = (AllowPrivateAccess = "true"))
-		UMainHUD* MainHUDRef;
+		TObjectPtr<UMainHUD> MainHUDRef;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory", Meta = (AllowPrivateAccess = "true"))
-		class UInventoryComponent* InventoryComponent;
+		TObjectPtr<UInventoryComponent> InventoryComponent;
 
 public:
 

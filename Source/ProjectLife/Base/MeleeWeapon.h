@@ -21,7 +21,7 @@ public:
 	AMeleeWeapon();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* AttackCollision;
+		TObjectPtr<UBoxComponent> AttackCollision;
 
 protected:
 

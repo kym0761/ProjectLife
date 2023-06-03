@@ -26,22 +26,22 @@ class PROJECTLIFE_API UMainHUD : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UQuickSlotWidget* Widget_QuickSlot;
+		TObjectPtr<UQuickSlotWidget> Widget_QuickSlot;
 
 	UPROPERTY(Meta = (BindWidget))
-		UInventoryWidget* Widget_Inventory;
+		TObjectPtr<UInventoryWidget> Widget_Inventory;
 
 	UPROPERTY(Meta = (BindWidget))
-		UConditionWidget* Widget_Condition;
+		TObjectPtr<UConditionWidget> Widget_Condition;
 
 	UPROPERTY(Meta = (BindWidget))
-		UInteractNotifyWidget* Widget_InteractNotify;
+		TObjectPtr<UInteractNotifyWidget> Widget_InteractNotify;
 
 	UPROPERTY(Meta = (BindWidget))
-		UStorageWidget* Widget_Storage;
+		TObjectPtr<UStorageWidget> Widget_Storage;
 
 	UPROPERTY(Meta = (BindWidget))
-		UEquipmentWidget* Widget_Equipment;
+		TObjectPtr<UEquipmentWidget> Widget_Equipment;
 
 	UPROPERTY()
 		bool bInventoryUsing;
@@ -53,7 +53,7 @@ public:
 		bool bStorageUsing;
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
-		UWidgetAnimation* StorageAnimation;
+		TObjectPtr<UWidgetAnimation> StorageAnimation;
 
 public:
 

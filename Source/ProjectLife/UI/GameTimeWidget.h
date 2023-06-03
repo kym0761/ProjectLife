@@ -20,27 +20,27 @@ class PROJECTLIFE_API UGameTimeWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Year;
+		TObjectPtr<UTextBlock> TextBlock_Year;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Month;
+		TObjectPtr<UTextBlock> TextBlock_Month;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Day;
+		TObjectPtr<UTextBlock> TextBlock_Day;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Hour;
+		TObjectPtr<UTextBlock> TextBlock_Hour;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Minute;
+		TObjectPtr<UTextBlock> TextBlock_Minute;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
-		UDataTable* MonthTitleDataTable;
+		TObjectPtr<UDataTable> MonthTitleDataTable;
 
 private:
 
 	UPROPERTY()
-		AProjectLifeGameState* GameStateRef;
+		TObjectPtr<AProjectLifeGameState> GameStateRef;
 
 public:
 	virtual void NativeConstruct() override;

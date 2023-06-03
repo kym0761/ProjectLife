@@ -23,31 +23,31 @@ class PROJECTLIFE_API UQuestViewWidget : public UUserWidget
 public:
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UTextBlock* QuestNameText;
+		TObjectPtr<UTextBlock> QuestNameText;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UTextBlock* QuestDescriptionText;
+		TObjectPtr<UTextBlock> QuestDescriptionText;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UVerticalBox* QuestObjectivesBox;
+		TObjectPtr<UVerticalBox> QuestObjectivesBox;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UVerticalBox* QuestRewardsBox;
+		TObjectPtr<UVerticalBox> QuestRewardsBox;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UButton* CurrentQuestButton;
+		TObjectPtr<UButton> CurrentQuestButton;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UButton* CompletedQuestButton;
+		TObjectPtr<UButton> CompletedQuestButton;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UButton* ExitButton;
+		TObjectPtr<UButton> ExitButton;
 
 	UPROPERTY(BlueprintReadOnly, Meta = (BindWidget))
-		UScrollBox* QuestScrollBox;
+		TObjectPtr<UScrollBox> QuestScrollBox;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest")
-		UProjectLIfeGameInstance* GameInstanceRef;
+		TObjectPtr<UProjectLIfeGameInstance> GameInstanceRef;
 
 	virtual void NativeConstruct() override;
 

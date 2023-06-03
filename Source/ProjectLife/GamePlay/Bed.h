@@ -21,10 +21,10 @@ public:
 
 	//Needed for Main Collision.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 protected:
 	// Called when the game starts or when spawned

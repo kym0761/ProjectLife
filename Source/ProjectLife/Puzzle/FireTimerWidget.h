@@ -19,11 +19,11 @@ class PROJECTLIFE_API UFireTimerWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UProgressBar* TimerProgressBar;
+		TObjectPtr<UProgressBar> TimerProgressBar;
 
 	//FireStand의 BeginPlay에서 초기화됨.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fire")
-		AFireStand* FireRef;
+		TObjectPtr<AFireStand> FireRef;
 
 public:
 

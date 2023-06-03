@@ -22,17 +22,17 @@ class PROJECTLIFE_API UChoiceSlot : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-	UTextBlock* TextBlock_ChoiceText;
+		TObjectPtr<UTextBlock> TextBlock_ChoiceText;
 
 	UPROPERTY(Meta = (BindWidget))
-		UImage* Image_ChoiceIcon;
+		TObjectPtr<UImage> Image_ChoiceIcon;
 
 private:
 	UPROPERTY()
 		int32 ChoiceNum;
 
 	UPROPERTY()
-		UConversationWidget* ConversationWidgetRef;
+		TObjectPtr<UConversationWidget> ConversationWidgetRef;
 
 public:
 

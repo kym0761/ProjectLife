@@ -19,13 +19,13 @@ public:
 	AFarmingTool();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Farming")
-		AActor* FarmingToolOwner;
+		TObjectPtr<AActor> FarmingToolOwner;
 
 protected:
 	// Called when the game starts or when spawned

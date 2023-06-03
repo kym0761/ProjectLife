@@ -20,10 +20,10 @@ public:
 	ABasicInteractiveActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		USphereComponent* Sphere;
+		TObjectPtr<USphereComponent> Sphere;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		USkeletalMeshComponent* Mesh;
+		TObjectPtr<USkeletalMeshComponent> Mesh;
 
 protected:
 	// Called when the game starts or when spawned

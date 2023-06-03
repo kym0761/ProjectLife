@@ -21,13 +21,13 @@ class PROJECTLIFE_API UShoppingSlot : public UUserWidget
 public:
 	
 	UPROPERTY(Meta = (BindWidget))
-		UImage* SlotImage;
+		TObjectPtr<UImage> SlotImage;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* SlotItemName;
+		TObjectPtr<UTextBlock> SlotItemName;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* SlotItemPrice;
+		TObjectPtr<UTextBlock> SlotItemPrice;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UConfirmShopping> ConfirmShoppingClass;
@@ -38,7 +38,7 @@ public:
 private:
 
 	UPROPERTY()
-		AShoppingActor* ShopOwnerRef;
+		TObjectPtr<AShoppingActor> ShopOwnerRef;
 
 public:
 

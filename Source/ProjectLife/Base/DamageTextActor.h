@@ -19,7 +19,7 @@ public:
 	ADamageTextActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DamageText")
-		UWidgetComponent* WidgetComponent;
+		TObjectPtr<UWidgetComponent> WidgetComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DamageText")
 		TSubclassOf<UDamageTextWidget> DamageTextClass;

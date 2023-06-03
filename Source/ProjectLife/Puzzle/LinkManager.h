@@ -22,7 +22,7 @@ public:
 	ALinkManager();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Refs")
-		TArray<ULinkComponent*> Links;
+		TArray<TObjectPtr<ULinkComponent>> Links;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Refs")
 		TSubclassOf<ALinkEdge> EdgeClass;

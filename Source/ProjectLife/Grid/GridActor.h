@@ -18,11 +18,11 @@ public:
 	AGridActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	//Crop or Building
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
-		AActor* Occupying;
+		TObjectPtr<AActor> Occupying;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
 		int32 X;
@@ -31,13 +31,13 @@ public:
 		int32 Y;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* GridMesh;
+		TObjectPtr<UStaticMeshComponent> GridMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* ValidGridMesh;
+		TObjectPtr<UStaticMeshComponent> ValidGridMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* InvalidGridMesh;
+		TObjectPtr<UStaticMeshComponent> InvalidGridMesh;
 
 protected:
 	// Called when the game starts or when spawned

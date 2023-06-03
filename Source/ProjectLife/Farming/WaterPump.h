@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	AWaterPump();
 
-	UWaterDeliveryComponent* WaterDeliveryComponent;
+	TObjectPtr<UWaterDeliveryComponent> WaterDeliveryComponent;
 
 protected:
 	// Called when the game starts or when spawned

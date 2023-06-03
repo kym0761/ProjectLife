@@ -20,7 +20,7 @@ public:
 	AMilker();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category ="Component")
-		USphereComponent* Sphere;
+		TObjectPtr<USphereComponent> Sphere;
 
 protected:
 	// Called when the game starts or when spawned

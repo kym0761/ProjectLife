@@ -19,13 +19,13 @@ class PROJECTLIFE_API UInteractNotifyWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* NameTextBlock;
+		TObjectPtr<UTextBlock> NameTextBlock;
 
 private:
 
 	//Interact 오브젝트는 여러가지가 존재하므로, UObject를 통해 확인.
 	UPROPERTY()
-		UObject* ObjectRef;
+		TObjectPtr<UObject> ObjectRef;
 
 public:
 

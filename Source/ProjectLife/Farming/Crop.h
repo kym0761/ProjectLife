@@ -22,16 +22,16 @@ public:
 	ACrop();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		AGridActor* GridRef;
+		TObjectPtr<AGridActor> GridRef;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Growth")
-		UGrowthComponent* GrowthComponent;
+		TObjectPtr<UGrowthComponent> GrowthComponent;
 
 protected:
 	// Called when the game starts or when spawned

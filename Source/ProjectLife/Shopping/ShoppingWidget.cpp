@@ -36,7 +36,7 @@ void UShoppingWidget::ExitButtonClicked()
 {
 	GetOwningPlayer()->bShowMouseCursor = true;
 	GetOwningPlayer()->SetInputMode(FInputModeGameAndUI());
-	RemoveFromViewport();
+	RemoveFromParent();
 }
 
 void UShoppingWidget::InitShoppingWidget(AShoppingActor* ShopOwner)

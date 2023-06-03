@@ -21,19 +21,19 @@ class PROJECTLIFE_API UConversationWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_NameText;
+		TObjectPtr<UTextBlock> TextBlock_NameText;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_ConversationText;
+		TObjectPtr<UTextBlock> TextBlock_ConversationText;
 
 	UPROPERTY( BlueprintReadWrite, Meta = (BindWidget))
-		UButton* Button_Next;
+		TObjectPtr<UButton> Button_Next;
 
 	UPROPERTY( BlueprintReadWrite, Meta = (BindWidget))
-		UButton* Button_End;
+		TObjectPtr<UButton> Button_End;
 
 	UPROPERTY(Meta = (BindWidget))
-	UVerticalBox* VerticalBox_Choices;
+		TObjectPtr<UVerticalBox> VerticalBox_Choices;
 
 	//FTimerHandle DialogueTimer;
 
@@ -42,11 +42,11 @@ public:
 
 	//대화 내용이 담긴 DataTable
 	UPROPERTY(BlueprintReadWrite, Category = "Conversation")
-		TArray<UDataTable*> ConversationDataTable;
+		TArray<TObjectPtr<UDataTable>> ConversationDataTable;
 
 	//선택지가 담긴 DataTable
 	UPROPERTY(BlueprintReadWrite, Category = "Conversation")
-		TArray<UDataTable*> ChoiceDataTable;
+		TArray<TObjectPtr<UDataTable>> ChoiceDataTable;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Conversation")
 		TSubclassOf<UChoiceSlot> ChoiceSlot_BP;

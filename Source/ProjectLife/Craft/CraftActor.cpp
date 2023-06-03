@@ -51,7 +51,7 @@ void ACraftActor::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	//기존에 있던 CraftWidget 제거
 	if (IsValid(CraftWidgetRef))
 	{
-		CraftWidgetRef->RemoveFromViewport();
+		CraftWidgetRef->RemoveFromParent();
 		CraftWidgetRef = nullptr;
 	}
 }
@@ -76,7 +76,7 @@ void ACraftActor::Interact_Implementation(APawn* InteractCauser)
 	//기존에 있던 CraftWidget 제거
 	if (IsValid(CraftWidgetRef))
 	{
-		CraftWidgetRef->RemoveFromViewport();
+		CraftWidgetRef->RemoveFromParent();
 		CraftWidgetRef = nullptr;
 	}
 

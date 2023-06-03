@@ -30,7 +30,7 @@ public:
 		int32 NumberOfHarvest;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Growth")
-		TArray<UStaticMesh*> GrowthMeshs;
+		TArray<TObjectPtr<UStaticMesh>> GrowthMeshs;
 
 private:
 

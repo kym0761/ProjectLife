@@ -24,14 +24,14 @@ public:
 
 	//Needed for Main Collision.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBoxComponent* Box;
+		TObjectPtr<UBoxComponent> Box;
 
 	//Needed For Detection.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		USphereComponent* Sphere;
+		TObjectPtr<USphereComponent> Sphere;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* Mesh;
+		TObjectPtr<UStaticMeshComponent> Mesh;
 
 private:
 

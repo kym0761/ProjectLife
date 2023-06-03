@@ -20,6 +20,6 @@ public:
 	ALinkHold();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		ULinkComponent* LinkComponent;
+		TObjectPtr<ULinkComponent> LinkComponent;
 
 };

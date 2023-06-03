@@ -22,13 +22,13 @@ class PROJECTLIFE_API UShoppingWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UScrollBox* ShoppingScrollBox;
+		TObjectPtr<UScrollBox> ShoppingScrollBox;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* MoneyTextBlock;
+		TObjectPtr<UTextBlock> MoneyTextBlock;
 
 	UPROPERTY(Meta = (BindWidget))
-		UButton* ExitButton;
+		TObjectPtr<UButton> ExitButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shopping")
 		TSubclassOf<UShoppingSlot> ShoppingSlotClass;
@@ -36,7 +36,7 @@ public:
 private:
 
 	UPROPERTY()
-		AShoppingActor* ShoppingActorRef;
+		TObjectPtr<AShoppingActor> ShoppingActorRef;
 
 public:
 

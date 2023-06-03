@@ -17,7 +17,7 @@ public:
 	AAnimal();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-		TArray<USoundBase*> InteractSound;
+		TArray<TObjectPtr<USoundBase>> InteractSound;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Interact")
 		bool bInteractOK;

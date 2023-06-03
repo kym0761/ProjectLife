@@ -44,52 +44,52 @@ public:
 	ABasicCharacter();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		USpringArmComponent* SpringArm;
+		TObjectPtr<USpringArmComponent> SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UCameraComponent* Camera;
+		TObjectPtr<UCameraComponent> Camera;
 
 	//StatComponent.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UStatComponent* StatComponent;
+		TObjectPtr<UStatComponent> StatComponent;
 
 	//EquipmentComponent
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UEquipmentComponent* EquipmentComponent;
+		TObjectPtr<UEquipmentComponent> EquipmentComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UAbilityComponent* AbilityComponent;
+		TObjectPtr<UAbilityComponent> AbilityComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UGridDetectComponent* GridDetectComponent;
+		TObjectPtr<UGridDetectComponent> GridDetectComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-		UInteractDetectComponent* InteractDetectComponent;
+		TObjectPtr<UInteractDetectComponent> InteractDetectComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TSubclassOf<ABasicWeapon> WeaponClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
-		ABasicWeapon* CurrentWeapon;
+		TObjectPtr<ABasicWeapon> CurrentWeapon;
 
 	//Current CameraView Type
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "View")
 		ECameraType CameraType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Speech")
-		USpeechWidgetComponent* SpeechBubbleWidget;
+		TObjectPtr<USpeechWidgetComponent> SpeechBubbleWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 		TSubclassOf<ADamageTextActor> DamageTextActorClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
-		USceneComponent* HoldPosition;
+		TObjectPtr<USceneComponent> HoldPosition;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
 		bool bHoldSomething;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hold")
-		AActor* CurrentHold;
+		TObjectPtr<AActor> CurrentHold;
 
 protected:
 	// Called when the game starts or when spawned

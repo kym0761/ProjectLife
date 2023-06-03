@@ -25,11 +25,11 @@ public:
 	AStorageBox();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		USphereComponent* Sphere;
+		TObjectPtr<USphereComponent> Sphere;
 
 	//스켈레탈 메시를 쓰는 이유는 상자 열고 닫는 거를 메시에 넣었기 때문임.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		USkeletalMeshComponent* StorageMesh;
+		TObjectPtr<USkeletalMeshComponent> StorageMesh;
 
 	//TODO : Storage 고유 번호를 매겨서 저장할 때 써먹어야함.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Storage")
@@ -39,7 +39,7 @@ public:
 		bool bOpen;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Storage")
-		UInventoryComponent* InventoryComponent;
+		TObjectPtr<UInventoryComponent> InventoryComponent;
 
 protected:
 	virtual void BeginPlay() override;

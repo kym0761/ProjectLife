@@ -19,7 +19,7 @@ public:
 	ALootingPoint();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UBillboardComponent* Billboard;
+		TObjectPtr<UBillboardComponent> Billboard;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Looting")
 		TSubclassOf<AItemPickup> ItemPickupClass;

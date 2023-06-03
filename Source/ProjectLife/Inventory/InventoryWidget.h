@@ -25,7 +25,7 @@ public:
 	//	UUniformGridPanel* GridPanel;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
-		TArray<UItemSlot*> ItemSlotArray;
+		TArray<TObjectPtr<UItemSlot>> ItemSlotArray;
 
 	virtual void NativeConstruct() override;
 

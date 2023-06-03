@@ -15,7 +15,8 @@ void UDamageTextWidget::SetDamageText(float InDamage)
 {
 	if (DamageTextBlock)
 	{
-		FText temp = UKismetTextLibrary::Conv_FloatToText(InDamage, ERoundingMode::HalfToEven);
+		FText temp = UKismetTextLibrary::Conv_DoubleToText(InDamage, ERoundingMode::HalfToEven);
+
 		DamageTextBlock->SetText(temp);
 	}
 }

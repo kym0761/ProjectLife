@@ -289,6 +289,7 @@ void ABasicCharacter::InteractCheck()
 	//Disable the Check When Hold Something.
 	if (bHoldSomething)
 	{
+		//UnHold();
 		return;
 	}
 
@@ -320,7 +321,7 @@ void ABasicCharacter::InteractTrigger()
 	//Disable the Check When Hold Something.
 	if (bHoldSomething)
 	{
-		//UnHold();
+		UnHold();
 		return;
 	}
 

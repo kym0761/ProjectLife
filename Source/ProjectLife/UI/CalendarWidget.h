@@ -21,7 +21,7 @@ class PROJECTLIFE_API UCalendarWidget : public UUserWidget
 public :
 	
 	UPROPERTY(Meta = (BindWidget))
-		UUniformGridPanel* CalendarGridPanel;
+		TObjectPtr<UUniformGridPanel> CalendarGridPanel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameTime")
 		TSubclassOf<UCalendarDateSlot> CalendarDateSlotClass;
@@ -33,10 +33,10 @@ public :
 		TSubclassOf<UCalendarDateSlot> CalendarDateSlot_Today_Class;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Year;
+		TObjectPtr<UTextBlock> TextBlock_Year;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Month;
+		TObjectPtr<UTextBlock> TextBlock_Month;
 
 public:
 

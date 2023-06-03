@@ -19,7 +19,7 @@ class PROJECTLIFE_API UMultipleChoiceWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UVerticalBox* VerticalBox_Choices;
+		TObjectPtr<UVerticalBox> VerticalBox_Choices;
 
 
 };

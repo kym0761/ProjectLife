@@ -18,7 +18,7 @@ class PROJECTLIFE_API UCalendarDateSlot : public UUserWidget
 public :
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* SlotDayNumber;
+		TObjectPtr<UTextBlock> SlotDayNumber;
 
 public:
 

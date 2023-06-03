@@ -23,21 +23,21 @@ class PROJECTLIFE_API UConfirmShopping : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_OK;
+		TObjectPtr<UButton> Button_OK;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_Cancel;
+		TObjectPtr<UButton> Button_Cancel;
 
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_Plus;
+		TObjectPtr<UButton> Button_Plus;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_10Plus;
+		TObjectPtr<UButton> Button_10Plus;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_Minus;
+		TObjectPtr<UButton> Button_Minus;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* Button_10Minus;
+		TObjectPtr<UButton> Button_10Minus;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_Quantity;
+		TObjectPtr<UTextBlock> TextBlock_Quantity;
 
 private:
 
@@ -46,10 +46,10 @@ private:
 		int32 Quantity;
 
 	UPROPERTY()
-		AShoppingActor* ShopOwnerRef;
+		TObjectPtr<AShoppingActor> ShopOwnerRef;
 
 	UPROPERTY()
-		UInventoryComponent* InventoryComponentRef;
+		TObjectPtr<UInventoryComponent> InventoryComponentRef;
 
 
 	//가리키고 있는 상점의 아이템 Array Number

@@ -20,6 +20,6 @@ public:
 	ACow();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		ULivestockProduceComponent* LivestockProduceComponent;
+		TObjectPtr<ULivestockProduceComponent> LivestockProduceComponent;
 
 };

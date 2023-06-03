@@ -23,7 +23,7 @@ public:
 
 	//Current Link's Edges
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
-		TArray<ALinkEdge*> LinkEdges;
+		TArray<TObjectPtr<ALinkEdge>> LinkEdges;
 
 	//Edge Spawn Class.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Link")
@@ -31,11 +31,11 @@ public:
 
 	//Other LinkComponents.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
-		TArray<ULinkComponent*> LinkComps;
+		TArray<TObjectPtr<ULinkComponent>> LinkComps;
 
 	//Adjacent LinkComponents.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Link")
-		TArray<ULinkComponent*> AdjacentLinkComps;
+		TArray<TObjectPtr<ULinkComponent>> AdjacentLinkComps;
 
 	FTimerHandle LinkTimer;
 

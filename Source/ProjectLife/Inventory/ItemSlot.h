@@ -22,16 +22,16 @@ class PROJECTLIFE_API UItemSlot : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UImage* SlotImage;
+		TObjectPtr<UImage> SlotImage;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* SlotItemNum;
+		TObjectPtr<UTextBlock> SlotItemNum;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
 		int32 InventorySlotNumber;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Inventory")
-		UInventoryComponent* InventoryComponentRef;
+		TObjectPtr<UInventoryComponent> InventoryComponentRef;
 
 	//Using for Drag Drop
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")

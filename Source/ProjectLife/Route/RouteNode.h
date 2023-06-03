@@ -44,8 +44,8 @@ public:
 		float G;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		ARouteNode* RouteNode;
+		TObjectPtr<ARouteNode> RouteNode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		URouteInfo* RouteParentInfo;
+		TObjectPtr<URouteInfo> RouteParentInfo;
 };

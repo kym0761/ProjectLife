@@ -228,7 +228,7 @@ void UEquipSlot::SetEquipmentCompRef(UEquipmentComponent* InVal)
 	}
 }
 
-UEquipmentComponent* UEquipSlot::GetEquipmentCompRef() const
+TObjectPtr<UEquipmentComponent> UEquipSlot::GetEquipmentCompRef() const
 {
 	if (IsValid(EquipmentCompRef))
 	{

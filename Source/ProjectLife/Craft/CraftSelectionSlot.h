@@ -23,10 +23,10 @@ class PROJECTLIFE_API UCraftSelectionSlot : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UImage* Image_SlotImage;
+		TObjectPtr<UImage> Image_SlotImage;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* TextBlock_SlotItemName;
+		TObjectPtr<UTextBlock> TextBlock_SlotItemName;
 
 private:
 
@@ -36,7 +36,7 @@ private:
 
 	//Parent Á¢±Ù¿ë
 	UPROPERTY()
-		UCraftWidget* ParentCraftWidgetRef;
+		TObjectPtr<UCraftWidget> ParentCraftWidgetRef;
 
 public:
 

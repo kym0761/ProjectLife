@@ -44,10 +44,10 @@ public:
 #pragma region dataTable
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		UDataTable* ItemDataTable;
+		TObjectPtr<UDataTable> ItemDataTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameInstance")
-		UDataTable* EquipmentDataTable;
+		TObjectPtr<UDataTable> EquipmentDataTable;
 
 	FItemData GetItemDataFromTable(FString Name);
 	FEquipmentItemData GetEquipmentItemDataFromTable(FString Name);

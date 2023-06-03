@@ -19,10 +19,10 @@ class PROJECTLIFE_API UDoorTimerWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UProgressBar* TimerProgressBar;
+		TObjectPtr<UProgressBar> TimerProgressBar;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
-		APuzzleDoor* DoorRef;
+		TObjectPtr<APuzzleDoor> DoorRef;
 
 public:
 

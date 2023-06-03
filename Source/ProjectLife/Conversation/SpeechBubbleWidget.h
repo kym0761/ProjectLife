@@ -21,10 +21,10 @@ class PROJECTLIFE_API USpeechBubbleWidget : public UUserWidget
 public:
 	
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* SpeechTextBlock;
+		TObjectPtr<UTextBlock> SpeechTextBlock;
 
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* NameTextBlock;
+		TObjectPtr<UTextBlock> NameTextBlock;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speech")
 		FString SpeechString;

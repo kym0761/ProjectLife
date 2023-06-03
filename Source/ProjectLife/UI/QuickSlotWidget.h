@@ -21,12 +21,12 @@ class PROJECTLIFE_API UQuickSlotWidget : public UUserWidget
 public:
 
 	UPROPERTY(Meta = (BindWidget))
-		UHorizontalBox* QuickSlotBox;
+		TObjectPtr<UHorizontalBox> QuickSlotBox;
 
 private:
 
 	UPROPERTY()
-		TArray<UItemSlot*> QuickSlotArray;
+		TArray<TObjectPtr<UItemSlot>> QuickSlotArray;
 
 public:
 

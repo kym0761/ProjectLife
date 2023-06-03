@@ -25,11 +25,11 @@ private:
 		float CurrentDurationTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability", Meta = (AllowPrivateAccess = "true"))
-		AActor* AbilityOwner;
+		TObjectPtr<AActor> AbilityOwner;
 
 	//어빌리티 당 Target은 단 한명 -> 예시) 독 장판이 여러 명에게 각각 중독 어빌리티를 뿌림
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ability", Meta = (AllowPrivateAccess = "true"))
-		AActor* AbilityTarget;
+		TObjectPtr<AActor> AbilityTarget;
 
 	FTimerHandle AbilityCountdownTimer;
 

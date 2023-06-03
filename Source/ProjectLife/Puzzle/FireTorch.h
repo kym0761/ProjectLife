@@ -21,10 +21,10 @@ public:
 	AFireTorch();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Effect")
-		UBoxComponent* FireOverlap;
+		TObjectPtr<UBoxComponent> FireOverlap;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Effect")
-		UNiagaraComponent* FireEffect;
+		TObjectPtr<UNiagaraComponent> FireEffect;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Effect")
 		bool bFireOn;

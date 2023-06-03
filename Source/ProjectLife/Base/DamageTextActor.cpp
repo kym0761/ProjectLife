@@ -24,11 +24,12 @@ ADamageTextActor::ADamageTextActor()
 void ADamageTextActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	if (DamageTextClass)
 	{
 		WidgetComponent->SetWidgetClass(DamageTextClass);
-		UDamageTextWidget* damageWidget = Cast<UDamageTextWidget>(WidgetComponent->GetWidget());
+		auto refWidget = WidgetComponent->GetUserWidgetObject();
+		UDamageTextWidget* damageWidget = Cast<UDamageTextWidget>(refWidget);
 		if (damageWidget)
 		{
 			damageWidget->SetDamageText(AppliedDamage);

@@ -20,7 +20,7 @@ public:
 
 private:
 	UPROPERTY()
-		AActor* HasInteractive;
+		TObjectPtr<AActor> HasInteractive;
 
 protected:
 	// Called when the game starts

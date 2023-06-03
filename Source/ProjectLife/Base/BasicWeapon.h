@@ -19,10 +19,10 @@ public:
 	ABasicWeapon();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStaticMeshComponent* WeaponMesh;
+		TObjectPtr<UStaticMeshComponent> WeaponMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
-		UStatComponent* OwnerStatComponent;
+		TObjectPtr<UStatComponent> OwnerStatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		FEquipmentItemData WeaponData;

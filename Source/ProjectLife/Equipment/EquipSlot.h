@@ -21,7 +21,7 @@ class PROJECTLIFE_API UEquipSlot : public UUserWidget
 
 public:
 	UPROPERTY(Meta = (BindWidget))
-		UImage* SlotImage;
+		TObjectPtr<UImage> SlotImage;
 	
 	//Set Equipment Slot Type
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
@@ -37,7 +37,7 @@ public:
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Equipment", Meta = (AllowPrivateAccess = "true"))
-		UEquipmentComponent* EquipmentCompRef;
+		TObjectPtr<UEquipmentComponent> EquipmentCompRef;
 
 public:
 
@@ -57,5 +57,5 @@ public:
 	void UpdateEquipSlot();
 
 	void SetEquipmentCompRef(UEquipmentComponent* InVal);
-	UEquipmentComponent* GetEquipmentCompRef() const;
+	TObjectPtr<UEquipmentComponent> GetEquipmentCompRef() const;
 };

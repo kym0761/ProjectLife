@@ -22,7 +22,7 @@ public:
 	UCraftComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
-		UDataTable* RecipeDataTable;
+		TObjectPtr<UDataTable> RecipeDataTable;
 
 private:
 	UPROPERTY()
