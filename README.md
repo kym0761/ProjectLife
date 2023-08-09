@@ -1,11 +1,11 @@
 ## 목차
 
-[1. ProjectLife](#projectlife)
-[2. Inventory System](#inventory-system)
-[3. InventoryComponent](#inventorycomponent)
-[4. InventoryUI](#inventory-ui)
-[5. Drag Drop](#drag-drop)
-[6. Shop](#shop)
+1. [ProjectLife](#projectlife)
+2. [Inventory System](#inventory-system)
+3. [InventoryComponent](#inventorycomponent)
+4. [InventoryUI](#inventory-ui)
+5. [Drag Drop](#drag-drop)
+6. [Shop](#shop)
 
 
 # ProjectLife
