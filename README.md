@@ -11,7 +11,7 @@
 
 <img src="ExplainImages/inventory01.png" width="50%">
 
-#InventoryComponent
+# InventoryComponent
 
 <img src="ExplainImages/inventory02.png" width="50%">
 
@@ -29,4 +29,34 @@ UInventoryComponent는 실질적인 인벤토리 기능을 담당한다.
 
 UInventoryComponent는 OnInventoryDataChanged를 통해 인벤토리의 데이터의 변경이 있을 시에 Broadcast()하여 인벤토리의 내용을 출력하는 UI들의 내용을 변경시켜 준다.
 
+# Inventory UI
 
+<img src="ExplainImages/inventory01.png" width="50%">
+
+Inventory UI는 크게 UInventoryWidget 과 UItemSlot으로 구성되어 있다.
+UInventoryWidget은 UItemSlot을 여러 개 보유한 컨테이너의 개념이며, UItemSlot은 UInventoryComponent 안에 있는 아이템 정보를 출력 및 사용을 위한 버튼형 슬롯이다.
+플레이어 인벤토리와 보관함 등의 서로 다른 아이템 공간에 Drag Drop으로 아이템을 옮길 수 있다.
+
+<img src="ExplainImages/inventoryUI01.png" width="50%">
+
+다음 예시는 UInventoryWidget의 코드의 일부.
+UpdateInventoryWidget()은 UInventoryWidget가 보유한 UItemSlot들을 TArray<UItemSlot*> 형태로 보유하고 있으며 이 슬롯들의 정보를 갱신시켜주는 역할을 한다.
+InitInventoryWidget()에서 인벤토리 UI를 초기화하고, UInventoryComponent의 Delegate에 UpdateInventoryWidget()을 bind한다.
+인벤토리의 데이터가 바뀔 때마다 Delegate를 Broadcast()하여 UpdateInventoryWidget()가 호출된다.
+
+# Drag Drop
+
+<img src="ExplainImages/inventoryUI02.png" width="50%">
+
+위의 이미지처럼 Drag Drop을 구현하여 인벤토리 내부를 정리할 수 있다.
+
+<img src="ExplainImages/dragdrop01.png" width="50%">
+
+UItemSlot::NativeOnDragDetected()의 코드 일부.
+
+유저가 인벤토리 슬롯을 드래그하면 슬롯의 데이터를 그대로 복사한다. 이 작업을 하면 유저가 슬롯에 마우스 커서를 올리고 클릭한 뒤에 마우스를 움직이면 아이템 슬롯이 드래그 되며 마우스를 따라다닌다.
+
+<img src="ExplainImages/dragdrop02.png" width="50%">
+
+UItemSlot::NativeOnDrop()의 코드 일부.
+위에서 만들어진 Drag가 다른 UItemSlot의 위에 놓인다면 두 슬롯의 데이터를 서로 바꾸는 기능을 한다.
