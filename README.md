@@ -1,4 +1,4 @@
-# 목차
+## 목차
 
 [1. ProjectLife](#projectlife)
 [2. Inventory System](#inventory-system)
