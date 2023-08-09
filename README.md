@@ -95,3 +95,47 @@ AShoppingActor의 Interact()는 플레이어가 AShoppingActor 앞에서 E버튼
 
 AShoppingActor는 BeginPlay()에서 ShoppingDataTable을 읽어 자신이 판매할 아이템 데이터를 불러올 수 있다.
 ShoppingDataTable는 미리 설정된 FTableRowBase를 상속한 구조체를 통해 데이터 테이블 블루프린트로 관리되어 있다.
+
+# Crafting
+
+<img src="ExplainImages/crafting01.png" width="50%">
+
+인벤토리에 있는 소스와 당근을 Cook Actor의 인벤토리에 넣어주면, 당근 1개와 소스 1개를 사용해 Stirred-Carrot이 제작 가능한 요리 목록에 나타난다. 이 요리 레시피 목록과 재료는 DataTable로 정리되어 있고 이 데이터를 기반으로 요리 제작한다. 요리하기 버튼을 누르면 요리 결과창에 요리가 CookActor의 10번째 슬롯에 생성되고, 이를 드래그하여 인벤토리에 넣으면 된다.
+
+<img src="ExplainImages/crafting01.png" width="50%">
+
+ACookActor는 재료를 받아서 요리를 제작해 주는 기능을 가진 Actor다. AShoppingActor처럼 IInteractive 인터페이스를 상속받아져 있는 상태며, Interact가 호출되면 요리 UI가 생성되어 플레이어가 요리를 할 수 있다.
+
+ACookActor::MakeCooking은 요리를 만드는 기능을 한다.
+만들려는 요리 Item의 이름을 읽고 레시피 정보를 가져온 뒤에
+1. 인벤토리에 재료가 존재하는지 확인.⇒ CheckItemInInventory()
+2. 인벤토리에 재료가 존재하는 걸 확인하면 인벤토리의 아이템들을 사용. ⇒UseItemsInInventory()
+3. ACookActor의 인벤토리 10번째 슬롯에 요리 결과물 정보를 생성.
+
+# Ingame Time
+
+<img src="ExplainImages/time01.png" width="50%">
+
+작물이 시간이 지남에 따라 성장하는 등의 기능을 위해 일단 인게임에서 돌아가는 FInGameTime이라는 구조체를 만든다.
+이 구조체는 Year, Month, Day, Hour, Minute 등의 시간 변수가 존재하며, + - 등의 연산이 가능한 구조체다.
+
+<img src="ExplainImages/time02.png" width="50%">
+
+이 게임은 침대에서 잠을 자면 하루가 증가하고 다음날 오전 06:00부터 다음 게임을 시작한다.
+예시는 위의 이미지대로 0년 1월 2일 11:00에 잠을 자면, 0년 1월 3일 06:00에 일어난다.
+
+<img src="ExplainImages/time03.png" width="50%">
+
+위의 예시는 GameMode에서 IncreaseDay() 함수를 호출하면서 일어나는 결과다. GameInstance에 저장된 현재 시간을 읽고 다음 날로 변경시킨다. 그리고 다음날로 변경됐을 시에 일어나는 IncreaseGrowth() 같은 함수도 동작할 수 있다.
+
+<img src="ExplainImages/time04.png" width="50%">
+
+맵에 존재하는 농작물들은 위의 IncreaseDay에 의해 호출되어 성장한다.
+
+<img src="ExplainImages/time05.png" width="50%">
+
+순서대로 3일,6일, 9일이 지났을 때의 결과다. 9일째는 성장이 완료되어 가까이에서 Interact()하면 수확된다.
+
+<img src="ExplainImages/time05.png" width="50%">
+
+위처럼 인게임 시간에 맞춰 달력도 만들어진다.
