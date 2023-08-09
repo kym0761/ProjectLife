@@ -54,9 +54,35 @@ InitInventoryWidget()에서 인벤토리 UI를 초기화하고, UInventoryCompon
 
 UItemSlot::NativeOnDragDetected()의 코드 일부.
 
-유저가 인벤토리 슬롯을 드래그하면 슬롯의 데이터를 그대로 복사한다. 이 작업을 하면 유저가 슬롯에 마우스 커서를 올리고 클릭한 뒤에 마우스를 움직이면 아이템 슬롯이 드래그 되며 마우스를 따라다닌다.
+유저가 인벤토리 슬롯을 드래그하면 슬롯의 데이터를 그대로 복사한다.
+
+이 작업을 하면 유저가 슬롯에 마우스 커서를 올리고 클릭한 뒤에 마우스를 움직이면 아이템 슬롯이 드래그 되며 마우스를 따라다닌다.
 
 <img src="ExplainImages/dragdrop02.png" width="50%">
 
 UItemSlot::NativeOnDrop()의 코드 일부.
+
 위에서 만들어진 Drag가 다른 UItemSlot의 위에 놓인다면 두 슬롯의 데이터를 서로 바꾸는 기능을 한다.
+
+# Shop
+
+<img src="ExplainImages/shop01.png" width="50%">
+
+위의 이미지처럼 푸른 실린더 액터에 Interact()하면 위의 이미지처럼 상점 UI가 나타난다.
+
+<img src="ExplainImages/shop02.png" width="50%">
+
+원하는 아이템 개수만큼 조절한 뒤에 OK를 누르면 구매가 확정되어 아이템이 인벤토리에 추가된다.
+
+<img src="ExplainImages/shop03.png" width="50%">
+
+AShoppingActor는 Interact가 가능한 Actor로 IInteractive 인터페이스를 보유하고 있어서 플레이어의 키보드 E를 누르면 Interact()가 호출되어 Interact할 수 있다.
+
+<img src="ExplainImages/shop04.png" width="50%">
+
+AShoppingActor의 Interact()는 플레이어가 AShoppingActor 앞에서 E버튼을 눌렀을 때, UShoppingWidget을 생성한다.
+
+<img src="ExplainImages/shop05.png" width="50%">
+
+AShoppingActor는 BeginPlay()에서 ShoppingDataTable을 읽어 자신이 판매할 아이템 데이터를 불러올 수 있다.
+ShoppingDataTable는 미리 설정된 FTableRowBase를 상속한 구조체를 통해 데이터 테이블 블루프린트로 관리되어 있다.
