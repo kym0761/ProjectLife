@@ -1,7 +1,7 @@
 ## 목차
 
-1. [ProjectLife](#ProjectLife)
-2. [Inventory System](#Inventory-System)
+1. [ProjectLife](#projectlife)
+2. [Inventory System](#inventory-system)
 
 # ProjectLife
 
