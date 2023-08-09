@@ -33,6 +33,15 @@ enum class EGameDamageType : uint8
 	Magical UMETA(DisplayName = "Magical")
 };
 
+//EGameDefenseType
+UENUM(BlueprintType)
+enum class EGameDefenseType : uint8
+{
+	None UMETA(DisplayName = "None"),
+	Light UMETA(DisplayName = "Light"),
+	Heavy UMETA(DisplayName = "Heavy")
+};
+
 UENUM(BlueprintType)
 enum class EGameElementType : uint8
 {
