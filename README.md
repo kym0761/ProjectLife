@@ -6,7 +6,8 @@
 4. [InventoryUI](#inventory-ui)
 5. [Drag Drop](#drag-drop)
 6. [Shop](#shop)
-
+7. [Crafting](#crafting)
+8. [Dungeon Puzzle](#dungeon-puzzle)
 
 # ProjectLife
 
@@ -136,6 +137,63 @@ ACookActor::MakeCooking은 요리를 만드는 기능을 한다.
 
 순서대로 3일,6일, 9일이 지났을 때의 결과다. 9일째는 성장이 완료되어 가까이에서 Interact()하면 수확된다.
 
-<img src="ExplainImages/time05.png" width="50%">
+<img src="ExplainImages/time06.png" width="50%">
 
 위처럼 인게임 시간에 맞춰 달력도 만들어진다.
+
+# Dungeon Puzzle
+
+## 예시
+
+<img src="ExplainImages/dungeonPuzzle01.png" width="50%">
+
+버튼을 누르면 문이 열려 통과가 된다. 이 문은 시간 제한이 존재한다.
+
+<img src="ExplainImages/dungeonPuzzle02.png" width="50%">
+
+이 문은 두 개의 화로 기둥에 불이 다 붙어야 열린다. 화로 기둥은 버튼을 누르면 활성화된다.
+
+ <img src="ExplainImages/dungeonPuzzle03.png" width="50%">
+
+이 예시는 버튼이 플레이어가 올라타는 것 뿐만 아니라, 버튼 위에 다른 물리적인 물체가 존재하면 눌린다는 의미다.
+
+ <img src="ExplainImages/dungeonPuzzle04.png" width="50%">
+
+이 화로 기둥은 한번 켜지고 시간제한이 있다. 시간제한이 끝나면 불이 꺼진다.
+
+## 구현
+
+ <img src="ExplainImages/dungeonPuzzleCode01.png" width="50%">
+
+위의 이미지처럼 트리거 역할을 하는 Actor를 만든다. 트리거 해야할 액터는 ToTrigger라는 TArray에 저장된다.
+이 ToTrigger는, ITriggerable이라는 인터페이스를 상속받아, ToTrigger의 대상이 되어 TriggerAction에서 문이 열리는 기능을 보유하고 있다.
+
+ <img src="ExplainImages/dungeonPuzzleCode02.png" width="50%">
+
+위처럼 버튼을 클릭하고 ToTrigger에 트리거할 대상인 Door를 선택하면, 이 버튼이 눌렸을 때 이 Door가 트리거되어 문이 열린다.
+
+ <img src="ExplainImages/dungeonPuzzleCode03.png" width="50%">
+
+위의 이미지처럼, 초록색 버튼을 누르면 트리거된 퍼즐이 리셋된다. 이는 퍼즐을 잘못 사용했을 때 유용할 수 있다.
+초록버튼은 Trigger()에서 Iresetable 인터페이스를 상속받은 액터를 리셋시킨다.
+
+ <img src="ExplainImages/dungeonPuzzleCode04.png" width="50%">
+
+위의 이미지처럼, 화로 기둥 같이 불이 붙는 퍼즐 요소 Actor는 근처에 불이 존재하면 연쇄적으로 불이 붙는다.
+이는 ICombustible이라는 인터페이스를 통해 불붙이는 기능을 만들었다.
+
+ <img src="ExplainImages/dungeonPuzzleCode05.png" width="50%">
+
+위의 이미지처럼, 왼쪽 문이 막혀있지만, 원통 사이에 원뿔을 놓으면 전기적으로 연결되어 문이 활성화되고 열린다.
+
+ <img src="ExplainImages/dungeonPuzzleCode06.png" width="50%">
+
+이는 ULinkComponent에서 BFS 알고리즘을 통해 전기 발생 장치와 연결되어 닿을 수 있는지를 확인하고 활성화 여부를 결정한다. 발생 장치가 발견됐다면 순회를 종료하면 된다.
+
+ <img src="ExplainImages/dungeonPuzzleCode07.png" width="50%">
+
+위처럼 모든 원뿔이 전기적으로 연결되어 있는 상태라면...
+
+ <img src="ExplainImages/dungeonPuzzleCode08.png" width="50%">
+
+만약 중간에 어느 정도 거리가 멀어진 원뿔이 존재하면 연결이 해제되며, 이는 다른 ULinkComponent를 가진 원뿔에게도 연쇄적으로 발생한다.
