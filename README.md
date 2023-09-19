@@ -103,7 +103,7 @@ ShoppingDataTable는 미리 설정된 FTableRowBase를 상속한 구조체를 �
 
 인벤토리에 있는 소스와 당근을 Cook Actor의 인벤토리에 넣어주면, 당근 1개와 소스 1개를 사용해 Stirred-Carrot이 제작 가능한 요리 목록에 나타난다. 이 요리 레시피 목록과 재료는 DataTable로 정리되어 있고 이 데이터를 기반으로 요리 제작한다. 요리하기 버튼을 누르면 요리 결과창에 요리가 CookActor의 10번째 슬롯에 생성되고, 이를 드래그하여 인벤토리에 넣으면 된다.
 
-<img src="ExplainImages/crafting01.png" width="50%">
+<img src="ExplainImages/crafting02.png" width="50%">
 
 ACookActor는 재료를 받아서 요리를 제작해 주는 기능을 가진 Actor다. AShoppingActor처럼 IInteractive 인터페이스를 상속받아져 있는 상태며, Interact가 호출되면 요리 UI가 생성되어 플레이어가 요리를 할 수 있다.
 
